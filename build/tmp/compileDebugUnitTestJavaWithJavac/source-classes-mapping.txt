@@ -1,0 +1,2 @@
+io/openim/android/sdk/ExampleUnitTest.java
+ io.openim.android.sdk.ExampleUnitTest

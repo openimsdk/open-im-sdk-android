@@ -1,0 +1,4 @@
+io/openim/android/sdk/BuildConfig.java
+ io.openim.android.sdk.BuildConfig
+io/openim/android/sdk/enums/ConversationType.java
+ io.openim.android.sdk.enums.ConversationType
