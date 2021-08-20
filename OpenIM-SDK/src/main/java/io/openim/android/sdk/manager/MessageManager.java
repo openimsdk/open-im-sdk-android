@@ -174,6 +174,14 @@ public class MessageManager {
         return parse(Open_im_sdk.createForwardMessage(JSON.toJSONString(messageList)));
     }
 
+    public Message createLocationMessage(double latitude, double longitude, String description) {
+        return parse(Open_im_sdk.createLocationMessage(description, longitude, latitude));
+    }
+
+    public Message createCustomMessage(byte[] data, byte[] extension, String description) {
+        return parse(Open_im_sdk.createCustomMessage(data, extension, description));
+    }
+
     public void getTotalUnreadMsgCount(OnBase<String> base) {
         Open_im_sdk.getTotalUnreadMsgCount(BaseImpl.stringBase(base));
     }
