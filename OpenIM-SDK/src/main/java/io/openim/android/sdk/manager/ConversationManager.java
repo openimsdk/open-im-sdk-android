@@ -42,7 +42,7 @@ public class ConversationManager {
         Open_im_sdk.getAllConversationList(BaseImpl.arrayBase(base, ConversationInfo.class));
     }
 
-    void setOnConversationListener(OnConversationListener listener) {
+    public void setOnConversationListener(OnConversationListener listener) {
         Open_im_sdk.setConversationListener(new open_im_sdk.OnConversationListener() {
             @Override
             public void onConversationChanged(String s) {

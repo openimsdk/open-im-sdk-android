@@ -21,44 +21,49 @@ import open_im_sdk.SendMsgCallBack;
 
 public class MessageManager {
     public List<WeakReference<OnAdvanceMsgListener>> listeners = new ArrayList<>();
+    private static boolean initialized = false;
 
-    public MessageManager() {
-        Open_im_sdk.addAdvancedMsgListener(new open_im_sdk.OnAdvancedMsgListener() {
-            @Override
-            public void onRecvC2CReadReceipt(String s) {
-                for (WeakReference<OnAdvanceMsgListener> r : listeners) {
-                    if (r.get() != null) {
-                        List<HaveReadInfo> list = JSON.parseArray(s, HaveReadInfo.class);
-                        r.get().onRecvC2CReadReceipt(list);
+    private synchronized void initListener() {
+        if (!initialized) {
+            initialized = true;
+            Open_im_sdk.addAdvancedMsgListener(new open_im_sdk.OnAdvancedMsgListener() {
+                @Override
+                public void onRecvC2CReadReceipt(String s) {
+                    for (WeakReference<OnAdvanceMsgListener> r : listeners) {
+                        if (r.get() != null) {
+                            List<HaveReadInfo> list = JSON.parseArray(s, HaveReadInfo.class);
+                            r.get().onRecvC2CReadReceipt(list);
+                        }
                     }
+
                 }
 
-            }
-
-            @Override
-            public void onRecvMessageRevoked(String s) {
-                for (WeakReference<OnAdvanceMsgListener> r : listeners) {
-                    if (r.get() != null) {
-                        r.get().onRecvMessageRevoked(s);
+                @Override
+                public void onRecvMessageRevoked(String s) {
+                    for (WeakReference<OnAdvanceMsgListener> r : listeners) {
+                        if (r.get() != null) {
+                            r.get().onRecvMessageRevoked(s);
+                        }
                     }
+
                 }
 
-            }
-
-            @Override
-            public void onRecvNewMessage(String s) {
-                for (WeakReference<OnAdvanceMsgListener> r : listeners) {
-                    if (r.get() != null) {
-                        Message msg = JSON.parseObject(s, Message.class);
-                        r.get().onRecvNewMessage(msg);
+                @Override
+                public void onRecvNewMessage(String s) {
+                    for (WeakReference<OnAdvanceMsgListener> r : listeners) {
+                        if (r.get() != null) {
+                            Message msg = JSON.parseObject(s, Message.class);
+                            r.get().onRecvNewMessage(msg);
+                        }
                     }
-                }
 
-            }
-        });
+                }
+            });
+        }
     }
 
     public void addAdvancedMsgListener(OnAdvanceMsgListener listener) {
+        initListener();
         listeners.add(new WeakReference<>(listener));
     }
 
