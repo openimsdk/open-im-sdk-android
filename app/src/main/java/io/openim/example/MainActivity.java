@@ -1,6 +1,7 @@
 package io.openim.example;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +20,7 @@ import io.openim.android.sdk.models.GroupMembersInfo;
 import io.openim.android.sdk.models.HaveReadInfo;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.UserInfo;
+import io.openim.android.sdk.utils.JsonUtil;
 
 public class MainActivity extends AppCompatActivity implements InitSDKListener, OnAdvanceMsgListener,
         OnConversationListener, OnFriendshipListener, OnGroupListener {
@@ -32,11 +34,11 @@ public class MainActivity extends AppCompatActivity implements InitSDKListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String path = getExternalCacheDir().getAbsolutePath();
-        OpenIMClient.getInstance().initSDK(1, IP_API, IP_WS, path, this);
+        OpenIMClient.getInstance().initSDK(2, IP_API, IP_WS, path, this);
         OpenIMClient.getInstance().messageManager.addAdvancedMsgListener(this);
-        OpenIMClient.getInstance().conversationManager.setOnConversationListener(this);
-        OpenIMClient.getInstance().friendshipManager.setOnFriendListener(this);
-        OpenIMClient.getInstance().groupManager.setOnGroupListener(this);
+//        OpenIMClient.getInstance().conversationManager.setOnConversationListener(this);
+//        OpenIMClient.getInstance().friendshipManager.setOnFriendListener(this);
+//        OpenIMClient.getInstance().groupManager.setOnGroupListener(this);
         OpenIMClient.getInstance().login(new OnBase<String>() {
             @Override
             public void onError(long code, String error) {
@@ -210,5 +212,19 @@ public class MainActivity extends AppCompatActivity implements InitSDKListener, 
     @Override
     public void onApplicationProcessed(String groupId, GroupMembersInfo opUser, int agreeOrReject, String opReason) {
         System.out.println("============onApplicationProcessed============");
+    }
+
+    public void onGetConversation(View view) {
+        OpenIMClient.getInstance().conversationManager.getAllConversationList(new OnBase<List<ConversationInfo>>() {
+            @Override
+            public void onError(long code, String error) {
+
+            }
+
+            @Override
+            public void onSuccess(List<ConversationInfo> data) {
+                System.out.println("onGetConversation:" + JsonUtil.toString(data));
+            }
+        });
     }
 }
