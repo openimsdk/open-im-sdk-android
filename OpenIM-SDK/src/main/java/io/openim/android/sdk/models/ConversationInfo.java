@@ -9,7 +9,7 @@ public class ConversationInfo {
     private String faceUrl;
     private int recvMsgOpt;
     private int unreadCount;
-    private Message latestMsg;
+    private String latestMsg;
     private long latestMsgSendTime;
     private String draftText;
     private long draftTimestamp;
@@ -79,11 +79,11 @@ public class ConversationInfo {
         this.unreadCount = unreadCount;
     }
 
-    public Message getLatestMsg() {
+    public String getLatestMsg() {
         return latestMsg;
     }
 
-    public void setLatestMsg(Message latestMsg) {
+    public void setLatestMsg(String latestMsg) {
         this.latestMsg = latestMsg;
     }
 

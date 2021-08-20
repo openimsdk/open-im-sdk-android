@@ -38,4 +38,5 @@ dependencies {
 
     implementation 'io.openim:client-sdk:0.0.5@aar'
     implementation 'com.alibaba:fastjson:1.1.72.android'
+//    implementation 'com.google.code.gson:gson:2.8.7'
 }

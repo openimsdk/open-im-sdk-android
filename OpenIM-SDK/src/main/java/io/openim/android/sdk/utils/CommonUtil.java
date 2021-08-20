@@ -3,8 +3,6 @@ package io.openim.android.sdk.utils;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.alibaba.fastjson.JSON;
-
 import java.util.List;
 
 import io.openim.android.sdk.listener.OnBase;
@@ -30,13 +28,13 @@ public class CommonUtil {
 
     public static <T> void returnObject(OnBase<T> onBase, Class<T> clazz, String s) {
         if (onBase != null) {
-            CommonUtil.runMainThread(() -> onBase.onSuccess(JSON.parseObject(s, clazz)));
+            CommonUtil.runMainThread(() -> onBase.onSuccess(JsonUtil.toObj(s, clazz)));
         }
     }
 
     public static <T> void returnList(OnBase<List<T>> onBase, Class<T> clazz, String s) {
         if (onBase != null) {
-            CommonUtil.runMainThread(() -> onBase.onSuccess(JSON.parseArray(s, clazz)));
+            CommonUtil.runMainThread(() -> onBase.onSuccess(JsonUtil.toArray(s, clazz)));
         }
     }
 }

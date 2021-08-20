@@ -1,6 +1,5 @@
 package io.openim.android.sdk.manager;
 
-import com.alibaba.fastjson.JSON;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import io.openim.android.sdk.listener.OnMsgSendCallback;
 import io.openim.android.sdk.models.HaveReadInfo;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.utils.CommonUtil;
+import io.openim.android.sdk.utils.JsonUtil;
 import open_im_sdk.Open_im_sdk;
 import open_im_sdk.SendMsgCallBack;
 
@@ -31,7 +31,7 @@ public class MessageManager {
                 public void onRecvC2CReadReceipt(String s) {
                     for (WeakReference<OnAdvanceMsgListener> r : listeners) {
                         if (r.get() != null) {
-                            List<HaveReadInfo> list = JSON.parseArray(s, HaveReadInfo.class);
+                            List<HaveReadInfo> list = JsonUtil.toArray(s, HaveReadInfo.class);
                             r.get().onRecvC2CReadReceipt(list);
                         }
                     }
@@ -52,7 +52,7 @@ public class MessageManager {
                 public void onRecvNewMessage(String s) {
                     for (WeakReference<OnAdvanceMsgListener> r : listeners) {
                         if (r.get() != null) {
-                            Message msg = JSON.parseObject(s, Message.class);
+                            Message msg = JsonUtil.toObj(s, Message.class);
                             r.get().onRecvNewMessage(msg);
                         }
                     }
@@ -99,7 +99,7 @@ public class MessageManager {
                     CommonUtil.returnSuccess(base, s);
                 }
             }
-        }, JSON.toJSONString(message), recvUid, recvGid, onlineUserOnly);
+        }, JsonUtil.toString(message), recvUid, recvGid, onlineUserOnly);
     }
 
     public void getHistoryMessageList(OnBase<List<Message>> base, String userID, String groupID, Message startMsg, int count) {
@@ -108,15 +108,15 @@ public class MessageManager {
         map.put("groupID", groupID);
         map.put("startMsg", startMsg);
         map.put("count", count);
-        Open_im_sdk.getHistoryMessageList(BaseImpl.arrayBase(base, Message.class), JSON.toJSONString(map));
+        Open_im_sdk.getHistoryMessageList(BaseImpl.arrayBase(base, Message.class), JsonUtil.toString(map));
     }
 
     public void revokeMessage(OnBase<String> base, Message message) {
-        Open_im_sdk.revokeMessage(BaseImpl.stringBase(base), JSON.toJSONString(message));
+        Open_im_sdk.revokeMessage(BaseImpl.stringBase(base), JsonUtil.toString(message));
     }
 
     public void deleteMessageFromLocalStorage(OnBase<String> base, Message message) {
-        Open_im_sdk.deleteMessageFromLocalStorage(BaseImpl.stringBase(base), JSON.toJSONString(message));
+        Open_im_sdk.deleteMessageFromLocalStorage(BaseImpl.stringBase(base), JsonUtil.toString(message));
     }
 
     public void deleteMessages(OnBase<String> base, List<Message> message) {
@@ -124,11 +124,11 @@ public class MessageManager {
     }
 
     public void insertSingleMessageToLocalStorage(OnBase<String> base, Message message, String userID, String sender) {
-        Open_im_sdk.insertSingleMessageToLocalStorage(BaseImpl.stringBase(base), JSON.toJSONString(message), userID, sender);
+        Open_im_sdk.insertSingleMessageToLocalStorage(BaseImpl.stringBase(base), JsonUtil.toString(message), userID, sender);
     }
 
     public void findMessages(OnBase<List<Message>> base, List<String> messageIDList) {
-        Open_im_sdk.findMessages(BaseImpl.arrayBase(base, Message.class), JSON.toJSONString(messageIDList));
+        Open_im_sdk.findMessages(BaseImpl.arrayBase(base, Message.class), JsonUtil.toString(messageIDList));
     }
 
     public void markSingleMessageHasRead(OnBase<String> base, String userID) {
@@ -140,7 +140,7 @@ public class MessageManager {
     }
 
     public void markC2CMessageAsRead(OnBase<String> base, String userID, List<String> messageIDList) {
-        Open_im_sdk.markC2CMessageAsRead(BaseImpl.stringBase(base), userID, JSON.toJSONString(messageIDList));
+        Open_im_sdk.markC2CMessageAsRead(BaseImpl.stringBase(base), userID, JsonUtil.toString(messageIDList));
     }
 
     public void typingStatusUpdate(String userID, boolean typing) {
@@ -152,7 +152,7 @@ public class MessageManager {
     }
 
     public Message createTextAtMessage(String text, List<String> atUidList) {
-        return parse(Open_im_sdk.createTextAtMessage(text, JSON.toJSONString(atUidList)));
+        return parse(Open_im_sdk.createTextAtMessage(text, JsonUtil.toString(atUidList)));
     }
 
     public Message createImageMessage(String imagePath) {
@@ -172,11 +172,11 @@ public class MessageManager {
     }
 
     public Message createMergerMessage(List<Message> messageList, String title, List<String> summaryList) {
-        return parse(Open_im_sdk.createMergerMessage(JSON.toJSONString(messageList), title, JSON.toJSONString(summaryList)));
+        return parse(Open_im_sdk.createMergerMessage(JsonUtil.toString(messageList), title, JsonUtil.toString(summaryList)));
     }
 
     public Message createForwardMessage(List<Message> messageList) {
-        return parse(Open_im_sdk.createForwardMessage(JSON.toJSONString(messageList)));
+        return parse(Open_im_sdk.createForwardMessage(JsonUtil.toString(messageList)));
     }
 
     public Message createLocationMessage(double latitude, double longitude, String description) {
@@ -196,6 +196,6 @@ public class MessageManager {
     }
 
     static Message parse(String msg) {
-        return JSON.parseObject(msg, Message.class);
+        return JsonUtil.toObj(msg, Message.class);
     }
 }

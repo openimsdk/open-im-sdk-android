@@ -1,6 +1,5 @@
 package io.openim.android.sdk;
 
-import com.alibaba.fastjson.JSON;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +14,7 @@ import io.openim.android.sdk.manager.GroupManager;
 import io.openim.android.sdk.manager.MessageManager;
 import io.openim.android.sdk.models.UserInfo;
 import io.openim.android.sdk.utils.CommonUtil;
+import io.openim.android.sdk.utils.JsonUtil;
 import open_im_sdk.Open_im_sdk;
 
 public class OpenIMClient {
@@ -46,7 +46,7 @@ public class OpenIMClient {
         map.put("ipApi", ipApi);
         map.put("ipWs", ipWs);
         map.put("dbDir", dbPath);
-        Open_im_sdk.initSDK(JSON.toJSONString(map), new open_im_sdk.IMSDKListener() {
+        Open_im_sdk.initSDK(JsonUtil.toString(map), new open_im_sdk.IMSDKListener() {
             @Override
             public void onConnectFailed(long l, String s) {
                 if (null != listener) {
@@ -78,7 +78,7 @@ public class OpenIMClient {
             @Override
             public void onSelfInfoUpdated(String s) {
                 if (null != listener) {
-                    CommonUtil.runMainThread(() -> listener.onSelfInfoUpdated(JSON.parseObject(s, UserInfo.class)));
+                    CommonUtil.runMainThread(() -> listener.onSelfInfoUpdated(JsonUtil.toObj(s, UserInfo.class)));
                 }
             }
 
@@ -113,11 +113,11 @@ public class OpenIMClient {
     }
 
     public void getUsersInfo(OnBase<List<UserInfo>> base, List<String> uidList) {
-        Open_im_sdk.getUsersInfo(JSON.toJSONString(uidList), BaseImpl.arrayBase(base, UserInfo.class));
+        Open_im_sdk.getUsersInfo(JsonUtil.toString(uidList), BaseImpl.arrayBase(base, UserInfo.class));
     }
 
     public void setSelfInfo(OnBase<String> base, UserInfo info) {
-        Open_im_sdk.setSelfInfo(JSON.toJSONString(info), BaseImpl.stringBase(base));
+        Open_im_sdk.setSelfInfo(JsonUtil.toString(info), BaseImpl.stringBase(base));
     }
 
     public void forceSyncLoginUerInfo() {

@@ -1,7 +1,5 @@
 package io.openim.android.sdk.manager;
 
-import com.alibaba.fastjson.JSON;
-
 import java.util.List;
 
 import io.openim.android.sdk.listener.BaseImpl;
@@ -9,6 +7,7 @@ import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnConversationListener;
 import io.openim.android.sdk.models.ConversationInfo;
 import io.openim.android.sdk.utils.CommonUtil;
+import io.openim.android.sdk.utils.JsonUtil;
 import open_im_sdk.Open_im_sdk;
 
 public class ConversationManager {
@@ -47,7 +46,7 @@ public class ConversationManager {
             @Override
             public void onConversationChanged(String s) {
                 if (null != listener) {
-                    List<ConversationInfo> list = JSON.parseArray(s, ConversationInfo.class);
+                    List<ConversationInfo> list = JsonUtil.toArray(s, ConversationInfo.class);
                     CommonUtil.runMainThread(() -> listener.onConversationChanged(list));
                 }
             }
@@ -55,7 +54,7 @@ public class ConversationManager {
             @Override
             public void onNewConversation(String s) {
                 if (null != listener) {
-                    List<ConversationInfo> list = JSON.parseArray(s, ConversationInfo.class);
+                    List<ConversationInfo> list = JsonUtil.toArray(s, ConversationInfo.class);
                     CommonUtil.runMainThread(() -> listener.onNewConversation(list));
 
                 }
