@@ -159,12 +159,24 @@ public class MessageManager {
         return parse(Open_im_sdk.createImageMessage(imagePath));
     }
 
+    public Message createImageMessageFromFullPath(String imagePath) {
+        return parse(Open_im_sdk.createImageMessageFromFullPath(imagePath));
+    }
+
     public Message createSoundMessage(String soundPath, long duration) {
         return parse(Open_im_sdk.createSoundMessage(soundPath, duration));
     }
 
+    public Message createSoundMessageFromFullPath(String soundPath, long duration) {
+        return parse(Open_im_sdk.createSoundMessageFromFullPath(soundPath, duration));
+    }
+
     public Message createVideoMessage(String videoPath, String videoType, long duration, String snapshotPath) {
         return parse(Open_im_sdk.createVideoMessage(videoPath, videoType, duration, snapshotPath));
+    }
+
+    public Message createVideoMessageFromFullPath(String videoPath, String videoType, long duration, String snapshotPath) {
+        return parse(Open_im_sdk.createVideoMessageFromFullPath(videoPath, videoType, duration, snapshotPath));
     }
 
     public Message createFileMessage(String filePath, String fileName) {
