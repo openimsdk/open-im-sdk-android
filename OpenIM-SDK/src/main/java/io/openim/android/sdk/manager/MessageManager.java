@@ -2,11 +2,11 @@ package io.openim.android.sdk.manager;
 
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnAdvanceMsgListener;
@@ -20,61 +20,62 @@ import open_im_sdk.Open_im_sdk;
 import open_im_sdk.SendMsgCallBack;
 
 public class MessageManager {
-    public List<WeakReference<OnAdvanceMsgListener>> listeners = new ArrayList<>();
+    private static final List<WeakReference<OnAdvanceMsgListener>> listeners = new CopyOnWriteArrayList<>();
     private static boolean initialized = false;
-
-    private synchronized void initListener() {
-        if (!initialized) {
-            initialized = true;
-            Open_im_sdk.addAdvancedMsgListener(new open_im_sdk.OnAdvancedMsgListener() {
-                @Override
-                public void onRecvC2CReadReceipt(String s) {
-                    for (WeakReference<OnAdvanceMsgListener> r : listeners) {
-                        if (r.get() != null) {
-                            List<HaveReadInfo> list = JsonUtil.toArray(s, HaveReadInfo.class);
-                            r.get().onRecvC2CReadReceipt(list);
-                        }
-                    }
-
+    private static final open_im_sdk.OnAdvancedMsgListener sdkListener = new open_im_sdk.OnAdvancedMsgListener() {
+        @Override
+        public void onRecvC2CReadReceipt(String s) {
+            for (WeakReference<OnAdvanceMsgListener> r : listeners) {
+                if (r.get() != null) {
+                    List<HaveReadInfo> list = JsonUtil.toArray(s, HaveReadInfo.class);
+                    r.get().onRecvC2CReadReceipt(list);
                 }
+            }
 
-                @Override
-                public void onRecvMessageRevoked(String s) {
-                    for (WeakReference<OnAdvanceMsgListener> r : listeners) {
-                        if (r.get() != null) {
-                            r.get().onRecvMessageRevoked(s);
-                        }
-                    }
-
-                }
-
-                @Override
-                public void onRecvNewMessage(String s) {
-                    for (WeakReference<OnAdvanceMsgListener> r : listeners) {
-                        if (r.get() != null) {
-                            Message msg = JsonUtil.toObj(s, Message.class);
-                            r.get().onRecvNewMessage(msg);
-                        }
-                    }
-
-                }
-            });
         }
-    }
+
+        @Override
+        public void onRecvMessageRevoked(String s) {
+            for (WeakReference<OnAdvanceMsgListener> r : listeners) {
+                if (r.get() != null) {
+                    r.get().onRecvMessageRevoked(s);
+                }
+            }
+
+        }
+
+        @Override
+        public void onRecvNewMessage(String s) {
+            for (WeakReference<OnAdvanceMsgListener> r : listeners) {
+                if (r.get() != null) {
+                    Message msg = JsonUtil.toObj(s, Message.class);
+                    r.get().onRecvNewMessage(msg);
+                }
+            }
+
+        }
+    };
 
     public void addAdvancedMsgListener(OnAdvanceMsgListener listener) {
-        initListener();
         listeners.add(new WeakReference<>(listener));
+        if (!initialized) {
+            initialized = true;
+            Open_im_sdk.addAdvancedMsgListener(sdkListener);
+        }
     }
 
     public void removeAdvancedMsgListener(OnAdvanceMsgListener listener) {
-        final Iterator<WeakReference<OnAdvanceMsgListener>> each = listeners.iterator();
-        while (each.hasNext()) {
-            if (each.next().get() == listener) {
-                each.remove();
+        final Iterator<WeakReference<OnAdvanceMsgListener>> it = listeners.iterator();
+        while (it.hasNext()) {
+            if (it.next().get() == listener) {
+                it.remove();
+                break;
             }
         }
-//        Open_im_sdk.removeAdvancedMsgListener(listener);
+        if (listeners.isEmpty()) {
+            initialized = false;
+            Open_im_sdk.removeAdvancedMsgListener(sdkListener);
+        }
     }
 
     public void sendMessage(OnMsgSendCallback base, Message message, String recvUid, String recvGid, boolean onlineUserOnly) {
