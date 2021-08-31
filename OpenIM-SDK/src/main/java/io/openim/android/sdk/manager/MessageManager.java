@@ -200,6 +200,10 @@ public class MessageManager {
         return parse(Open_im_sdk.createCustomMessage(data, extension, description));
     }
 
+    public Message createQuoteMessage(String text, Message message) {
+        return parse(Open_im_sdk.createQuoteMessage(text, JsonUtil.toString(message)));
+    }
+
     public void getTotalUnreadMsgCount(OnBase<String> base) {
         Open_im_sdk.getTotalUnreadMsgCount(BaseImpl.stringBase(base));
     }
