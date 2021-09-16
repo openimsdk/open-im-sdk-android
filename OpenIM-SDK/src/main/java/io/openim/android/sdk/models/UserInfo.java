@@ -1,18 +1,58 @@
 package io.openim.android.sdk.models;
 
 public class UserInfo {
+    /**
+     * 用户id
+     */
     private String uid;
+    /**
+     * 用户名
+     */
     private String name;
+    /**
+     * 用户头像
+     */
     private String icon;
+    /**
+     * 性别：1男，2女
+     */
     private int gender;
+    /**
+     * 手机号
+     */
     private String mobile;
+    /**
+     * 生日
+     */
     private String birth;
+    /**
+     * 邮箱
+     */
     private String email;
+    /**
+     * 扩展字段
+     */
     private String ex;
+    /**
+     * 备注
+     */
     private String comment;
+    /**
+     * 黑名单：1已拉入黑名单
+     */
     private int isInBlackList;
+    /**
+     * 验证消息
+     */
     private String reqMessage;
+    /**
+     * 申请时间
+     */
     private String applyTime;
+    /**
+     * 好友申请列表：0等待处理；1已同意；2已拒绝<br />
+     * 好友关系：1已经是好友
+     */
     private int flag;
 
     public String getUid() {

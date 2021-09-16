@@ -1,18 +1,60 @@
 package io.openim.android.sdk.models;
 
 public class ConversationInfo {
+    /**
+     * 会话id
+     */
     private String conversationID;
+    /**
+     * 会话类型 1:单聊 2:群聊
+     */
     private int conversationType;
+    /**
+     * 会话对象用户ID
+     */
     private String userID;
+    /**
+     * 会话群聊ID
+     */
     private String groupID;
+    /**
+     * 会话对象(用户或群聊)名称
+     */
     private String showName;
+    /**
+     * 用户头像或群聊头像
+     */
     private String faceUrl;
+    /**
+     * 接收消息选项：<br/>
+     * 1:在线正常接收消息，离线时进行推送<br/>
+     * 2:不会接收到消息<br/>
+     * 3:在线正常接收消息，离线不会有推送
+     */
     private int recvMsgOpt;
+    /**
+     * 未读消息数量
+     */
     private int unreadCount;
+    /**
+     * 最后一条消息 消息对象json字符串
+     */
     private String latestMsg;
+    /**
+     * 最后一条消息发送时间(ns)
+     */
     private long latestMsgSendTime;
+    /**
+     * 会话草稿
+     */
     private String draftText;
+    /**
+     * 会话草稿设置时间
+     */
     private long draftTimestamp;
+    /**
+     * 是否置顶，1置顶
+     */
     private int isPinned;
 
     public String getConversationID() {

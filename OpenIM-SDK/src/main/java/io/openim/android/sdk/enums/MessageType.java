@@ -1,16 +1,48 @@
 package io.openim.android.sdk.enums;
 
+/**
+ * 消息类型
+ */
 public class MessageType {
-    ///
+    /**
+     * 文本
+     */
     static final int TEXT = 101;
+    /**
+     * 图片
+     */
     static final int PICTURE = 102;
+    /**
+     * 声音
+     */
     static final int VOICE = 103;
+    /**
+     * 视频
+     */
     static final int VIDEO = 104;
+    /**
+     * 文件
+     */
     static final int FILE = 105;
+    /**
+     * _@消息
+     */
     static final int AT_TEXT = 106;
+    /**
+     * 合并
+     */
     static final int MERGER = 107;
+    /**
+     * 撤回
+     */
     static final int REVOKE = 111;
+    /**
+     * 已读
+     */
     static final int HAS_READ_RECEIPT = 112;
+    /**
+     * 正在输入
+     */
     static final int TYPING = 113;
 
     ///

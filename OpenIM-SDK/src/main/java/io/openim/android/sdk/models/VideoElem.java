@@ -1,17 +1,53 @@
 package io.openim.android.sdk.models;
 
 public class VideoElem {
+    /**
+     * 视频本地资源地址
+     */
     private String videoPath;
+    /**
+     * 视频唯一ID
+     */
     private String videoUUID;
+    /**
+     * 视频oss地址
+     */
     private String videoUrl;
+    /**
+     * 视频类型
+     */
     private String videoType;
+    /**
+     * 视频大小
+     */
     private long videoSize;
+    /**
+     * 视频时长
+     */
     private long duration;
+    /**
+     * 视频快照本地地址
+     */
     private String snapshotPath;
+    /**
+     * 视频快照唯一ID
+     */
     private String snapshotUUID;
+    /**
+     * 视频快照大小
+     */
     private long snapshotSize;
+    /**
+     * 视频快照oss地址
+     */
     private String snapshotUrl;
+    /**
+     * 视频快照宽度
+     */
     private int snapshotWidth;
+    /**
+     * 视频快照高度
+     */
     private int snapshotHeight;
 
     public String getVideoPath() {

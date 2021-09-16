@@ -1,10 +1,25 @@
 package io.openim.android.sdk.models;
 
 public class FileElem {
+    /**
+     * 文件本地资源地址
+     */
     private String filePath;
+    /**
+     *
+     */
     private String uuID;
+    /**
+     * oss地址
+     */
     private String sourceUrl;
+    /**
+     * 文件名称
+     */
     private String fileName;
+    /**
+     * 文件大小
+     */
     private long fileSize;
 
     public String getFilePath() {

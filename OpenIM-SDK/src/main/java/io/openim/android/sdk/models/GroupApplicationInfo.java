@@ -1,21 +1,69 @@
 package io.openim.android.sdk.models;
 
 public class GroupApplicationInfo {
+    /**
+     *
+     */
     private String id;
+    /**
+     * 群组ID
+     */
     private String groupID;
+    /**
+     * 申请用户的ID
+     */
     private String fromUserID;
+    /**
+     * 接收用户的ID
+     */
     private String toUserID;
+    /**
+     * 0：未处理，1：拒绝，2：同意
+     */
     private int flag; //INIT = 0, REFUSE = -1, AGREE = 1
+    /**
+     * 原因
+     */
     private String reqMsg;
+    /**
+     * 处理反馈
+     */
     private String handledMsg;
+    /**
+     * 时间
+     */
     private int createTime;
+    /**
+     * 申请用户的昵称
+     */
     private String fromUserNickName;
+    /**
+     * 接收用户的昵称
+     */
     private String toUserNickName;
+    /**
+     * 申请用户的头像
+     */
     private String fromUserFaceURL;
+    /**
+     * 接收用户的昵称
+     */
     private String toUserFaceURL;
+    /**
+     * 处理人
+     */
     private String handledUser;
+    /**
+     * 0：申请进群, 1：邀请进群
+     */
     private int type; //APPLICATION = 0, INVITE = 1
+    /**
+     * 0：未处理, 1：被其他人处理, 2：被自己处理
+     */
     private int handleStatus; //UNHANDLED = 0, BY_OTHER = 1, BY_SELF = 2
+    /**
+     * 0：拒绝，1：同意
+     */
     private int handleResult; //REFUSE = 0, AGREE = 1
 
     public String getId() {

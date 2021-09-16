@@ -3,11 +3,42 @@ package io.openim.android.sdk.models;
 import java.util.List;
 
 public class HaveReadInfo {
+    /**
+     * 用户id
+     */
     private String uid;
+    /**
+     * 已读消息id
+     */
     private List<String> msgIDList;
+    /**
+     * 阅读时间
+     */
     private int readTime;
+    /**
+     * 标识消息是用户级别还是系统级别 100:用户 200:系统
+     */
     private int msgFrom;
+    /**
+     * 消息类型：
+     * 101:文本消息
+     * 102:图片消息
+     * 103:语音消息
+     * 104:视频消息
+     * 105:文件消息
+     * 106:@消息
+     * 107:合并消息
+     * 108:转发消息
+     * 109:位置消息
+     * 110:自定义消息
+     * 111:撤回消息回执
+     * 112:C2C已读回执
+     * 113:正在输入状态
+     */
     private int contentType;
+    /**
+     * 会话类型 1:单聊 2:群聊
+     */
     private int sessionType;
 
     public String getUid() {

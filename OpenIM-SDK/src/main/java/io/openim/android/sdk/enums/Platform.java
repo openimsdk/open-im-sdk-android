@@ -1,5 +1,8 @@
 package io.openim.android.sdk.enums;
 
+/**
+ * 平台
+ */
 public class Platform {
     static final int IOS = 1;
     static final int ANDROID = 2;

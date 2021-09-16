@@ -1,11 +1,29 @@
 package io.openim.android.sdk.models;
 
 public class PictureInfo {
+    /**
+     * 唯一ID
+     */
     private String uuID;
+    /**
+     * 图片类型
+     */
     private String type;
+    /**
+     * 图片大小
+     */
     private long size;
+    /**
+     * 图片宽度
+     */
     private int width;
+    /**
+     * 图片高度
+     */
     private int height;
+    /**
+     * 图片oss地址
+     */
     private String url;
 
     public String getUuID() {

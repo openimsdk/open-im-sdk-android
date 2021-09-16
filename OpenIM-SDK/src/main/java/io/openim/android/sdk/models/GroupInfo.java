@@ -1,13 +1,37 @@
 package io.openim.android.sdk.models;
 
 public class GroupInfo {
+    /**
+     * 组ID
+     */
     private String groupID;
+    /**
+     * 群名
+     */
     private String groupName;
+    /**
+     * 群公告
+     */
     private String notification;
+    /**
+     * 群简介
+     */
     private String introduction;
+    /**
+     * 群头像
+     */
     private String faceUrl;
+    /**
+     * 群主id
+     */
     private String ownerId;
+    /**
+     * 创建时间
+     */
     private long createTime;
+    /**
+     * 群成员数量
+     */
     private int memberCount;
 
     public String getGroupID() {
