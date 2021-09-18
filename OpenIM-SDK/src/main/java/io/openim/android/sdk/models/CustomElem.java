@@ -1,23 +1,23 @@
 package io.openim.android.sdk.models;
 
 public class CustomElem {
-    private byte[] data;
-    private byte[] extension;
+    private String data;
+    private String extension;
     private String description;
 
-    public byte[] getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(byte[] data) {
+    public void setData(String data) {
         this.data = data;
     }
 
-    public byte[] getExtension() {
+    public String getExtension() {
         return extension;
     }
 
-    public void setExtension(byte[] extension) {
+    public void setExtension(String extension) {
         this.extension = extension;
     }
 
