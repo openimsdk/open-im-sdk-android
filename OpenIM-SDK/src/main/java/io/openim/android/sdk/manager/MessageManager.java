@@ -357,12 +357,12 @@ public class MessageManager {
     /**
      * 创建自定义消息
      *
-     * @param data        内容
-     * @param extension   内容
+     * @param data        json String
+     * @param extension   json String
      * @param description 描述
      * @return {@link Message}
      */
-    public Message createCustomMessage(byte[] data, byte[] extension, String description) {
+    public Message createCustomMessage(String data, String extension, String description) {
         return parse(Open_im_sdk.createCustomMessage(data, extension, description));
     }
 
@@ -377,6 +377,15 @@ public class MessageManager {
         return parse(Open_im_sdk.createQuoteMessage(text, JsonUtil.toString(message)));
     }
 
+    /**
+     * 创建名片消息
+     *
+     * @param content json String
+     * @return {@link Message}
+     */
+    public Message createCardMessage(String content) {
+        return parse(Open_im_sdk.createCardMessage(content));
+    }
 
     public void forceSyncMsg() {
         Open_im_sdk.forceSyncMsg();
