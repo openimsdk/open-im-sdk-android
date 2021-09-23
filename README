@@ -215,20 +215,7 @@ OpenIMClient.getInstance().unInitSDK();
 根据用户ID批量获取用户信息
 
 ```
- List<String> ids = new ArrayList<>();
- ids.add(uid1);
- ids.add(uid2);
- OpenIMClient.getInstance().getUsersInfo(new OnBase<List<UserInfo>>() {
-     @Override
-     public void onError(long code, String error) {
-
-     }
-
-     @Override
-     public void onSuccess(List<UserInfo> data) {
-
-     }
- }, ids);
+ List<String> ids = new ArrayList<>(); ids.add(uid1); ids.add(uid2); OpenIMClient.getInstance().getUsersInfo(new OnBase<List<UserInfo>>() {     @Override     public void onError(long code, String error) {     }     @Override     public void onSuccess(List<UserInfo> data) {     } }, ids);
 ```
 
 - 参数说明：
@@ -388,8 +375,7 @@ OpenIMClient.getInstance().messageManager.createVideoMessage(videoPath, videoTyp
 创建视频消息（绝对路径）
 
 ```
-OpenIMClient.getInstance().messageManager.createVideoMessageFromFullPath(videoPath, videoType, duration,
-    snapshotPath)
+OpenIMClient.getInstance().messageManager.createVideoMessageFromFullPath(videoPath, videoType, duration, 		      snapshotPath)
 ```
 
 - 参数说明：
@@ -553,22 +539,7 @@ OpenIMClient.getInstance().messageManager.createCustomMessage(data, extension, d
 发送消息
 
 ```
- OpenIMClient.getInstance().messageManager.sendMessage(new OnMsgSendCallback() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onProgress(long progress) {
-							// 消息发送进度监听，主要用途：图片，视频，文件等上传进度监听。
-            }
-
-            @Override
-            public void onSuccess(String s) {
-
-            }
-        }, message, recvUid, recvGid, onlineUserOnly)
+ OpenIMClient.getInstance().messageManager.sendMessage(new OnMsgSendCallback() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onProgress(long progress) {							// 消息发送进度监听，主要用途：图片，视频，文件等上传进度监听。            }            @Override            public void onSuccess(String s) {            }        }, message, recvUid, recvGid, onlineUserOnly)
 ```
 
 - 参数说明：
@@ -608,17 +579,7 @@ OpenIMClient.getInstance().messageManager.typingStatusUpdate(userID, typing)
 撤回消息
 
 ```
- OpenIMClient.getInstance().messageManager.revokeMessage(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, message);
+ OpenIMClient.getInstance().messageManager.revokeMessage(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, message);
 ```
 
 - 参数说明：
@@ -636,17 +597,7 @@ OpenIMClient.getInstance().messageManager.typingStatusUpdate(userID, typing)
 标记接收的消息为已读
 
 ```
- OpenIMClient.getInstance().messageManager.markC2CMessageAsRead(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, userID, messageIDList)
+ OpenIMClient.getInstance().messageManager.markC2CMessageAsRead(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, userID, messageIDList)
 ```
 
 - 参数说明：
@@ -665,17 +616,7 @@ OpenIMClient.getInstance().messageManager.typingStatusUpdate(userID, typing)
 获取聊天记录
 
 ```
-OpenIMClient.getInstance().messageManager.getHistoryMessageList(new OnBase<List<Message>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<Message> data) {
-
-            }
-        },  userID,  groupID,  startMsg,  count)
+OpenIMClient.getInstance().messageManager.getHistoryMessageList(new OnBase<List<Message>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<Message> data) {            }        },  userID,  groupID,  startMsg,  count)
 ```
 
 - 参数说明：
@@ -696,43 +637,7 @@ OpenIMClient.getInstance().messageManager.getHistoryMessageList(new OnBase<List<
 添加消息监听
 
 ```
-OpenIMClient.getInstance().messageManager.addAdvancedMsgListener(new OnAdvanceMsgListener() {
-            @Override
-            public void onRecvNewMessage(Message msg) {
-                 	// 如果是当前窗口的消息
-                  if (isCurrentChat(message)) {
-                    // 正在输入消息
-                    if (message.contentType == MessageType.typing) {
-                     //
-                    } else {
-                      // 新增消息
-                      if (!messageList.contains(message)) {
-                        messageList.add(message);
-                      }
-                    }
-                  }
-            }
-
-            @Override
-            public void onRecvC2CReadReceipt(List<HaveReadInfo> list) {
-          			// 消息已读回执
-                 messageList.forEach((e) {
-                  // 获取当前聊天窗口的已读回执
-                   var info = list.firstWhere((element) => element.uid == uid);
-                  // 标记消息列表里对应的消息为已读状态
-                  if (info.msgIDList?.contains(e.clientMsgID) == true) {
-                    e.isRead = true;
-                  }
-                });
-            }
-
-            @Override
-            public void onRecvMessageRevoked(String msgId) {
-              // 消息被撤回回调
-               var revokedMsg = Message(clientMsgID: msgId);
-               messageList.remove(revokedMsg);
-            }
-        });
+OpenIMClient.getInstance().messageManager.addAdvancedMsgListener(new OnAdvanceMsgListener() {            @Override            public void onRecvNewMessage(Message msg) {                 	// 如果是当前窗口的消息                  if (isCurrentChat(message)) {                    // 正在输入消息                    if (message.contentType == MessageType.typing) {                     //                     } else {                      // 新增消息                      if (!messageList.contains(message)) {                        messageList.add(message);                      }                    }                  }            }            @Override            public void onRecvC2CReadReceipt(List<HaveReadInfo> list) {          			// 消息已读回执                 messageList.forEach((e) {                  // 获取当前聊天窗口的已读回执                   var info = list.firstWhere((element) => element.uid == uid);                  // 标记消息列表里对应的消息为已读状态                  if (info.msgIDList?.contains(e.clientMsgID) == true) {                    e.isRead = true;                  }                });            }            @Override            public void onRecvMessageRevoked(String msgId) {              // 消息被撤回回调               var revokedMsg = Message(clientMsgID: msgId);               messageList.remove(revokedMsg);            }        });
 ```
 
 | 事件回调           | 事件描述       | 推荐操作         |
@@ -764,17 +669,7 @@ OpenIMClient.getInstance().messageManager.removeAdvancedMsgListener(listener);
 删除本地消息。
 
 ```
-OpenIMClient.getInstance().messageManager.deleteMessageFromLocalStorage(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, message)
+OpenIMClient.getInstance().messageManager.deleteMessageFromLocalStorage(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, message)
 ```
 
 - 参数说明：
@@ -790,17 +685,7 @@ OpenIMClient.getInstance().messageManager.deleteMessageFromLocalStorage(new OnBa
 插入一条消息到本地。
 
 ```
-OpenIMClient.getInstance().messageManager.insertSingleMessageToLocalStorage(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, message,  receiver,  sender)
+OpenIMClient.getInstance().messageManager.insertSingleMessageToLocalStorage(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, message,  receiver,  sender)
 ```
 
 - 参数说明：
@@ -818,17 +703,7 @@ OpenIMClient.getInstance().messageManager.insertSingleMessageToLocalStorage(new 
 根据消息ID查找本地消息。
 
 ```
-OpenIMClient.getInstance().messageManager.findMessages(new OnBase<List<Message>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<Message> data) {
-
-            }
-        }, messageIDList)
+OpenIMClient.getInstance().messageManager.findMessages(new OnBase<List<Message>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<Message> data) {            }        }, messageIDList)
 ```
 
 - 参数说明：
@@ -848,17 +723,7 @@ OpenIMClient.getInstance().messageManager.findMessages(new OnBase<List<Message>>
 拉取当前所有的会话记录
 
 ```
- OpenIMClient.getInstance().conversationManager.getAllConversationList(new OnBase<List<ConversationInfo>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<ConversationInfo> data) {
-
-            }
-        });
+ OpenIMClient.getInstance().conversationManager.getAllConversationList(new OnBase<List<ConversationInfo>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<ConversationInfo> data) {            }        });
 ```
 
 
@@ -868,17 +733,7 @@ OpenIMClient.getInstance().messageManager.findMessages(new OnBase<List<Message>>
 根据用户ID或群聊ID和session类型获取单个会话。
 
 ```
-OpenIMClient.getInstance().conversationManager.getOneConversation(new OnBase<ConversationInfo>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(ConversationInfo data) {
-
-            }
-        },  sourceId,  sessionType)
+OpenIMClient.getInstance().conversationManager.getOneConversation(new OnBase<ConversationInfo>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(ConversationInfo data) {            }        },  sourceId,  sessionType)
 ```
 
 - 参数说明：
@@ -895,17 +750,7 @@ OpenIMClient.getInstance().conversationManager.getOneConversation(new OnBase<Con
 根据会话ID获取多个会话。
 
 ```
-OpenIMClient.getInstance().conversationManager.getMultipleConversation(new OnBase<List<ConversationInfo>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<ConversationInfo> data) {
-
-            }
-        }, conversationIDList)
+OpenIMClient.getInstance().conversationManager.getMultipleConversation(new OnBase<List<ConversationInfo>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<ConversationInfo> data) {            }        }, conversationIDList)
 ```
 
 - 参数说明：
@@ -921,17 +766,7 @@ OpenIMClient.getInstance().conversationManager.getMultipleConversation(new OnBas
 删除会话，执行此操作会触发会话记录发生改变回调。
 
 ```
-  OpenIMClient.getInstance().conversationManager.deleteConversation(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, conversationID);
+  OpenIMClient.getInstance().conversationManager.deleteConversation(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, conversationID);
 ```
 
 - 参数说明：
@@ -947,17 +782,7 @@ OpenIMClient.getInstance().conversationManager.getMultipleConversation(new OnBas
 设置草稿，执行此操作会触发会话记录发生改变回调。
 
 ```
- OpenIMClient.getInstance().conversationManager.setConversationDraft(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, conversationID,  draftText)
+ OpenIMClient.getInstance().conversationManager.setConversationDraft(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, conversationID,  draftText)
 ```
 
 - 参数说明：
@@ -974,17 +799,7 @@ OpenIMClient.getInstance().conversationManager.getMultipleConversation(new OnBas
 置顶会话，执行此操作会触发会话记录发生改变回调。
 
 ```
-OpenIMClient.getInstance().conversationManager.pinConversation(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, conversationID,  isPinned)
+OpenIMClient.getInstance().conversationManager.pinConversation(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, conversationID,  isPinned)
 ```
 
 - 参数说明：
@@ -1003,17 +818,7 @@ OpenIMClient.getInstance().conversationManager.pinConversation(new OnBase<String
 标记单聊会话消息为已读。
 
 ```
- OpenIMClient.getInstance().conversationManager.markSingleMessageHasRead(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, userID);
+ OpenIMClient.getInstance().conversationManager.markSingleMessageHasRead(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, userID);
 ```
 
 - 参数说明：
@@ -1029,17 +834,7 @@ OpenIMClient.getInstance().conversationManager.pinConversation(new OnBase<String
 标记群聊会话消息已读。
 
 ```
-OpenIMClient.getInstance().conversationManager.markGroupMessageHasRead(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, groupID);
+OpenIMClient.getInstance().conversationManager.markGroupMessageHasRead(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, groupID);
 ```
 
 - 参数说明：
@@ -1055,17 +850,7 @@ OpenIMClient.getInstance().conversationManager.markGroupMessageHasRead(new OnBas
 获取消息总未读。
 
 ```
-OpenIMClient.getInstance().conversationManager.getTotalUnreadMsgCount(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        });
+OpenIMClient.getInstance().conversationManager.getTotalUnreadMsgCount(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        });
 ```
 
 
@@ -1075,38 +860,7 @@ OpenIMClient.getInstance().conversationManager.getTotalUnreadMsgCount(new OnBase
 设置会话监听器，会话记录发生改变时回调。
 
 ```
-OpenIMClient.getInstance().conversationManager.setOnConversationListener(new OnConversationListener() {
-            @Override
-            public void onConversationChanged(List<ConversationInfo> list) {
-                	// 会话记录改变
-            }
-
-            @Override
-            public void onNewConversation(List<ConversationInfo> list) {
-								// 新增会话
-            }
-
-            @Override
-            public void onSyncServerFailed() {
-
-            }
-
-            @Override
-            public void onSyncServerFinish() {
-
-            }
-
-            @Override
-            public void onSyncServerStart() {
-
-            }
-
-            @Override
-            public void onTotalUnreadMessageCountChanged(int i) {
-							// 未读消息总数改变
-            }
-        });
-
+OpenIMClient.getInstance().conversationManager.setOnConversationListener(new OnConversationListener() {            @Override            public void onConversationChanged(List<ConversationInfo> list) {                	// 会话记录改变            }            @Override            public void onNewConversation(List<ConversationInfo> list) {								// 新增会话            }            @Override            public void onSyncServerFailed() {            }            @Override            public void onSyncServerFinish() {            }            @Override            public void onSyncServerStart() {            }            @Override            public void onTotalUnreadMessageCountChanged(int i) {							// 未读消息总数改变            }        });
 ```
 
 | 事件回调                   | 事件描述             | 推荐操作       |
@@ -1124,17 +878,7 @@ OpenIMClient.getInstance().conversationManager.setOnConversationListener(new OnC
 获取好友列表。
 
 ```
-   OpenIMClient.getInstance().friendshipManager.getFriendList(new OnBase<List<UserInfo>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<UserInfo> data) {
-
-            }
-        });
+   OpenIMClient.getInstance().friendshipManager.getFriendList(new OnBase<List<UserInfo>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<UserInfo> data) {            }        });
 ```
 
 
@@ -1144,17 +888,7 @@ OpenIMClient.getInstance().conversationManager.setOnConversationListener(new OnC
 获取好友信息。
 
 ```
- OpenIMClient.getInstance().friendshipManager.getFriendsInfo(new OnBase<List<UserInfo>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<UserInfo> data) {
-
-            }
-        }, uidList);
+ OpenIMClient.getInstance().friendshipManager.getFriendsInfo(new OnBase<List<UserInfo>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<UserInfo> data) {            }        }, uidList);
 ```
 
 - 参数说明：
@@ -1170,17 +904,7 @@ OpenIMClient.getInstance().conversationManager.setOnConversationListener(new OnC
 设置好友备注信息。
 
 ```
-OpenIMClient.getInstance().friendshipManager.setFriendInfo(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, uid,  comment);
+OpenIMClient.getInstance().friendshipManager.setFriendInfo(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, uid,  comment);
 ```
 
 - 参数说明：
@@ -1197,17 +921,7 @@ OpenIMClient.getInstance().friendshipManager.setFriendInfo(new OnBase<String>() 
 检查与用户间是否有好友关系。
 
 ```
-OpenIMClient.getInstance().friendshipManager.checkFriend(new OnBase<List<UserInfo>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<UserInfo> data) {
-
-            }
-        }, uidList);
+OpenIMClient.getInstance().friendshipManager.checkFriend(new OnBase<List<UserInfo>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<UserInfo> data) {            }        }, uidList);
 ```
 
 - 参数说明：
@@ -1225,17 +939,7 @@ OpenIMClient.getInstance().friendshipManager.checkFriend(new OnBase<List<UserInf
 从好友列表中删除用户。
 
 ```
- OpenIMClient.getInstance().friendshipManager.deleteFromFriendList(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, uid);
+ OpenIMClient.getInstance().friendshipManager.deleteFromFriendList(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, uid);
 ```
 
 - 参数说明：
@@ -1251,17 +955,7 @@ OpenIMClient.getInstance().friendshipManager.checkFriend(new OnBase<List<UserInf
 发起添加好友申请。
 
 ```
-OpenIMClient.getInstance().friendshipManager.addFriend(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, uid, reason);
+OpenIMClient.getInstance().friendshipManager.addFriend(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, uid, reason);
 ```
 
 - 参数说明：
@@ -1278,17 +972,7 @@ OpenIMClient.getInstance().friendshipManager.addFriend(new OnBase<String>() {
 获取好友请求列表。
 
 ```
- OpenIMClient.getInstance().friendshipManager.getFriendApplicationList(new OnBase<List<UserInfo>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<UserInfo> data) {
-
-            }
-        });
+ OpenIMClient.getInstance().friendshipManager.getFriendApplicationList(new OnBase<List<UserInfo>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<UserInfo> data) {            }        });
 ```
 
 类UserInfo的flag字段：flag == 0：等待处理；flag == 1：已添加；flag == -1：已拒绝。
@@ -1302,17 +986,7 @@ OpenIMClient.getInstance().friendshipManager.addFriend(new OnBase<String>() {
 接受好友请求。
 
 ```
-OpenIMClient.getInstance().friendshipManager.acceptFriendApplication(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, uid);
+OpenIMClient.getInstance().friendshipManager.acceptFriendApplication(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, uid);
 ```
 
 uid：为好友申请列表返回的数据里UserInfo类的uid字段。
@@ -1324,17 +998,7 @@ uid：为好友申请列表返回的数据里UserInfo类的uid字段。
 拒绝好友请求。
 
 ```
-OpenIMClient.getInstance().friendshipManager.refuseFriendApplication(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, uid);
+OpenIMClient.getInstance().friendshipManager.refuseFriendApplication(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, uid);
 ```
 
 
@@ -1356,17 +1020,7 @@ OpenIM.iMManager.friendshipManager.addToBlackList(uid: uid)
 从黑名单移除用户。
 
 ```
-OpenIMClient.getInstance().friendshipManager.addToBlackList(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, uid);
+OpenIMClient.getInstance().friendshipManager.addToBlackList(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, uid);
 ```
 
 
@@ -1376,17 +1030,7 @@ OpenIMClient.getInstance().friendshipManager.addToBlackList(new OnBase<String>()
 获取黑名单列表。
 
 ```
-  OpenIMClient.getInstance().friendshipManager.getBlackList(new OnBase<List<UserInfo>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<UserInfo> data) {
-
-            }
-        });
+  OpenIMClient.getInstance().friendshipManager.getBlackList(new OnBase<List<UserInfo>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<UserInfo> data) {            }        });
 ```
 
 <font color='red'>注：如果好友被拉进黑名单，调用<font color='blue'>getFriendList 或 getFriendListMap</font>方法得到好友包含了黑名单的人，需要通过UserInfo类的isInBlackList字段筛选，如果isInBlackList == 1说明被拉入黑名单。</font>
@@ -1398,52 +1042,7 @@ OpenIMClient.getInstance().friendshipManager.addToBlackList(new OnBase<String>()
 设置好友监听器。
 
 ```
-OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFriendshipListener() {
-            @Override
-            public void onBlackListAdd(UserInfo u) {
-
-            }
-
-            @Override
-            public void onBlackListDeleted(UserInfo u) {
-
-            }
-
-            @Override
-            public void onFriendApplicationListAccept(UserInfo u) {
-
-            }
-
-            @Override
-            public void onFriendApplicationListAdded(UserInfo u) {
-
-            }
-
-            @Override
-            public void onFriendApplicationListDeleted(UserInfo u) {
-
-            }
-
-            @Override
-            public void onFriendApplicationListReject(UserInfo u) {
-
-            }
-
-            @Override
-            public void onFriendInfoChanged(UserInfo u) {
-
-            }
-
-            @Override
-            public void onFriendListAdded(UserInfo u) {
-
-            }
-
-            @Override
-            public void onFriendListDeleted(UserInfo u) {
-
-            }
-        });
+OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFriendshipListener() {            @Override            public void onBlackListAdd(UserInfo u) {                            }            @Override            public void onBlackListDeleted(UserInfo u) {            }            @Override            public void onFriendApplicationListAccept(UserInfo u) {            }            @Override            public void onFriendApplicationListAdded(UserInfo u) {            }            @Override            public void onFriendApplicationListDeleted(UserInfo u) {            }            @Override            public void onFriendApplicationListReject(UserInfo u) {            }            @Override            public void onFriendInfoChanged(UserInfo u) {            }            @Override            public void onFriendListAdded(UserInfo u) {            }            @Override            public void onFriendListDeleted(UserInfo u) {            }        });
 ```
 
 | 事件回调                     | 事件描述             | 推荐操作                           |
@@ -1469,17 +1068,7 @@ OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFrien
 创建一个群聊，并指定群信息以及群成员。
 
 ```
- OpenIMClient.getInstance().groupManager.createGroup(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, groupName, notification, introduction, faceUrl, list);
+ OpenIMClient.getInstance().groupManager.createGroup(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, groupName, notification, introduction, faceUrl, list);
 ```
 
 - 参数说明：
@@ -1499,17 +1088,7 @@ OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFrien
 批量获取群组信息。
 
 ```
- OpenIMClient.getInstance().groupManager.getGroupsInfo(new OnBase<List<GroupInfo>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<GroupInfo> data) {
-
-            }
-        }, gidList);
+ OpenIMClient.getInstance().groupManager.getGroupsInfo(new OnBase<List<GroupInfo>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<GroupInfo> data) {            }        }, gidList);
 ```
 
 - 参数说明：
@@ -1525,17 +1104,7 @@ OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFrien
 设置、更新群聊信息。
 
 ```
-      OpenIMClient.getInstance().groupManager.setGroupInfo(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, groupName,  notification,  introduction,  faceUrl);
+      OpenIMClient.getInstance().groupManager.setGroupInfo(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, groupName,  notification,  introduction,  faceUrl);
 ```
 
 
@@ -1545,17 +1114,7 @@ OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFrien
 获取已加入的群列表。
 
 ```
- OpenIMClient.getInstance().groupManager.getJoinedGroupList(new OnBase<List<GroupInfo>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<GroupInfo> data) {
-
-            }
-        });
+ OpenIMClient.getInstance().groupManager.getJoinedGroupList(new OnBase<List<GroupInfo>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<GroupInfo> data) {            }        });
 ```
 
 如果类GroupInfo的ownerId字段的值跟当前用户的uid一致，则当前用户就是群的发起者。否则是参与者。
@@ -1569,17 +1128,7 @@ OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFrien
 GroupMembersList类的nextSeq字段：下一页的开始index。data字段：群成员。
 
 ```
-OpenIMClient.getInstance().groupManager.getGroupMemberList(new OnBase<GroupMembersList>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(GroupMembersList data) {
-
-            }
-        },  groupId,  filter,  next);
+OpenIMClient.getInstance().groupManager.getGroupMemberList(new OnBase<GroupMembersList>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(GroupMembersList data) {            }        },  groupId,  filter,  next);
 ```
 
 - 参数说明：
@@ -1597,17 +1146,7 @@ OpenIMClient.getInstance().groupManager.getGroupMemberList(new OnBase<GroupMembe
 批量获取群成员信息。
 
 ```
-OpenIMClient.getInstance().groupManager.getGroupMembersInfo(new OnBase<List<GroupMembersInfo>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<GroupMembersInfo> data) {
-
-            }
-        }, groupId,  uidList);
+OpenIMClient.getInstance().groupManager.getGroupMembersInfo(new OnBase<List<GroupMembersInfo>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<GroupMembersInfo> data) {            }        }, groupId,  uidList);
 ```
 
 - 参数说明：
@@ -1624,17 +1163,7 @@ OpenIMClient.getInstance().groupManager.getGroupMembersInfo(new OnBase<List<Grou
 申请加入群聊。
 
 ```
-  OpenIMClient.getInstance().groupManager.joinGroup(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, gid, reason);
+  OpenIMClient.getInstance().groupManager.joinGroup(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, gid, reason);
 ```
 
 - 参数说明：
@@ -1651,17 +1180,7 @@ OpenIMClient.getInstance().groupManager.getGroupMembersInfo(new OnBase<List<Grou
 获取加入群聊申请列表。
 
 ```
-OpenIMClient.getInstance().groupManager.getGroupApplicationList(new OnBase<GroupApplicationList>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(GroupApplicationList data) {
-
-            }
-        });
+OpenIMClient.getInstance().groupManager.getGroupApplicationList(new OnBase<GroupApplicationList>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(GroupApplicationList data) {            }        });
 ```
 
 - GroupApplicationList字段说明：
@@ -1678,17 +1197,7 @@ OpenIMClient.getInstance().groupManager.getGroupApplicationList(new OnBase<Group
 同意入群请求。
 
 ```
-  OpenIMClient.getInstance().groupManager.acceptGroupApplication(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, info, reason);
+  OpenIMClient.getInstance().groupManager.acceptGroupApplication(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, info, reason);
 ```
 
 - 参数说明：
@@ -1705,17 +1214,7 @@ OpenIMClient.getInstance().groupManager.getGroupApplicationList(new OnBase<Group
 拒绝入群请求。
 
 ```
-OpenIMClient.getInstance().groupManager.refuseGroupApplication(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, info, reason);
+OpenIMClient.getInstance().groupManager.refuseGroupApplication(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, info, reason);
 ```
 
 - 参数说明：
@@ -1732,17 +1231,7 @@ OpenIMClient.getInstance().groupManager.refuseGroupApplication(new OnBase<String
 邀请用户加入群组(可批量)。
 
 ```
-  OpenIMClient.getInstance().groupManager.inviteUserToGroup(new OnBase<List<GroupInviteResult>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<GroupInviteResult> data) {
-
-            }
-        }, groupId, uidList,  reason);
+  OpenIMClient.getInstance().groupManager.inviteUserToGroup(new OnBase<List<GroupInviteResult>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<GroupInviteResult> data) {            }        }, groupId, uidList,  reason);
 ```
 
 - 参数说明：
@@ -1760,17 +1249,7 @@ OpenIMClient.getInstance().groupManager.refuseGroupApplication(new OnBase<String
 踢出群聊(可批量)。
 
 ```
-    OpenIMClient.getInstance().groupManager.kickGroupMember(new OnBase<List<GroupInviteResult>>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(List<GroupInviteResult> data) {
-
-            }
-        }, groupId, uidList,  reason);
+    OpenIMClient.getInstance().groupManager.kickGroupMember(new OnBase<List<GroupInviteResult>>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(List<GroupInviteResult> data) {            }        }, groupId, uidList,  reason);
 ```
 
 - 参数说明：
@@ -1788,17 +1267,7 @@ OpenIMClient.getInstance().groupManager.refuseGroupApplication(new OnBase<String
 退出群聊。
 
 ```
-OpenIMClient.getInstance().groupManager.quitGroup(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, gid);
+OpenIMClient.getInstance().groupManager.quitGroup(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, gid);
 ```
 
 
@@ -1808,17 +1277,7 @@ OpenIMClient.getInstance().groupManager.quitGroup(new OnBase<String>() {
 转让群主。
 
 ```
- OpenIMClient.getInstance().groupManager.transferGroupOwner(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-
-            }
-
-            @Override
-            public void onSuccess(String data) {
-
-            }
-        }, gid, uid);
+ OpenIMClient.getInstance().groupManager.transferGroupOwner(new OnBase<String>() {            @Override            public void onError(long code, String error) {                            }            @Override            public void onSuccess(String data) {            }        }, gid, uid);
 ```
 
 - 参数说明：
@@ -1837,47 +1296,7 @@ OpenIMClient.getInstance().groupManager.quitGroup(new OnBase<String>() {
 设置群组监听器。
 
 ```
- OpenIMClient.getInstance().groupManager.setOnGroupListener(new OnGroupListener() {
-            @Override
-            public void onMemberEnter(String groupId, List<GroupMembersInfo> list) {
-
-            }
-
-            @Override
-            public void onMemberLeave(String groupId, GroupMembersInfo info) {
-
-            }
-
-            @Override
-            public void onMemberInvited(String groupId, GroupMembersInfo opUser, List<GroupMembersInfo> list) {
-
-            }
-
-            @Override
-            public void onMemberKicked(String groupId, GroupMembersInfo opUser, List<GroupMembersInfo> list) {
-
-            }
-
-            @Override
-            public void onGroupCreated(String groupId) {
-
-            }
-
-            @Override
-            public void onGroupInfoChanged(String groupId, GroupInfo info) {
-
-            }
-
-            @Override
-            public void onReceiveJoinApplication(String groupId, GroupMembersInfo info, String opReason) {
-
-            }
-
-            @Override
-            public void onApplicationProcessed(String groupId, GroupMembersInfo opUser, int agreeOrReject, String opReason) {
-
-            }
-        });
+ OpenIMClient.getInstance().groupManager.setOnGroupListener(new OnGroupListener() {            @Override            public void onMemberEnter(String groupId, List<GroupMembersInfo> list) {                            }            @Override            public void onMemberLeave(String groupId, GroupMembersInfo info) {            }            @Override            public void onMemberInvited(String groupId, GroupMembersInfo opUser, List<GroupMembersInfo> list) {            }            @Override            public void onMemberKicked(String groupId, GroupMembersInfo opUser, List<GroupMembersInfo> list) {            }            @Override            public void onGroupCreated(String groupId) {            }            @Override            public void onGroupInfoChanged(String groupId, GroupInfo info) {            }            @Override            public void onReceiveJoinApplication(String groupId, GroupMembersInfo info, String opReason) {            }            @Override            public void onApplicationProcessed(String groupId, GroupMembersInfo opUser, int agreeOrReject, String opReason) {            }        });
 ```
 
 | 事件回调               | 事件描述       | 推荐操作       |
@@ -1898,21 +1317,7 @@ OpenIMClient.getInstance().groupManager.quitGroup(new OnBase<String>() {
 ## 7.1. 用户信息对象
 
 ```
-class UserInfo {
-  String uid;
-  String name;
-  String icon;
-  int gender;
-  String mobile;
-  String birth;
-  String email;
-  String ex;
-  String comment;
-  int isInBlackList;
-  String reqMessage;
-  String applyTime;
-  int flag;
- }
+class UserInfo {  String uid;  String name;  String icon;  int gender;  String mobile;  String birth;  String email;  String ex;  String comment;  int isInBlackList;  String reqMessage;  String applyTime;  int flag; }
 ```
 
 | Field         | **Description**                                              |
@@ -1936,119 +1341,7 @@ class UserInfo {
 ##  7.2. 消息对象
 
 ```
-class Message {
-  String clientMsgID;
-  String serverMsgID;
-  int createTime;
-  int sendTime;
-  String sendID;
-  String recvID;
-  int msgFrom;
-
-  /// [MessageType]
-  int contentType;
-  int platformID;
-  List<String> forceList;
-  String senderNickName;
-  String senderFaceUrl;
-  String groupID;
-  String content;
-  int seq;
-  bool isRead;
-
-  /// [MessageStatus]
-  int status;
-  String remark;
-  Object ext;
-
-  /// [ConversationType]
-  int sessionType;
-  PictureElem pictureElem;
-  SoundElem soundElem;
-  VideoElem videoElem;
-  FileElem fileElem;
-  AtElem atElem;
-  LocationElem locationElem;
-  CustomElem customElem;
-  QuoteElem quoteElem;
-  MergeElem mergeElem;
-}
-
-class PictureElem {
-  String sourcePath;
-  PictureInfo sourcePicture;
-  PictureInfo bigPicture;
-  PictureInfo snapshotPicture;
-}
-
-class PictureInfo {
-  String uuID;
-  String type;
-  int size;
-  int width;
-  int height;
-  String url;
-}
-
-class SoundElem {
-  String uuID;
-  String soundPath;
-  String sourceUrl;
-  int dataSize;
-  int duration;
-}
-
-class VideoElem {
-  String videoPath;
-  String videoUUID;
-  String videoUrl;
-  String videoType;
-  int videoSize;
-  int duration;
-  String snapshotPath;
-  String snapshotUUID;
-  int snapshotSize;
-  String snapshotUrl;
-  int snapshotWidth;
-  int snapshotHeight;
-}
-
-class FileElem {
-  String filePath;
-  String uuID;
-  String sourceUrl;
-  String fileName;
-  int fileSize;
-}
-
-class AtElem {
-  String text;
-  List<String> atUserList;
-  boolean isAtSelf;
-}
-
-class LocationElem {
-  String description;
-  double longitude;
-  double latitude;
-}
-
-class CustomElem {
-  String data;
-  String extension;
-  String description;
-}
-
-class QuoteElem {
-  String text;
-  Message quoteMessage;
-}
-
-class MergeElem {
-  String title;
-  List<String> abstractList;
-  List<Message> multiMessage;
-}
+class Message {  String clientMsgID;  String serverMsgID;  int createTime;  int sendTime;  String sendID;  String recvID;  int msgFrom;  /// [MessageType]  int contentType;  int platformID;  List<String> forceList;  String senderNickName;  String senderFaceUrl;  String groupID;  String content;  int seq;  bool isRead;  /// [MessageStatus]  int status;  String remark;  Object ext;  /// [ConversationType]  int sessionType;  PictureElem pictureElem;  SoundElem soundElem;  VideoElem videoElem;  FileElem fileElem;  AtElem atElem;  LocationElem locationElem;  CustomElem customElem;  QuoteElem quoteElem;  MergeElem mergeElem;}class PictureElem {  String sourcePath;  PictureInfo sourcePicture;  PictureInfo bigPicture;  PictureInfo snapshotPicture;}class PictureInfo {  String uuID;  String type;  int size;  int width;  int height;  String url;}class SoundElem {  String uuID;  String soundPath;  String sourceUrl;  int dataSize;  int duration;}class VideoElem {  String videoPath;  String videoUUID;  String videoUrl;  String videoType;  int videoSize;  int duration;  String snapshotPath;  String snapshotUUID;  int snapshotSize;  String snapshotUrl;  int snapshotWidth;  int snapshotHeight;}class FileElem {  String filePath;  String uuID;  String sourceUrl;  String fileName;  int fileSize;}class AtElem {  String text;  List<String> atUserList;  boolean isAtSelf;}class LocationElem {  String description;  double longitude;  double latitude;}class CustomElem {  String data;  String extension;  String description;}class QuoteElem {  String text;  Message quoteMessage;}class MergeElem {  String title;  List<String> abstractList;  List<Message> multiMessage;}
 ```
 
 
@@ -2206,24 +1499,7 @@ class MergeElem {
 ## 7.3. 会话对象
 
 ```
-class ConversationInfo {
-  String conversationID;
-  /// [ConversationType]
-  int conversationType;
-  String userID;
-  String groupID;
-  String showName;
-  String faceUrl;
-  int recvMsgOpt;
-  int unreadCount;
-  Message latestMsg;
-  int latestMsgSendTime;
-  String draftText;
-  int draftTimestamp;
-
-  ///  pinned value is 1
-  int isPinned;
- }
+class ConversationInfo {  String conversationID;  /// [ConversationType]  int conversationType;  String userID;  String groupID;  String showName;  String faceUrl;  int recvMsgOpt;  int unreadCount;  Message latestMsg;  int latestMsgSendTime;  String draftText;  int draftTimestamp;  ///  pinned value is 1  int isPinned; }
 ```
 
 | Field             | Description                                                  |
@@ -2247,14 +1523,7 @@ class ConversationInfo {
 ## 7.4. 已读消息回执
 
 ```
-class HaveReadInfo {
-  String uid;
-  List<String> msgIDList;
-  int readTime;
-  int msgFrom;
-  int contentType;
-  int sessionType;
- }
+class HaveReadInfo {  String uid;  List<String> msgIDList;  int readTime;  int msgFrom;  int contentType;  int sessionType; }
 ```
 
 | Field       | Description                                                  |
@@ -2271,16 +1540,7 @@ class HaveReadInfo {
 ## 7.5. 群组信息对象
 
 ```
-class GroupInfo {
-  String groupID;
-  String groupName;
-  String notification;
-  String introduction;
-  String faceUrl;
-  String ownerId;
-  int createTime;
-  int memberCount;
-  }
+class GroupInfo {  String groupID;  String groupName;  String notification;  String introduction;  String faceUrl;  String ownerId;  int createTime;  int memberCount;  }
 ```
 
 | Field        | Description  |
@@ -2299,15 +1559,7 @@ class GroupInfo {
 ## 7.6. 群组成员信息
 
 ```
-class GroupMembersInfo {
-  String groupID;
-  String userId;
-  int role;
-  int joinTime;
-  String nickName;
-  String faceUrl;
-  Object ext;
- }
+class GroupMembersInfo {  String groupID;  String userId;  int role;  int joinTime;  String nickName;  String faceUrl;  Object ext; }
 ```
 
 | Field    | Description                                |
@@ -2325,24 +1577,7 @@ class GroupMembersInfo {
 ## 7.7. 群申请信息
 
 ```
-class GroupApplicationInfo {
-  String id;
-  String groupID;
-  String fromUserID;
-  String toUserID;
-  int flag; //INIT = 0, REFUSE = -1, AGREE = 1
-  String reqMsg;
-  String handledMsg;
-  int createTime;
-  String fromUserNickName;
-  String toUserNickName;
-  String fromUserFaceURL;
-  String toUserFaceURL;
-  String handledUser;
-  int type; //APPLICATION = 0, INVITE = 1
-  int handleStatus; //UNHANDLED = 0, BY_OTHER = 1, BY_SELF = 2
-  int handleResult; //REFUSE = 0, AGREE = 1
-  }
+class GroupApplicationInfo {  String id;  String groupID;  String fromUserID;  String toUserID;  int flag; //INIT = 0, REFUSE = -1, AGREE = 1  String reqMsg;  String handledMsg;  int createTime;  String fromUserNickName;  String toUserNickName;  String fromUserFaceURL;  String toUserFaceURL;  String handledUser;  int type; //APPLICATION = 0, INVITE = 1  int handleStatus; //UNHANDLED = 0, BY_OTHER = 1, BY_SELF = 2  int handleResult; //REFUSE = 0, AGREE = 1  }
 ```
 
 | Field            | Description                               |
