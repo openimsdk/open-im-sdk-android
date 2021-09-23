@@ -7,9 +7,9 @@ public class ConversationType {
     /**
      * 当前会话是单聊
      */
-    static final int SINGLE_CHAT = 1;
+    public static final int SINGLE_CHAT = 1;
     /**
      * 当前会话是群聊
      */
-    static final int GROUP_CHAT = 2;
+    public static final int GROUP_CHAT = 2;
 }
