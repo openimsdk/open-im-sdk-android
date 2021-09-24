@@ -1,12 +1,10 @@
 package io.openim.android.sdk;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.openim.android.sdk.internal.log.LogcatHelper;
 import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.InitSDKListener;
 import io.openim.android.sdk.listener.OnBase;
@@ -57,18 +55,9 @@ public class OpenIMClient {
      * @param listener SDK初始化监听
      */
     public void initSDK(int platform, String ipApi, String ipWs, String dbPath, InitSDKListener listener) {
-        String paramsText;
-        try {
-            JSONObject params = new JSONObject();
-            params.put("platform", platform);
-            params.put("ipApi", ipApi);
-            params.put("ipWs", ipWs);
-            params.put("dbDir", dbPath);
-            paramsText = params.toString();
-        } catch (JSONException e) {
-            // fallback with json
-            paramsText = JsonUtil.toString(CollectionUtils.simpleMapOf("platform", platform, "ipApi", ipApi, "ipWs", ipWs, "dbDir", dbPath));
-        }
+        // fastjson is unreliable, should instead with google/gson in android
+        String paramsText = JsonUtil.toString(CollectionUtils.simpleMapOf("platform", platform, "ipApi", ipApi, "ipWs", ipWs, "dbDir", dbPath));
+        LogcatHelper.logDInDebug(String.format("init config: %s", paramsText));
         Open_im_sdk.initSDK(paramsText, new open_im_sdk.IMSDKListener() {
             @Override
             public void onConnectFailed(long l, String s) {
