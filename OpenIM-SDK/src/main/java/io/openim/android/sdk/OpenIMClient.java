@@ -1,7 +1,5 @@
 package io.openim.android.sdk;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +13,6 @@ import io.openim.android.sdk.manager.FriendshipManager;
 import io.openim.android.sdk.manager.GroupManager;
 import io.openim.android.sdk.manager.MessageManager;
 import io.openim.android.sdk.models.UserInfo;
-import io.openim.android.sdk.util.CollectionUtils;
 import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
 import open_im_sdk.Open_im_sdk;
@@ -36,11 +33,11 @@ public class OpenIMClient {
     }
 
     private static class Singleton {
-        private static final OpenIMClient INSTANCE = new OpenIMClient();
+        private static final OpenIMClient instance = new OpenIMClient();
     }
 
     public static OpenIMClient getInstance() {
-        return Singleton.INSTANCE;
+        return Singleton.instance;
     }
 
     /**
@@ -57,19 +54,12 @@ public class OpenIMClient {
      * @param listener SDK初始化监听
      */
     public void initSDK(int platform, String ipApi, String ipWs, String dbPath, InitSDKListener listener) {
-        String paramsText;
-        try {
-            JSONObject params = new JSONObject();
-            params.put("platform", platform);
-            params.put("ipApi", ipApi);
-            params.put("ipWs", ipWs);
-            params.put("dbDir", dbPath);
-            paramsText = params.toString();
-        } catch (JSONException e) {
-            // fallback with json
-            paramsText = JsonUtil.toString(CollectionUtils.simpleMapOf("platform", platform, "ipApi", ipApi, "ipWs", ipWs, "dbDir", dbPath));
-        }
-        Open_im_sdk.initSDK(paramsText, new open_im_sdk.IMSDKListener() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("platform", platform);
+        map.put("ipApi", ipApi);
+        map.put("ipWs", ipWs);
+        map.put("dbDir", dbPath);
+        Open_im_sdk.initSDK(JsonUtil.toString(map), new open_im_sdk.IMSDKListener() {
             @Override
             public void onConnectFailed(long l, String s) {
                 if (null != listener) {
@@ -112,6 +102,7 @@ public class OpenIMClient {
                 }
             }
         });
+
     }
 
     /**
