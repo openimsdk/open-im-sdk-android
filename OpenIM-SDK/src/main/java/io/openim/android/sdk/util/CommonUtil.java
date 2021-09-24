@@ -1,4 +1,4 @@
-package io.openim.android.sdk.utils;
+package io.openim.android.sdk.util;
 
 import android.os.Handler;
 import android.os.Looper;
