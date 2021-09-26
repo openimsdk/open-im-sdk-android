@@ -15,7 +15,7 @@ import io.openim.android.sdk.models.GroupInviteResult;
 import io.openim.android.sdk.models.GroupMemberRole;
 import io.openim.android.sdk.models.GroupMembersInfo;
 import io.openim.android.sdk.models.GroupMembersList;
-import io.openim.android.sdk.utils.JsonUtil;
+import io.openim.android.sdk.util.JsonUtil;
 import open_im_sdk.Open_im_sdk;
 
 /**

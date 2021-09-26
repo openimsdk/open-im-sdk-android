@@ -2,7 +2,7 @@ package io.openim.android.sdk.listener;
 
 import java.util.List;
 
-import io.openim.android.sdk.utils.CommonUtil;
+import io.openim.android.sdk.util.CommonUtil;
 import open_im_sdk.Base;
 
 public class BaseImpl {
