@@ -1,11 +1,16 @@
 package io.openim.android.sdk;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.openim.android.sdk.internal.log.LogcatHelper;
 import io.openim.android.sdk.listener.BaseImpl;
+import io.openim.android.sdk.listener.ConnectListener;
+import io.openim.android.sdk.listener.InitCallback;
 import io.openim.android.sdk.listener.InitSDKListener;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.manager.ConversationManager;
@@ -13,12 +18,15 @@ import io.openim.android.sdk.manager.FriendshipManager;
 import io.openim.android.sdk.manager.GroupManager;
 import io.openim.android.sdk.manager.MessageManager;
 import io.openim.android.sdk.models.UserInfo;
+import io.openim.android.sdk.user.Credential;
 import io.openim.android.sdk.util.CollectionUtils;
-import io.openim.android.sdk.util.CommonUtil;
 import io.openim.android.sdk.util.JsonUtil;
+import io.openim.android.sdk.util.Predicates;
 import open_im_sdk.Open_im_sdk;
 
 public class OpenIMClient {
+
+    private OpenIMClientImpl mClientImpl;
     //    public ImManager imManager;
     public ConversationManager conversationManager;
     public FriendshipManager friendshipManager;
@@ -26,11 +34,13 @@ public class OpenIMClient {
     public MessageManager messageManager;
 
     private OpenIMClient() {
+        mClientImpl = new OpenIMClientImpl();
 //        imManager = new ImManager();
-        conversationManager = new ConversationManager();
-        friendshipManager = new FriendshipManager();
-        groupManager = new GroupManager();
-        messageManager = new MessageManager();
+        // TODO: to be remove, use service interface via getters instead
+        conversationManager = mClientImpl.conversationManager;
+        friendshipManager = mClientImpl.friendshipManager;
+        groupManager = mClientImpl.groupManager;
+        messageManager = mClientImpl.messageManager;
     }
 
     private static class Singleton {
@@ -39,6 +49,14 @@ public class OpenIMClient {
 
     public static OpenIMClient getInstance() {
         return Singleton.INSTANCE;
+    }
+
+    public void init(@NonNull OpenIMConfig config, @Nullable InitCallback callback) {
+        Predicates.requireNonNull(config);
+
+        String conf = config.toJson();
+        LogcatHelper.logDInDebug(String.format("init config: %s", conf));
+        mClientImpl.init(conf, callback);
     }
 
     /**
@@ -55,77 +73,84 @@ public class OpenIMClient {
      * @param listener SDK初始化监听
      */
     public void initSDK(int platform, String ipApi, String ipWs, String dbPath, InitSDKListener listener) {
-        // fastjson is unreliable, should instead with google/gson in android
-        String paramsText = JsonUtil.toString(CollectionUtils.simpleMapOf("platform", platform, "ipApi", ipApi, "ipWs", ipWs, "dbDir", dbPath));
-        LogcatHelper.logDInDebug(String.format("init config: %s", paramsText));
-        Open_im_sdk.initSDK(paramsText, new open_im_sdk.IMSDKListener() {
+        String conf = JsonUtil.toString(CollectionUtils.simpleMapOf("platform", platform, "ipApi", ipApi, "ipWs", ipWs, "dbDir", dbPath));
+        LogcatHelper.logDInDebug(String.format("init config: %s", conf));
+        mClientImpl.init(conf, new InitCallback() {
             @Override
-            public void onConnectFailed(long l, String s) {
-                if (null != listener) {
-                    CommonUtil.runMainThread(() -> listener.onConnectFailed(l, s));
-                }
+            public void onSucceed() {
+            }
+
+            @Override
+            public void onFailed(@NonNull Throwable throwable) {
+            }
+        });
+        if (Predicates.isNull(listener)) {
+            return;
+        }
+        mClientImpl.registerConnListener(new ConnectListener() {
+            @Override
+            public void onConnectFailed(long code, String error) {
+                Predicates.requireNonNull(listener).onConnectFailed(code, error);
             }
 
             @Override
             public void onConnectSuccess() {
-                if (null != listener) {
-                    CommonUtil.runMainThread(listener::onConnectSuccess);
-                }
+                Predicates.requireNonNull(listener).onConnectSuccess();
             }
 
             @Override
             public void onConnecting() {
-                if (null != listener) {
-                    CommonUtil.runMainThread(listener::onConnecting);
-                }
+                Predicates.requireNonNull(listener).onConnecting();
             }
 
             @Override
             public void onKickedOffline() {
-                if (null != listener) {
-                    CommonUtil.runMainThread(listener::onKickedOffline);
-                }
+                Predicates.requireNonNull(listener).onKickedOffline();
             }
 
             @Override
-            public void onSelfInfoUpdated(String s) {
-                if (null != listener) {
-                    CommonUtil.runMainThread(() -> listener.onSelfInfoUpdated(JsonUtil.toObj(s, UserInfo.class)));
-                }
+            public void onSelfInfoUpdated(UserInfo info) {
+                Predicates.requireNonNull(listener).onSelfInfoUpdated(info);
             }
 
             @Override
             public void onUserTokenExpired() {
-                if (null != listener) {
-                    CommonUtil.runMainThread(listener::onUserTokenExpired);
-                }
+                Predicates.requireNonNull(listener).onUserTokenExpired();
             }
         });
     }
 
+    public void registerConnectListener(@Nullable ConnectListener listener) {
+        if (Predicates.isNull(listener)) {
+            return;
+        }
+        mClientImpl.registerConnListener(listener);
+    }
+
     /**
-     * 反初始化sdk
+     * Un-init SDK
      */
     public void unInitSDK() {
-        Open_im_sdk.unInitSDK();
+        mClientImpl.release();
     }
 
     /**
-     * 登录
+     * Login
      *
-     * @param uid   用户id
-     * @param token 用户token
-     * @param base  callback String
+     * @param credential user credential
+     * @param callback   callback String
      */
-    public void login(OnBase<String> base, String uid, String token) {
-        Open_im_sdk.login(uid, token, BaseImpl.stringBase(base));
+    public void login(@NonNull Credential credential, OnBase<String> callback) {
+        Predicates.requireNonNull(credential);
+
+        mClientImpl.login(credential, callback);
     }
 
     /**
-     * 登出
+     * Logout
      */
     public void logout(OnBase<String> base) {
-        Open_im_sdk.logout(BaseImpl.stringBase(base));
+        mClientImpl.logout(base);
     }
 
     /**
