@@ -20,10 +20,12 @@ import io.openim.android.sdk.models.GroupMembersInfo;
 import io.openim.android.sdk.models.HaveReadInfo;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.UserInfo;
+import io.openim.android.sdk.user.Credential;
 import io.openim.android.sdk.util.JsonUtil;
 
-public class MainActivity extends AppCompatActivity implements InitSDKListener, OnAdvanceMsgListener,
-        OnConversationListener, OnFriendshipListener, OnGroupListener {
+public class MainActivity extends AppCompatActivity implements InitSDKListener, OnAdvanceMsgListener, OnConversationListener, OnFriendshipListener,
+    OnGroupListener {
+
     /// api地址
     final static String IP_API = "https://open-im.rentsoft.cn";
     /// websocket地址
@@ -34,24 +36,28 @@ public class MainActivity extends AppCompatActivity implements InitSDKListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String path = getExternalCacheDir().getAbsolutePath();
-        OpenIMClient.getInstance().initSDK(2, IP_API, IP_WS, path, this);
-        OpenIMClient.getInstance().messageManager.addAdvancedMsgListener(this);
+        OpenIMClient client = OpenIMClient.getInstance();
+        client.initSDK(2, IP_API, IP_WS, path, this);
+        client.messageManager.addAdvancedMsgListener(this);
 //        OpenIMClient.getInstance().conversationManager.setOnConversationListener(this);
 //        OpenIMClient.getInstance().friendshipManager.setOnFriendListener(this);
 //        OpenIMClient.getInstance().groupManager.setOnGroupListener(this);
-        OpenIMClient.getInstance().login(new OnBase<String>() {
-            @Override
-            public void onError(long code, String error) {
-                System.out.println("=======login onError =================");
-            }
-
-            @Override
-            public void onSuccess(String data) {
-                System.out.println("=======login onSuccess =================");
-            }
-        }, "345513c4bd30ed21", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiIzNDU1MTNjNGJkMzBlZDIxIiwiUGxhdGZvcm0iOiJJT1MiLCJleHAiOjE2MzAwMzczNzAsImlhdCI6MTYyOTQzMjU3MCwibmJmIjoxNjI5NDMyNTcwfQ.jWMhpQMpchJXvJX3CC4BYCrEUxeuHoFeqmx4GPUsOWg");
+//        Credential credential = new Credential(
+//            "345513c4bd30ed21",
+//            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiIzNDU1MTNjNGJkMzBlZDIxIiwiUGxhdGZvcm0iOiJJT1MiLCJleHAiOjE2MzAwMzczNzAsImlhdCI6MTYyOTQzMjU3MCwibmJmIjoxNjI5NDMyNTcwfQ.jWMhpQMpchJXvJX3CC4BYCrEUxeuHoFeqmx4GPUsOWg"
+//        );
+//        client.login(credential, new OnBase<String>() {
+//            @Override
+//            public void onError(long code, String error) {
+//                System.out.println("=======login onError =================");
+//            }
+//
+//            @Override
+//            public void onSuccess(String data) {
+//                System.out.println("=======login onSuccess =================");
+//            }
+//        });
     }
-
 
     @Override
     public void onConnectFailed(long code, String error) {
@@ -141,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements InitSDKListener, 
     @Override
     public void onFriendApplicationListAccept(UserInfo u) {
         System.out.println("=========onFriendApplicationListAccept===============");
-
     }
 
     @Override
@@ -218,7 +223,6 @@ public class MainActivity extends AppCompatActivity implements InitSDKListener, 
         OpenIMClient.getInstance().conversationManager.getAllConversationList(new OnBase<List<ConversationInfo>>() {
             @Override
             public void onError(long code, String error) {
-
             }
 
             @Override

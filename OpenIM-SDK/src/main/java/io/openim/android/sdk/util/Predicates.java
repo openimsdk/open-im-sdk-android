@@ -25,4 +25,11 @@ public final class Predicates {
         }
         return obj;
     }
+
+    public static <T> T checkParamValue(String name, T value) {
+        if (value == null) {
+            throw new IllegalArgumentException("The value of the parameter " + name + " cannot be null.");
+        }
+        return value;
+    }
 }
