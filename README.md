@@ -8,10 +8,5 @@
 ## 2，import module OpenIM-SDK
 
 
-
-![image-20210926105443882](/Users/xianghairui/Library/Application Support/typora-user-images/image-20210926105443882.png)
-
-
-
 ## 3 , sync project
 
