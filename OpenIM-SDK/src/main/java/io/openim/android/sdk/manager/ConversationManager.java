@@ -108,6 +108,17 @@ public class ConversationManager {
     }
 
     /**
+     * 获取会话id；
+     * 在从群列表进入聊天窗口后退群，这时候需要根据此方法获取会话id删除会话。
+     *
+     * @param sourceId:    聊值：UserId；聊值：GroupId
+     * @param sessionType: 单聊：1；群聊：2
+     */
+    public void getConversationID(String sourceId, long sessionType) {
+        Open_im_sdk.getConversationIDBySessionType(sourceId, sessionType);
+    }
+
+    /**
      * 设置会话监听器
      * 如果会话改变，会触发onConversationChanged方法回调
      * 如果新增会话，会触发onNewConversation回调
