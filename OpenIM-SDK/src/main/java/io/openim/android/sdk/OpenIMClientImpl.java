@@ -13,6 +13,7 @@ import io.openim.android.sdk.manager.FriendshipManager;
 import io.openim.android.sdk.manager.GroupManager;
 import io.openim.android.sdk.manager.MessageManager;
 import io.openim.android.sdk.models.UserInfo;
+import io.openim.android.sdk.user.Credential;
 import io.openim.android.sdk.util.CollectionUtils;
 import io.openim.android.sdk.util.CommonUtil;
 import io.openim.android.sdk.util.JsonUtil;
@@ -116,7 +117,11 @@ class OpenIMClientImpl {
      * @param base  callback String
      */
     public void login(OnBase<String> base, String uid, String token) {
-        Open_im_sdk.login(uid, token, BaseImpl.stringBase(base));
+        Open_im_sdk.login(Predicates.checkParamValue("uid", uid), Predicates.checkParamValue("token", token), BaseImpl.stringBase(base));
+    }
+
+    public void login(OnBase<String> base, Credential credential) {
+        Open_im_sdk.login(Predicates.checkParamValue("uid", Predicates.requireNonNull(credential).getUid()), Predicates.checkParamValue("token", Predicates.requireNonNull(credential).getToken()), BaseImpl.stringBase(base));
     }
 
     /**

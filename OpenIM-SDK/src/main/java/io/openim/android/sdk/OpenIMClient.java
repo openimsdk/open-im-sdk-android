@@ -9,6 +9,7 @@ import io.openim.android.sdk.manager.FriendshipManager;
 import io.openim.android.sdk.manager.GroupManager;
 import io.openim.android.sdk.manager.MessageManager;
 import io.openim.android.sdk.models.UserInfo;
+import io.openim.android.sdk.user.Credential;
 
 public class OpenIMClient {
     //    public ImManager imManager;
@@ -72,6 +73,10 @@ public class OpenIMClient {
      */
     public void login(OnBase<String> base, String uid, String token) {
         clientImpl.login(base, uid, token);
+    }
+
+    public void login(OnBase<String> base, Credential credential) {
+        clientImpl.login(base, credential);
     }
 
     /**
