@@ -53,8 +53,8 @@ public class OpenIMClient {
      * @param dbDir    数据存储目录路径
      * @param listener SDK初始化监听
      */
-    public void initSDK(int platform, String ipApi, String ipWs, String dbDir, InitSDKListener listener) {
-        clientImpl.initSDK(platform, ipApi, ipWs, dbDir, listener);
+    public boolean initSDK(int platform, String ipApi, String ipWs, String dbDir, InitSDKListener listener) {
+        return clientImpl.initSDK(platform, ipApi, ipWs, dbDir, listener);
     }
 
 //    /**

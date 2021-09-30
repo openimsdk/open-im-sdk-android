@@ -52,12 +52,12 @@ class OpenIMClientImpl {
      * @param dbDir    数据存储目录路径
      * @param listener SDK初始化监听
      */
-    public void initSDK(int platform, String ipApi, String ipWs, String dbDir, InitSDKListener listener) {
+    public boolean initSDK(int platform, String ipApi, String ipWs, String dbDir, InitSDKListener listener) {
 
         // fastjson is unreliable, should instead with google/gson in android
         String paramsText = JsonUtil.toString(CollectionUtils.simpleMapOf("platform", platform, "ipApi", Predicates.checkParamValue("ipApi", ipApi), "ipWs", Predicates.checkParamValue("ipWs", ipWs), "dbDir", Predicates.checkParamValue("dbDir", dbDir)));
         LogcatHelper.logDInDebug(String.format("init config: %s", paramsText));
-        Open_im_sdk.initSDK(paramsText, new open_im_sdk.IMSDKListener() {
+        return Open_im_sdk.initSDK(paramsText, new open_im_sdk.IMSDKListener() {
             @Override
             public void onConnectFailed(long l, String s) {
                 if (null != listener) {
