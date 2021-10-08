@@ -1,6 +1,8 @@
 package io.openim.android.sdk.manager;
 
 
+import androidx.collection.ArrayMap;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,13 +132,13 @@ public class FriendshipManager {
      * 添加朋友
      *
      * @param uid    对方userID
-     * @param reason 请求消息
+     * @param reqMessage 请求消息
      * @param base   callback String
      */
-    public void addFriend(OnBase<String> base, String uid, String reason) {
-        Map<String, Object> params = new HashMap<>();
+    public void addFriend(OnBase<String> base, String uid, String reqMessage) {
+        Map<String, Object> params = new ArrayMap<>();
         params.put("uid", uid);
-        params.put("reqMessage", reason);
+        params.put("reqMessage", reqMessage);
         Open_im_sdk.addFriend(BaseImpl.stringBase(base), JsonUtil.toString(params));
     }
 
@@ -158,7 +160,7 @@ public class FriendshipManager {
      * @param base    callback String
      */
     public void setFriendInfo(OnBase<String> base, String uid, String comment) {
-        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new ArrayMap<>();
         params.put("uid", uid);
         params.put("comment", comment);
         Open_im_sdk.setFriendInfo(JsonUtil.toString(params), BaseImpl.stringBase(base));

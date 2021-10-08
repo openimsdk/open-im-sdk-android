@@ -1,6 +1,7 @@
 package io.openim.android.sdk;
 
-import java.util.HashMap;
+import androidx.collection.ArrayMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -46,16 +47,14 @@ class OpenIMClientImpl {
      * 需要将文件自行拷贝到dbPath目录下，如果此时文件路径为 apath+"/sound/a.mp3"，则参数path的值为：/sound/a.mp3。
      * 如果选择的全路径方法，路径为你文件的实际路径不需要再拷贝。
      *
-     * @param platform {@link io.openim.android.sdk.enums.Platform}
-     * @param ipApi    SDK的API接口地址。如：http:xxx:10000
-     * @param ipWs     SDK的web socket地址。如： ws:xxx:17778
-     * @param dbDir    数据存储目录路径
-     * @param listener SDK初始化监听
+     * @param apiUrl     SDK的API接口地址。如：http:xxx:10000
+     * @param wsUrl      SDK的web socket地址。如： ws:xxx:17778
+     * @param storageDir 数据存储目录路径
+     * @param listener   SDK初始化监听
      */
-    public boolean initSDK(int platform, String ipApi, String ipWs, String dbDir, InitSDKListener listener) {
-
+    public boolean initSDK(String apiUrl, String wsUrl, String storageDir, InitSDKListener listener) {
         // fastjson is unreliable, should instead with google/gson in android
-        String paramsText = JsonUtil.toString(CollectionUtils.simpleMapOf("platform", platform, "ipApi", Predicates.checkParamValue("ipApi", ipApi), "ipWs", Predicates.checkParamValue("ipWs", ipWs), "dbDir", Predicates.checkParamValue("dbDir", dbDir)));
+        String paramsText = JsonUtil.toString(CollectionUtils.simpleMapOf("platform", 2, "ipApi", apiUrl, "ipWs", wsUrl, "dbDir", storageDir));
         LogcatHelper.logDInDebug(String.format("init config: %s", paramsText));
         return Open_im_sdk.initSDK(paramsText, new open_im_sdk.IMSDKListener() {
             @Override
@@ -167,7 +166,7 @@ class OpenIMClientImpl {
      * @param base   callback String
      */
     public void setSelfInfo(OnBase<String> base, String name, String icon, int gender, String mobile, String birth, String email) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new ArrayMap<>();
         map.put("name", name);
         map.put("icon", icon);
         map.put("gender", gender);

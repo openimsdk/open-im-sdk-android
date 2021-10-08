@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements InitSDKListener, 
         setContentView(R.layout.activity_main);
         String path = getExternalCacheDir().getAbsolutePath();
         OpenIMClient client = OpenIMClient.getInstance();
-        client.initSDK(2, IP_API, IP_WS, path, this);
+        client.initSDK(IP_API, IP_WS, path, this);
         client.messageManager.addAdvancedMsgListener(this);
 //        OpenIMClient.getInstance().conversationManager.setOnConversationListener(this);
 //        OpenIMClient.getInstance().friendshipManager.setOnFriendListener(this);

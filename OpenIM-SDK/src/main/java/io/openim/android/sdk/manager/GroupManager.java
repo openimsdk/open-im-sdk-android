@@ -1,7 +1,8 @@
 package io.openim.android.sdk.manager;
 
 
-import java.util.HashMap;
+import androidx.collection.ArrayMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -163,7 +164,7 @@ public class GroupManager {
      * @param list         List<{@link GroupMemberRole}> 创建群是选择的成员. setRole：0:普通成员 2:管理员；1：群主
      */
     public void createGroup(OnBase<String> base, String groupName, String notification, String introduction, String faceUrl, List<GroupMemberRole> list) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new ArrayMap<>();
         map.put("groupName", groupName);
         map.put("notification", notification);
         map.put("introduction", introduction);
@@ -174,14 +175,16 @@ public class GroupManager {
     /**
      * 设置或更新群资料
      *
+     * @param groupID      群ID
      * @param groupName    群名称
      * @param notification 群公告
      * @param introduction 群简介
      * @param faceUrl      群icon
-     * @param base         callbak String
+     * @param base         callback String
      */
-    public void setGroupInfo(OnBase<String> base, String groupName, String notification, String introduction, String faceUrl) {
-        Map<String, Object> map = new HashMap<>();
+    public void setGroupInfo(OnBase<String> base, String groupID, String groupName, String notification, String introduction, String faceUrl) {
+        Map<String, Object> map = new ArrayMap<>();
+        map.put("groupID", groupID);
         map.put("groupName", groupName);
         map.put("notification", notification);
         map.put("introduction", introduction);

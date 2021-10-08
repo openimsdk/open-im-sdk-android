@@ -1,8 +1,9 @@
 package io.openim.android.sdk.manager;
 
 
+import androidx.collection.ArrayMap;
+
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +139,7 @@ public class MessageManager {
      * @param base     callback List<{@link Message}>
      */
     public void getHistoryMessageList(OnBase<List<Message>> base, String userID, String groupID, Message startMsg, int count) {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new ArrayMap<>();
         map.put("userID", userID);
         map.put("groupID", groupID);
         map.put("startMsg", startMsg);
