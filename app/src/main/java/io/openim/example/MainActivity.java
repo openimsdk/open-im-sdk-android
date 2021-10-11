@@ -20,16 +20,15 @@ import io.openim.android.sdk.models.GroupMembersInfo;
 import io.openim.android.sdk.models.HaveReadInfo;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.UserInfo;
-import io.openim.android.sdk.user.Credential;
 import io.openim.android.sdk.util.JsonUtil;
 
 public class MainActivity extends AppCompatActivity implements InitSDKListener, OnAdvanceMsgListener, OnConversationListener, OnFriendshipListener,
     OnGroupListener {
 
     /// api地址
-    final static String IP_API = "https://open-im.rentsoft.cn";
+    final static String IP_API = "http://1.14.194.38:10000";
     /// websocket地址
-    final static String IP_WS = "wss://open-im.rentsoft.cn/wss";
+    final static String IP_WS = "ws://1.14.194.38:17778";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,24 +38,11 @@ public class MainActivity extends AppCompatActivity implements InitSDKListener, 
         OpenIMClient client = OpenIMClient.getInstance();
         client.initSDK(IP_API, IP_WS, path, this);
         client.messageManager.addAdvancedMsgListener(this);
-//        OpenIMClient.getInstance().conversationManager.setOnConversationListener(this);
-//        OpenIMClient.getInstance().friendshipManager.setOnFriendListener(this);
-//        OpenIMClient.getInstance().groupManager.setOnGroupListener(this);
-//        Credential credential = new Credential(
-//            "345513c4bd30ed21",
-//            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiIzNDU1MTNjNGJkMzBlZDIxIiwiUGxhdGZvcm0iOiJJT1MiLCJleHAiOjE2MzAwMzczNzAsImlhdCI6MTYyOTQzMjU3MCwibmJmIjoxNjI5NDMyNTcwfQ.jWMhpQMpchJXvJX3CC4BYCrEUxeuHoFeqmx4GPUsOWg"
-//        );
-//        client.login(credential, new OnBase<String>() {
-//            @Override
-//            public void onError(long code, String error) {
-//                System.out.println("=======login onError =================");
-//            }
-//
-//            @Override
-//            public void onSuccess(String data) {
-//                System.out.println("=======login onSuccess =================");
-//            }
-//        });
+        client.groupManager.setOnGroupListener(this);
+        client.conversationManager.setOnConversationListener(this);
+        client.friendshipManager.setOnFriendshipListener(this);
+        // uid: 13918588195, token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+
     }
 
     @Override
@@ -230,5 +216,34 @@ public class MainActivity extends AppCompatActivity implements InitSDKListener, 
                 System.out.println("onGetConversation:" + JsonUtil.toString(data));
             }
         });
+    }
+
+    public void onLogin(View view) {
+        OpenIMClient.getInstance().login(new OnBase<String>() {
+            @Override
+            public void onError(long code, String error) {
+
+            }
+
+            @Override
+            public void onSuccess(String data) {
+                System.out.println("登录成功!");
+
+            }
+        }, "13918588195", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiIxMzkxODU4ODE5NSIsIlBsYXRmb3JtIjoiQW5kcm9pZCIsImV4cCI6MTYzNDM3ODE3MSwiaWF0IjoxNjMzNzczMzcxLCJuYmYiOjE2MzM3NzMzNzF9.d6vAIBlbOF2r7Ouz2Opl6GvroDpHkGCp-QNxm5cKiFU");
+    }
+
+    public void onGetMessageHistory(View view) {
+        OpenIMClient.getInstance().messageManager.getHistoryMessageList(new OnBase<List<Message>>() {
+            @Override
+            public void onError(long code, String error) {
+
+            }
+
+            @Override
+            public void onSuccess(List<Message> data) {
+                System.out.println("消息数：" + data.size());
+            }
+        }, "0b55c23c7fac2b34", "", null, 20);
     }
 }
