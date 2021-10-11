@@ -6,6 +6,7 @@ import io.openim.android.sdk.models.UserInfo;
  * sdk 初始化回调监听器
  * 只有在调用sdk的login方法后才开始回调
  *
+ * @deprecated listening connection via {@link ConnectListener}, and observe user changed via {@link UserStateChangedListener}
  */
 public interface InitSDKListener {
 

@@ -1,6 +1,6 @@
 package io.openim.android.sdk.manager;
 
-
+import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 
 import java.lang.ref.WeakReference;
@@ -9,21 +9,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import io.openim.android.sdk.internal.schedule.Schedulers;
 import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnAdvanceMsgListener;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnMsgSendCallback;
 import io.openim.android.sdk.models.HaveReadInfo;
 import io.openim.android.sdk.models.Message;
+import io.openim.android.sdk.service.MessageService;
 import io.openim.android.sdk.util.CommonUtil;
 import io.openim.android.sdk.util.JsonUtil;
+import io.openim.android.sdk.util.Predicates;
 import open_im_sdk.Open_im_sdk;
 import open_im_sdk.SendMsgCallBack;
 
 /**
  * 消息管理器
  */
-public class MessageManager {
+public class MessageManager implements MessageService {
+
     private static final List<WeakReference<OnAdvanceMsgListener>> listeners = new CopyOnWriteArrayList<>();
     private static boolean initialized = false;
     private static final open_im_sdk.OnAdvancedMsgListener sdkListener = new open_im_sdk.OnAdvancedMsgListener() {
@@ -67,7 +71,10 @@ public class MessageManager {
      * 当对方阅读了消息：onRecvC2CReadReceipt，通过回调将已读的消息更改状态。
      * 新增消息：onRecvNewMessage，向界面添加消息
      */
-    public void addAdvancedMsgListener(OnAdvanceMsgListener listener) {
+    @Override
+    public void addAdvancedMsgListener(@NonNull OnAdvanceMsgListener listener) {
+        Predicates.requireNonNull(listener);
+
         listeners.add(new WeakReference<>(listener));
         if (!initialized) {
             initialized = true;
@@ -78,6 +85,7 @@ public class MessageManager {
     /**
      * 移除消息监听
      */
+    @Override
     public void removeAdvancedMsgListener(OnAdvanceMsgListener listener) {
         final Iterator<WeakReference<OnAdvanceMsgListener>> it = listeners.iterator();
         while (it.hasNext()) {
@@ -102,7 +110,8 @@ public class MessageManager {
      * @param base           callback
      *                       onProgress:消息发送进度，如图片，文件，视频等消息
      */
-    public void sendMessage(OnMsgSendCallback base, Message message, String recvUid, String recvGid, boolean onlineUserOnly) {
+    @Override
+    public void sendMessage(Message message, String recvUid, String recvGid, boolean onlineUserOnly, OnMsgSendCallback base) {
         Open_im_sdk.sendMessage(new SendMsgCallBack() {
             @Override
             public void onError(long l, String s) {
@@ -114,7 +123,7 @@ public class MessageManager {
             @Override
             public void onProgress(long l) {
                 if (null != base) {
-                    CommonUtil.runMainThread(() -> base.onProgress(l));
+                    Schedulers.runOnMainThread(() -> base.onProgress(l));
                 }
             }
 
@@ -125,6 +134,11 @@ public class MessageManager {
                 }
             }
         }, JsonUtil.toString(message), recvUid, recvGid, onlineUserOnly);
+    }
+
+    @Override
+    public void recallMessage(@NonNull Message message, OnBase<String> callback) {
+        revokeMessage(callback, Predicates.requireNonNull(message));
     }
 
     /**
@@ -138,7 +152,8 @@ public class MessageManager {
      * @param count    一次拉取count条
      * @param base     callback List<{@link Message}>
      */
-    public void getHistoryMessageList(OnBase<List<Message>> base, String userID, String groupID, Message startMsg, int count) {
+    @Override
+    public void getHistoryMessageList(String userID, String groupID, Message startMsg, int count, OnBase<List<Message>> base) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("userID", userID);
         map.put("groupID", groupID);

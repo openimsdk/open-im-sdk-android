@@ -1,17 +1,30 @@
 package io.openim.android.sdk;
 
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
+import io.openim.android.sdk.listener.ConnectListener;
+import io.openim.android.sdk.listener.InitCallback;
 import io.openim.android.sdk.listener.InitSDKListener;
 import io.openim.android.sdk.listener.OnBase;
+import io.openim.android.sdk.listener.UserStateChangedListener;
 import io.openim.android.sdk.manager.ConversationManager;
 import io.openim.android.sdk.manager.FriendshipManager;
 import io.openim.android.sdk.manager.GroupManager;
 import io.openim.android.sdk.manager.MessageManager;
 import io.openim.android.sdk.models.UserInfo;
 import io.openim.android.sdk.user.Credential;
+import io.openim.android.sdk.util.Predicates;
 
-public class OpenIMClient {
+public final class OpenIMClient {
+
+    @NonNull
+    private static final OpenIMClient INSTANCE;
+
     //    public ImManager imManager;
     public ConversationManager conversationManager;
     public FriendshipManager friendshipManager;
@@ -32,12 +45,26 @@ public class OpenIMClient {
 //        messageManager = new MessageManager();
     }
 
-    private static class Singleton {
-        private static final OpenIMClient INSTANCE = new OpenIMClient();
+    static {
+        INSTANCE = new OpenIMClient();
     }
 
+    @NonNull
     public static OpenIMClient getInstance() {
-        return Singleton.INSTANCE;
+        return INSTANCE;
+    }
+
+    /**
+     * Init sdk by config specified, must provide callback for init result.
+     *
+     * @param config   init configs
+     * @param callback init result callback
+     */
+    public void init(@NonNull OpenIMConfig config, @NonNull InitCallback callback) {
+        Predicates.requireNonNull(config);
+        Predicates.requireNonNull(callback);
+
+        clientImpl.init(config, callback);
     }
 
     /**
@@ -70,13 +97,27 @@ public class OpenIMClient {
      * @param uid   用户id
      * @param token 用户token
      * @param base  callback String
+     * @deprecated use {@link #login(Credential, OnBase)} instead
      */
     public void login(OnBase<String> base, String uid, String token) {
-        clientImpl.login(base, uid, token);
+        if (TextUtils.isEmpty(uid) || TextUtils.isEmpty(token)) {
+            if (Predicates.nonNull(base)) {
+                // FIXME: give correct error-code for empty uid or token
+                base.onError(-1, "Empty uid or token.");
+            }
+            return;
+        }
+        login(new Credential(uid, token), base);
     }
 
-    public void login(OnBase<String> base, Credential credential) {
-        clientImpl.login(base, credential);
+    /**
+     * Login via user-credential
+     *
+     * @param credential user credential
+     * @param callback   login callback
+     */
+    public void login(@NonNull Credential credential, OnBase<String> callback) {
+        clientImpl.login(credential, callback);
     }
 
     /**
@@ -99,6 +140,14 @@ public class OpenIMClient {
     public String getLoginUid() {
         return clientImpl.getLoginUid();
     }
+
+//    /**
+//     * Returns message service instance
+//     */
+//    @NonNull
+//    public MessageService getMessageService() {
+//        return clientImpl.messageManager;
+//    }
 
     /**
      * 根据uid 批量查询用户信息
@@ -131,6 +180,26 @@ public class OpenIMClient {
 
     public void forceReConn() {
         clientImpl.forceReConn();
+    }
+
+    public void registerConnListener(@NonNull ConnectListener listener) {
+        Predicates.requireNonNull(listener);
+
+        clientImpl.registerConnListener(listener);
+    }
+
+    public void unregisterConnListener(@Nullable ConnectListener listener) {
+        clientImpl.unregisterConnListener(listener);
+    }
+
+    public void registerUserChangedListener(@NonNull UserStateChangedListener listener) {
+        Predicates.requireNonNull(listener);
+
+        clientImpl.registerUserChangedListener(listener);
+    }
+
+    public void unregisterUserChangedListener(@Nullable UserStateChangedListener listener) {
+        clientImpl.unregisterUserChangedListener(listener);
     }
 }
 

@@ -18,12 +18,26 @@ public final class Predicates {
         return obj != null;
     }
 
+    /**
+     * Throws an {@link IllegalArgumentException} if the value is null. Otherwise returns the not null value.
+     */
     @NonNull
-    public static <T> T requireNonNull(T obj) {
-        if (obj == null) {
-            throw new NullPointerException();
+    public static <T> T requireNonNull(T value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Required value was null.");
         }
-        return obj;
+        return value;
+    }
+
+    /**
+     * Throws an {@link IllegalStateException} if the value is null. Otherwise returns the not null value.
+     */
+    @NonNull
+    public static <T> T checkNotNull(T value) {
+        if (value == null) {
+            throw new IllegalStateException("Required value was null.");
+        }
+        return value;
     }
 
     public static <T> T checkParamValue(String name, T value) {

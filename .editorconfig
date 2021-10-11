@@ -11,3 +11,7 @@ insert_final_newline = true
 [*.java]
 max_line_length = 160
 wildcard_import_limit = 99
+
+[*.kt]
+max_line_length = 160
+wildcard_import_limit = 99

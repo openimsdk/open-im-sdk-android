@@ -1,14 +1,23 @@
 package io.openim.android.sdk;
 
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.collection.ArrayMap;
 
 import java.util.List;
 import java.util.Map;
 
+import io.openim.android.sdk.internal.Releasable;
 import io.openim.android.sdk.internal.log.LogcatHelper;
+import io.openim.android.sdk.internal.schedule.Schedulers;
 import io.openim.android.sdk.listener.BaseImpl;
+import io.openim.android.sdk.listener.ConnectListener;
+import io.openim.android.sdk.listener.InitCallback;
 import io.openim.android.sdk.listener.InitSDKListener;
 import io.openim.android.sdk.listener.OnBase;
+import io.openim.android.sdk.listener.UserStateChangedListener;
 import io.openim.android.sdk.manager.ConversationManager;
 import io.openim.android.sdk.manager.FriendshipManager;
 import io.openim.android.sdk.manager.GroupManager;
@@ -16,28 +25,45 @@ import io.openim.android.sdk.manager.MessageManager;
 import io.openim.android.sdk.models.UserInfo;
 import io.openim.android.sdk.user.Credential;
 import io.openim.android.sdk.util.CollectionUtils;
-import io.openim.android.sdk.util.CommonUtil;
 import io.openim.android.sdk.util.JsonUtil;
 import io.openim.android.sdk.util.Predicates;
 import open_im_sdk.Open_im_sdk;
 
 /**
+ * Internal client impl
+ * <p/>
+ * Access from {@link OpenIMClient} only
+ * <p/>
  * Created by alvince on 2021/9/24
  *
  * @author alvince.zy@gmail.com
  */
-class OpenIMClientImpl {
+class OpenIMClientImpl implements Releasable {
+
     ConversationManager conversationManager;
     FriendshipManager friendshipManager;
     GroupManager groupManager;
     MessageManager messageManager;
 
+    private ListenerInfo mListenerInfo;
 
     OpenIMClientImpl() {
         conversationManager = new ConversationManager();
         friendshipManager = new FriendshipManager();
         groupManager = new GroupManager();
         messageManager = new MessageManager();
+    }
+
+    /**
+     * Release and un-init SDK
+     */
+    @Override
+    public void release() {
+        LogcatHelper.logDInDebug("Release and un-init sdk.");
+        Open_im_sdk.unInitSDK();
+        if (Predicates.nonNull(mListenerInfo)) {
+            mListenerInfo.release();
+        }
     }
 
     /**
@@ -52,7 +78,7 @@ class OpenIMClientImpl {
      * @param storageDir 数据存储目录路径
      * @param listener   SDK初始化监听
      */
-    public boolean initSDK(String apiUrl, String wsUrl, String storageDir, InitSDKListener listener) {
+    boolean initSDK(String apiUrl, String wsUrl, String storageDir, InitSDKListener listener) {
         // fastjson is unreliable, should instead with google/gson in android
         String paramsText = JsonUtil.toString(CollectionUtils.simpleMapOf("platform", 2, "ipApi", apiUrl, "ipWs", wsUrl, "dbDir", storageDir));
         LogcatHelper.logDInDebug(String.format("init config: %s", paramsText));
@@ -60,87 +86,102 @@ class OpenIMClientImpl {
             @Override
             public void onConnectFailed(long l, String s) {
                 if (null != listener) {
-                    CommonUtil.runMainThread(() -> listener.onConnectFailed(l, s));
+                    Schedulers.runOnMainThread(() -> listener.onConnectFailed(l, s));
                 }
             }
 
             @Override
             public void onConnectSuccess() {
                 if (null != listener) {
-                    CommonUtil.runMainThread(listener::onConnectSuccess);
+                    Schedulers.runOnMainThread(listener::onConnectSuccess);
                 }
             }
 
             @Override
             public void onConnecting() {
                 if (null != listener) {
-                    CommonUtil.runMainThread(listener::onConnecting);
+                    Schedulers.runOnMainThread(listener::onConnecting);
                 }
             }
 
             @Override
             public void onKickedOffline() {
                 if (null != listener) {
-                    CommonUtil.runMainThread(listener::onKickedOffline);
+                    Schedulers.runOnMainThread(listener::onKickedOffline);
                 }
             }
 
             @Override
             public void onSelfInfoUpdated(String s) {
                 if (null != listener) {
-                    CommonUtil.runMainThread(() -> listener.onSelfInfoUpdated(JsonUtil.toObj(s, UserInfo.class)));
+                    Schedulers.runOnMainThread(() -> listener.onSelfInfoUpdated(JsonUtil.toObj(s, UserInfo.class)));
                 }
             }
 
             @Override
             public void onUserTokenExpired() {
                 if (null != listener) {
-                    CommonUtil.runMainThread(listener::onUserTokenExpired);
+                    Schedulers.runOnMainThread(listener::onUserTokenExpired);
                 }
             }
         });
     }
 
-    /**
-     * 反初始化sdk
-     */
-    public void unInitSDK() {
-//        Open_im_sdk.unInitSDK();
+    void init(@NonNull OpenIMConfig config, @NonNull InitCallback callback) {
+        String conf = Predicates.requireNonNull(config).toJson();
+        if (TextUtils.isEmpty(conf)) {
+            RuntimeException err = new IllegalArgumentException("Invalid config json: empty.");
+            Predicates.requireNonNull(callback).onFailed(err);
+            return;
+        }
+        if (Open_im_sdk.initSDK(conf, createCoreListener())) {
+            Predicates.requireNonNull(callback).onSucceed();
+            return;
+        }
+        Predicates.requireNonNull(callback).onFailed(new IllegalStateException("Unknown error while init sdk."));
     }
 
-    /**
-     * 登录
-     *
-     * @param uid   用户id
-     * @param token 用户token
-     * @param base  callback String
-     */
-    public void login(OnBase<String> base, String uid, String token) {
-        Open_im_sdk.login(Predicates.checkParamValue("uid", uid), Predicates.checkParamValue("token", token), BaseImpl.stringBase(base));
+    void login(@NonNull Credential credential, @Nullable OnBase<String> callback) {
+        Predicates.requireNonNull(credential);
+
+        String uid = credential.getUid();
+        String token = credential.getToken();
+        if (TextUtils.isEmpty(uid) || TextUtils.isEmpty(token)) {
+            if (Predicates.nonNull(callback)) {
+                // FIXME: give correct error-code for invalid credential
+                callback.onError(-1, "Empty uid or token.");
+            }
+            return;
+        }
+        Open_im_sdk.login(uid, token, BaseImpl.stringBase(callback));
     }
 
-    public void login(OnBase<String> base, Credential credential) {
-        Open_im_sdk.login(Predicates.checkParamValue("uid", Predicates.requireNonNull(credential).getUid()), Predicates.checkParamValue("token", Predicates.requireNonNull(credential).getToken()), BaseImpl.stringBase(base));
+    void login(OnBase<String> base, Credential credential) {
+        Open_im_sdk.login(
+            Predicates.checkParamValue("uid", Predicates.requireNonNull(credential).getUid()),
+            Predicates.checkParamValue("token", Predicates.requireNonNull(credential).getToken()),
+            BaseImpl.stringBase(base)
+        );
     }
 
     /**
      * 登出
      */
-    public void logout(OnBase<String> base) {
+    void logout(OnBase<String> base) {
         Open_im_sdk.logout(BaseImpl.stringBase(base));
     }
 
     /**
      * 查询登录状态
      */
-    public long getLoginStatus() {
+    long getLoginStatus() {
         return Open_im_sdk.getLoginStatus();
     }
 
     /**
      * 当前登录uid
      */
-    public String getLoginUid() {
+    String getLoginUid() {
         return Open_im_sdk.getLoginUid();
     }
 
@@ -150,7 +191,7 @@ class OpenIMClientImpl {
      * @param uidList 用户id列表
      * @param base    callback List<{@link UserInfo}>
      */
-    public void getUsersInfo(OnBase<List<UserInfo>> base, List<String> uidList) {
+    void getUsersInfo(OnBase<List<UserInfo>> base, List<String> uidList) {
         Open_im_sdk.getUsersInfo(JsonUtil.toString(uidList), BaseImpl.arrayBase(base, UserInfo.class));
     }
 
@@ -165,7 +206,7 @@ class OpenIMClientImpl {
      * @param email  邮箱
      * @param base   callback String
      */
-    public void setSelfInfo(OnBase<String> base, String name, String icon, int gender, String mobile, String birth, String email) {
+    void setSelfInfo(OnBase<String> base, String name, String icon, int gender, String mobile, String birth, String email) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("name", name);
         map.put("icon", icon);
@@ -176,11 +217,129 @@ class OpenIMClientImpl {
         Open_im_sdk.setSelfInfo(JsonUtil.toString(map), BaseImpl.stringBase(base));
     }
 
-    public void forceSyncLoginUerInfo() {
+    void forceSyncLoginUerInfo() {
         Open_im_sdk.forceSyncLoginUerInfo();
     }
 
-    public void forceReConn() {
+    void forceReConn() {
         Open_im_sdk.forceReConn();
+    }
+
+    void registerConnListener(@NonNull ConnectListener listener) {
+        Predicates.requireNonNull(listener);
+
+        @NonNull ListenerInfo listenerInfo = getListenerInfo();
+        if (listenerInfo.connListener == listener) {
+            return;
+        }
+        listenerInfo.connListener = listener;
+    }
+
+    void unregisterConnListener(@Nullable ConnectListener listener) {
+        if (Predicates.isNull(listener)) {
+            return;
+        }
+        @NonNull ListenerInfo listenerInfo = getListenerInfo();
+        if (listenerInfo.connListener == listener) {
+            listenerInfo.connListener = null;
+        }
+    }
+
+    void registerUserChangedListener(@NonNull UserStateChangedListener listener) {
+        Predicates.requireNonNull(listener);
+
+        @NonNull ListenerInfo listenerInfo = getListenerInfo();
+        if (listenerInfo.userStateListener == listener) {
+            return;
+        }
+        listenerInfo.userStateListener = listener;
+    }
+
+    void unregisterUserChangedListener(@Nullable UserStateChangedListener listener) {
+        if (Predicates.isNull(listener)) {
+            return;
+        }
+        @NonNull ListenerInfo listenerInfo = getListenerInfo();
+        if (listenerInfo.userStateListener == listener) {
+            listenerInfo.userStateListener = null;
+        }
+    }
+
+    @NonNull
+    synchronized ListenerInfo getListenerInfo() {
+        if (mListenerInfo != null) {
+            return mListenerInfo;
+        }
+        mListenerInfo = new ListenerInfo();
+        return mListenerInfo;
+    }
+
+    private open_im_sdk.IMSDKListener createCoreListener() {
+        return new open_im_sdk.IMSDKListener() {
+            @Override
+            public void onConnectFailed(long code, String s) {
+                final ConnectListener l = getListenerInfo().connListener;
+                if (Predicates.nonNull(l)) {
+                    Schedulers.runOnMainThread(() -> l.onConnectFailed(code, s));
+                }
+            }
+
+            @Override
+            public void onConnectSuccess() {
+                final ConnectListener l = getListenerInfo().connListener;
+                if (Predicates.nonNull(l)) {
+                    Schedulers.runOnMainThread(l::onConnectSuccess);
+                }
+            }
+
+            @Override
+            public void onConnecting() {
+                final ConnectListener l = getListenerInfo().connListener;
+                if (Predicates.nonNull(l)) {
+                    Schedulers.runOnMainThread(l::onConnecting);
+                }
+            }
+
+            @Override
+            public void onKickedOffline() {
+                final ConnectListener l = getListenerInfo().connListener;
+                if (Predicates.nonNull(l)) {
+                    Schedulers.runOnMainThread(l::onKickedOffline);
+                }
+            }
+
+            @Override
+            public void onSelfInfoUpdated(String s) {
+                final UserStateChangedListener l = getListenerInfo().userStateListener;
+                if (Predicates.nonNull(l)) {
+                    Schedulers.runOnMainThread(() -> l.onSelfProfileUpdated(JsonUtil.toObj(s, UserInfo.class)));
+                }
+            }
+
+            @Override
+            public void onUserTokenExpired() {
+                final UserStateChangedListener l = getListenerInfo().userStateListener;
+                if (Predicates.nonNull(l)) {
+                    Schedulers.runOnMainThread(l::onUserTokenExpired);
+                }
+            }
+        };
+    }
+
+    static final class ListenerInfo implements Releasable {
+        ListenerInfo() {
+        }
+
+        @Nullable
+        ConnectListener connListener;
+
+        @Nullable
+        UserStateChangedListener userStateListener;
+
+        @Override
+        public void release() {
+            connListener = null;
+            userStateListener = null;
+        }
     }
 }
