@@ -88,7 +88,7 @@ public class MessageManager {
         }
         if (listeners.isEmpty()) {
             initialized = false;
-            Open_im_sdk.removeAdvancedMsgListener(sdkListener);
+//            Open_im_sdk.removeAdvancedMsgListener(sdkListener);
         }
     }
 
@@ -319,6 +319,18 @@ public class MessageManager {
      */
     public Message createFileMessage(String filePath, String fileName) {
         return parse(Open_im_sdk.createFileMessage(filePath, fileName));
+    }
+
+    /**
+     * 创建文件消息
+     * initSDK时传入了数据缓存路径，如路径：A，这时需要你将声音文件复制到A路径下后，如 A/file/a.txt路径，soundPath的值：“/file/.txt”
+     *
+     * @param filePath 绝对路径
+     * @param fileName 文件名
+     * @return {@link Message}
+     */
+    public Message createFileMessageFromFullPath(String filePath, String fileName) {
+        return parse(Open_im_sdk.createFileMessageFromFullPath(filePath, fileName));
     }
 
     /**

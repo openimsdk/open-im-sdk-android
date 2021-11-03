@@ -268,19 +268,19 @@ public class GroupManager {
 
     }
 
-    public void forceSyncApplyGroupRequest() {
-        Open_im_sdk.forceSyncApplyGroupRequest();
-    }
-
-    public void forceSyncGroupRequest() {
-        Open_im_sdk.forceSyncGroupRequest();
-    }
-
-    public void forceSyncJoinedGroup() {
-        Open_im_sdk.forceSyncJoinedGroup();
-    }
-
-    public void forceSyncJoinedGroupMember() {
-        Open_im_sdk.forceSyncJoinedGroupMember();
-    }
+//    public void forceSyncApplyGroupRequest() {
+//        Open_im_sdk.forceSyncApplyGroupRequest();
+//    }
+//
+//    public void forceSyncGroupRequest() {
+//        Open_im_sdk.forceSyncGroupRequest();
+//    }
+//
+//    public void forceSyncJoinedGroup() {
+//        Open_im_sdk.forceSyncJoinedGroup();
+//    }
+//
+//    public void forceSyncJoinedGroupMember() {
+//        Open_im_sdk.forceSyncJoinedGroupMember();
+//    }
 }

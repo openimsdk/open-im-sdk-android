@@ -93,12 +93,12 @@ public class OpenIMClient {
         return clientImpl.getLoginStatus();
     }
 
-    /**
-     * 当前登录uid
-     */
-    public String getLoginUid() {
-        return clientImpl.getLoginUid();
-    }
+//    /**
+//     * 当前登录uid
+//     */
+//    public String getLoginUid() {
+//        return clientImpl.getLoginUid();
+//    }
 
     /**
      * 根据uid 批量查询用户信息
@@ -129,8 +129,8 @@ public class OpenIMClient {
         clientImpl.forceSyncLoginUerInfo();
     }
 
-    public void forceReConn() {
-        clientImpl.forceReConn();
-    }
+//    public void forceReConn() {
+//        clientImpl.forceReConn();
+//    }
 }
 

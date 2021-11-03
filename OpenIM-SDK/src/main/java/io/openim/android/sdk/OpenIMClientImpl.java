@@ -137,12 +137,12 @@ class OpenIMClientImpl {
         return Open_im_sdk.getLoginStatus();
     }
 
-    /**
-     * 当前登录uid
-     */
-    public String getLoginUid() {
-        return Open_im_sdk.getLoginUid();
-    }
+//    /**
+//     * 当前登录uid
+//     */
+//    public String getLoginUid() {
+//        return Open_im_sdk.getLoginUid();
+//    }
 
     /**
      * 根据uid 批量查询用户信息
@@ -180,7 +180,7 @@ class OpenIMClientImpl {
         Open_im_sdk.forceSyncLoginUerInfo();
     }
 
-    public void forceReConn() {
-        Open_im_sdk.forceReConn();
-    }
+//    public void forceReConn() {
+//        Open_im_sdk.forceReConn();
+//    }
 }

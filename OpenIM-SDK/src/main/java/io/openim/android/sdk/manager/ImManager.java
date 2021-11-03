@@ -133,12 +133,12 @@ public class ImManager {
         return Open_im_sdk.getLoginStatus();
     }
 
-    /**
-     * 获取登录用户uid
-     */
-    public String getLoginUid() {
-        return Open_im_sdk.getLoginUid();
-    }
+//    /**
+//     * 获取登录用户uid
+//     */
+//    public String getLoginUid() {
+//        return Open_im_sdk.getLoginUid();
+//    }
 
     /**
      * 根据uid批量查询用户信息
@@ -178,7 +178,7 @@ public class ImManager {
         Open_im_sdk.forceSyncLoginUerInfo();
     }
 
-    public void forceReConn() {
-        Open_im_sdk.forceReConn();
-    }
+//    public void forceReConn() {
+//        Open_im_sdk.forceReConn();
+//    }
 }

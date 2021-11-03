@@ -236,15 +236,15 @@ public class FriendshipManager {
         Open_im_sdk.addToBlackList(BaseImpl.stringBase(base), JsonUtil.toString(uid));
     }
 
-    public void forceSyncFriend() {
-        Open_im_sdk.forceSyncFriend();
-    }
-
-    public void forceSyncBlackList() {
-        Open_im_sdk.forceSyncBlackList();
-    }
-
-    public void forceSyncFriendApplication() {
-        Open_im_sdk.forceSyncFriendApplication();
-    }
+//    public void forceSyncFriend() {
+//        Open_im_sdk.forceSyncFriend();
+//    }
+//
+//    public void forceSyncBlackList() {
+//        Open_im_sdk.forceSyncBlackList();
+//    }
+//
+//    public void forceSyncFriendApplication() {
+//        Open_im_sdk.forceSyncFriendApplication();
+//    }
 }
