@@ -3,7 +3,6 @@ package io.openim.android.sdk.manager;
 
 import androidx.collection.ArrayMap;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +10,8 @@ import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnFriendshipListener;
 import io.openim.android.sdk.models.UserInfo;
-import io.openim.android.sdk.util.CommonUtil;
-import io.openim.android.sdk.util.JsonUtil;
+import io.openim.android.sdk.utils.CommonUtil;
+import io.openim.android.sdk.utils.JsonUtil;
 import open_im_sdk.Open_im_sdk;
 
 /**

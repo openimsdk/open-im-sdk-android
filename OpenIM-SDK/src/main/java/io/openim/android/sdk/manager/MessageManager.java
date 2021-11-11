@@ -15,8 +15,8 @@ import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnMsgSendCallback;
 import io.openim.android.sdk.models.HaveReadInfo;
 import io.openim.android.sdk.models.Message;
-import io.openim.android.sdk.util.CommonUtil;
-import io.openim.android.sdk.util.JsonUtil;
+import io.openim.android.sdk.utils.CommonUtil;
+import io.openim.android.sdk.utils.JsonUtil;
 import open_im_sdk.Open_im_sdk;
 import open_im_sdk.SendMsgCallBack;
 

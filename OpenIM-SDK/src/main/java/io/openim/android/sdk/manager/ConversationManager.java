@@ -6,8 +6,8 @@ import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnConversationListener;
 import io.openim.android.sdk.models.ConversationInfo;
-import io.openim.android.sdk.util.CommonUtil;
-import io.openim.android.sdk.util.JsonUtil;
+import io.openim.android.sdk.utils.CommonUtil;
+import io.openim.android.sdk.utils.JsonUtil;
 import open_im_sdk.Open_im_sdk;
 
 

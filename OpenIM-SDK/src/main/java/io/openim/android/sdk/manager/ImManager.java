@@ -9,8 +9,8 @@ import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.InitSDKListener;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.models.UserInfo;
-import io.openim.android.sdk.util.CommonUtil;
-import io.openim.android.sdk.util.JsonUtil;
+import io.openim.android.sdk.utils.CommonUtil;
+import io.openim.android.sdk.utils.JsonUtil;
 import open_im_sdk.Open_im_sdk;
 
 public class ImManager {
@@ -172,6 +172,10 @@ public class ImManager {
         map.put("birth", birth);
         map.put("email", email);
         Open_im_sdk.setSelfInfo(JsonUtil.toString(map), BaseImpl.stringBase(base));
+    }
+
+    public void enabledSDKLog(boolean enabled) {
+        Open_im_sdk.setSdkLog(enabled ? 0 : 1);
     }
 
     public void forceSyncLoginUerInfo() {

@@ -20,7 +20,7 @@ import io.openim.android.sdk.models.GroupMembersInfo;
 import io.openim.android.sdk.models.HaveReadInfo;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.UserInfo;
-import io.openim.android.sdk.util.JsonUtil;
+import io.openim.android.sdk.utils.JsonUtil;
 
 public class MainActivity extends AppCompatActivity implements InitSDKListener, OnAdvanceMsgListener, OnConversationListener, OnFriendshipListener,
     OnGroupListener {

@@ -1,7 +1,12 @@
 package io.openim.android.sdk;
 
-import java.util.List;
+import androidx.collection.ArrayMap;
 
+import java.util.List;
+import java.util.Map;
+
+import io.openim.android.sdk.internal.log.LogcatHelper;
+import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.InitSDKListener;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.manager.ConversationManager;
@@ -9,7 +14,10 @@ import io.openim.android.sdk.manager.FriendshipManager;
 import io.openim.android.sdk.manager.GroupManager;
 import io.openim.android.sdk.manager.MessageManager;
 import io.openim.android.sdk.models.UserInfo;
-import io.openim.android.sdk.user.Credential;
+import io.openim.android.sdk.utils.CollectionUtils;
+import io.openim.android.sdk.utils.CommonUtil;
+import io.openim.android.sdk.utils.JsonUtil;
+import open_im_sdk.Open_im_sdk;
 
 public class OpenIMClient {
     //    public ImManager imManager;
@@ -17,19 +25,13 @@ public class OpenIMClient {
     public FriendshipManager friendshipManager;
     public GroupManager groupManager;
     public MessageManager messageManager;
-    private final OpenIMClientImpl clientImpl;
 
     private OpenIMClient() {
-        clientImpl = new OpenIMClientImpl();
-        conversationManager = clientImpl.conversationManager;
-        friendshipManager = clientImpl.friendshipManager;
-        groupManager = clientImpl.groupManager;
-        messageManager = clientImpl.messageManager;
 //        imManager = new ImManager();
-//        conversationManager = new ConversationManager();
-//        friendshipManager = new FriendshipManager();
-//        groupManager = new GroupManager();
-//        messageManager = new MessageManager();
+        conversationManager = new ConversationManager();
+        friendshipManager = new FriendshipManager();
+        groupManager = new GroupManager();
+        messageManager = new MessageManager();
     }
 
     private static class Singleton {
@@ -54,7 +56,54 @@ public class OpenIMClient {
      * @return boolean   true成功; false失败
      */
     public boolean initSDK(String apiUrl, String wsUrl, String storageDir, InitSDKListener listener) {
-        return clientImpl.initSDK(apiUrl, wsUrl, storageDir, listener);
+        // fastjson is unreliable, should instead with google/gson in android
+        String paramsText = JsonUtil.toString(CollectionUtils.simpleMapOf("platform", 2, "ipApi", apiUrl, "ipWs", wsUrl, "dbDir", storageDir));
+        LogcatHelper.logDInDebug(String.format("init config: %s", paramsText));
+        boolean initialized = Open_im_sdk.initSDK(paramsText, new open_im_sdk.IMSDKListener() {
+            @Override
+            public void onConnectFailed(long l, String s) {
+                if (null != listener) {
+                    CommonUtil.runMainThread(() -> listener.onConnectFailed(l, s));
+                }
+            }
+
+            @Override
+            public void onConnectSuccess() {
+                if (null != listener) {
+                    CommonUtil.runMainThread(listener::onConnectSuccess);
+                }
+            }
+
+            @Override
+            public void onConnecting() {
+                if (null != listener) {
+                    CommonUtil.runMainThread(listener::onConnecting);
+                }
+            }
+
+            @Override
+            public void onKickedOffline() {
+                if (null != listener) {
+                    CommonUtil.runMainThread(listener::onKickedOffline);
+                }
+            }
+
+            @Override
+            public void onSelfInfoUpdated(String s) {
+                if (null != listener) {
+                    CommonUtil.runMainThread(() -> listener.onSelfInfoUpdated(JsonUtil.toObj(s, UserInfo.class)));
+                }
+            }
+
+            @Override
+            public void onUserTokenExpired() {
+                if (null != listener) {
+                    CommonUtil.runMainThread(listener::onUserTokenExpired);
+                }
+            }
+        });
+        LogcatHelper.logDInDebug(String.format("Initialization successful: %s", initialized));
+        return initialized;
     }
 
 //    /**
@@ -72,32 +121,29 @@ public class OpenIMClient {
      * @param base  callback String
      */
     public void login(OnBase<String> base, String uid, String token) {
-        clientImpl.login(base, uid, token);
+        Open_im_sdk.login(uid, token, BaseImpl.stringBase(base));
     }
 
-    public void login(OnBase<String> base, Credential credential) {
-        clientImpl.login(base, credential);
-    }
 
     /**
      * 登出
      */
     public void logout(OnBase<String> base) {
-        clientImpl.logout(base);
+        Open_im_sdk.logout(BaseImpl.stringBase(base));
     }
 
     /**
      * 查询登录状态
      */
     public long getLoginStatus() {
-        return clientImpl.getLoginStatus();
+        return Open_im_sdk.getLoginStatus();
     }
 
 //    /**
 //     * 当前登录uid
 //     */
 //    public String getLoginUid() {
-//        return clientImpl.getLoginUid();
+//        return Open_im_sdk.getLoginUid();
 //    }
 
     /**
@@ -107,7 +153,7 @@ public class OpenIMClient {
      * @param base    callback List<{@link UserInfo}>
      */
     public void getUsersInfo(OnBase<List<UserInfo>> base, List<String> uidList) {
-        clientImpl.getUsersInfo(base, uidList);
+        Open_im_sdk.getUsersInfo(JsonUtil.toString(uidList), BaseImpl.arrayBase(base, UserInfo.class));
     }
 
     /**
@@ -122,11 +168,18 @@ public class OpenIMClient {
      * @param base   callback String
      */
     public void setSelfInfo(OnBase<String> base, String name, String icon, int gender, String mobile, String birth, String email) {
-        clientImpl.setSelfInfo(base, name, icon, gender, mobile, birth, email);
+        Map<String, Object> map = new ArrayMap<>();
+        map.put("name", name);
+        map.put("icon", icon);
+        map.put("gender", gender);
+        map.put("mobile", mobile);
+        map.put("birth", birth);
+        map.put("email", email);
+        Open_im_sdk.setSelfInfo(JsonUtil.toString(map), BaseImpl.stringBase(base));
     }
 
     public void forceSyncLoginUerInfo() {
-        clientImpl.forceSyncLoginUerInfo();
+        Open_im_sdk.forceSyncLoginUerInfo();
     }
 
 //    public void forceReConn() {

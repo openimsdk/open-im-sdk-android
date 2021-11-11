@@ -1,4 +1,4 @@
-package io.openim.android.sdk.util;
+package io.openim.android.sdk.utils;
 
 import com.alibaba.fastjson.JSONObject;
 
