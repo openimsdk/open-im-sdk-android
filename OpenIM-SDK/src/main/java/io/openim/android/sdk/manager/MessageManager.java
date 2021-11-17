@@ -404,6 +404,24 @@ public class MessageManager {
         Open_im_sdk.forceSyncMsg();
     }
 
+    /**
+     * 聊天设置里清除聊天记录
+     *
+     * @param uid 用户id
+     */
+    public void clearC2CHistoryMessage(OnBase<String> base, String uid) {
+        Open_im_sdk.clearC2CHistoryMessage(BaseImpl.stringBase(base), uid);
+    }
+
+    /**
+     * 聊天设置里清除聊天记录
+     *
+     * @param gid 群id
+     */
+    public void clearGroupHistoryMessage(OnBase<String> base, String gid) {
+        Open_im_sdk.clearGroupHistoryMessage(BaseImpl.stringBase(base), gid);
+    }
+
     static Message parse(String msg) {
         return JsonUtil.toObj(msg, Message.class);
     }
