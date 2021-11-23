@@ -17,6 +17,7 @@ import io.openim.android.sdk.models.UserInfo;
 import io.openim.android.sdk.utils.CollectionUtils;
 import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
+import io.openim.android.sdk.utils.Predicates;
 import open_im_sdk.Open_im_sdk;
 
 public class OpenIMClient {
@@ -167,8 +168,9 @@ public class OpenIMClient {
      * @param email  邮箱
      * @param base   callback String
      */
-    public void setSelfInfo(OnBase<String> base, String name, String icon, int gender, String mobile, String birth, String email) {
+    public void setSelfInfo(OnBase<String> base, String uid, String name, String icon, int gender, String mobile, String birth, String email) {
         Map<String, Object> map = new ArrayMap<>();
+        map.put("uid", Predicates.requireNonNull(uid));
         map.put("name", name);
         map.put("icon", icon);
         map.put("gender", gender);

@@ -17,6 +17,7 @@ import io.openim.android.sdk.models.GroupMemberRole;
 import io.openim.android.sdk.models.GroupMembersInfo;
 import io.openim.android.sdk.models.GroupMembersList;
 import io.openim.android.sdk.utils.JsonUtil;
+import io.openim.android.sdk.utils.Predicates;
 import open_im_sdk.Open_im_sdk;
 
 /**
@@ -184,7 +185,7 @@ public class GroupManager {
      */
     public void setGroupInfo(OnBase<String> base, String groupID, String groupName, String notification, String introduction, String faceUrl) {
         Map<String, Object> map = new ArrayMap<>();
-        map.put("groupID", groupID);
+        map.put("groupID", Predicates.requireNonNull(groupID));
         map.put("groupName", groupName);
         map.put("notification", notification);
         map.put("introduction", introduction);
