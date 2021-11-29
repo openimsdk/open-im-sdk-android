@@ -4,7 +4,6 @@ package io.openim.android.sdk.manager;
 import androidx.collection.ArrayMap;
 
 import java.lang.ref.WeakReference;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -68,28 +67,50 @@ public class MessageManager {
      * 新增消息：onRecvNewMessage，向界面添加消息
      */
     public void addAdvancedMsgListener(OnAdvanceMsgListener listener) {
-        listeners.add(new WeakReference<>(listener));
-        if (!initialized) {
-            initialized = true;
-            Open_im_sdk.addAdvancedMsgListener(sdkListener);
-        }
+//        listeners.add(new WeakReference<>(listener));
+//        if (!initialized) {
+//            initialized = true;
+//            Open_im_sdk.addAdvancedMsgListener(sdkListener);
+//        }
+        Open_im_sdk.addAdvancedMsgListener(new open_im_sdk.OnAdvancedMsgListener() {
+            @Override
+            public void onRecvC2CReadReceipt(String s) {
+                if (listener != null) {
+                    List<HaveReadInfo> list = JsonUtil.toArray(s, HaveReadInfo.class);
+                    listener.onRecvC2CReadReceipt(list);
+                }
+            }
+
+            @Override
+            public void onRecvMessageRevoked(String s) {
+                if (listener != null) {
+                    listener.onRecvMessageRevoked(s);
+                }
+            }
+
+            @Override
+            public void onRecvNewMessage(String s) {
+                Message msg = JsonUtil.toObj(s, Message.class);
+                listener.onRecvNewMessage(msg);
+            }
+        });
     }
 
     /**
      * 移除消息监听
      */
     public void removeAdvancedMsgListener(OnAdvanceMsgListener listener) {
-        final Iterator<WeakReference<OnAdvanceMsgListener>> it = listeners.iterator();
-        while (it.hasNext()) {
-            if (it.next().get() == listener) {
-                it.remove();
-                break;
-            }
-        }
-        if (listeners.isEmpty()) {
-            initialized = false;
+//        final Iterator<WeakReference<OnAdvanceMsgListener>> it = listeners.iterator();
+//        while (it.hasNext()) {
+//            if (it.next().get() == listener) {
+//                it.remove();
+//                break;
+//            }
+//        }
+//        if (listeners.isEmpty()) {
+//            initialized = false;
 //            Open_im_sdk.removeAdvancedMsgListener(sdkListener);
-        }
+//        }
     }
 
     /**
