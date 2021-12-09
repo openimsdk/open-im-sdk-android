@@ -6,6 +6,7 @@ import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnConversationListener;
 import io.openim.android.sdk.models.ConversationInfo;
+import io.openim.android.sdk.models.NotDisturbInfo;
 import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
 import open_im_sdk.Open_im_sdk;
@@ -116,6 +117,24 @@ public class ConversationManager {
      */
     public void getConversationID(String sourceId, long sessionType) {
         Open_im_sdk.getConversationIDBySessionType(sourceId, sessionType);
+    }
+
+    /**
+     * 设置会话免打扰状态
+     *
+     * @param status 1:屏蔽消息; 2:接收消息但不提示; 3:正常
+     */
+    public void setConversationRecvMessageOpt(OnBase<String> base, List<String> conversationIDs, long status) {
+        Open_im_sdk.setConversationRecvMessageOpt(BaseImpl.stringBase(base), JsonUtil.toString(conversationIDs), status);
+    }
+
+    /**
+     * 获取会话免打扰状态
+     * 1: Do not receive messages, 2: Do not notify when messages are received; 0: Normal
+     * [{"conversationId":"single_13922222222","result":0}]
+     */
+    public void getConversationRecvMessageOpt(OnBase<List<NotDisturbInfo>> base, List<String> conversationIDs) {
+        Open_im_sdk.getConversationRecvMessageOpt(BaseImpl.arrayBase(base, NotDisturbInfo.class), JsonUtil.toString(conversationIDs));
     }
 
     /**

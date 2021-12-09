@@ -14,6 +14,7 @@ import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnConversationListener;
 import io.openim.android.sdk.listener.OnFriendshipListener;
 import io.openim.android.sdk.listener.OnGroupListener;
+import io.openim.android.sdk.listener.OnMsgSendCallback;
 import io.openim.android.sdk.models.ConversationInfo;
 import io.openim.android.sdk.models.GroupInfo;
 import io.openim.android.sdk.models.GroupMembersInfo;
@@ -26,9 +27,9 @@ public class MainActivity extends AppCompatActivity implements InitSDKListener, 
     OnGroupListener {
 
     /// api地址
-    final static String IP_API = "http://1.14.194.38:10000";
+    final static String IP_API = "http://121.37.25.71:10000";
     /// websocket地址
-    final static String IP_WS = "ws://1.14.194.38:17778";
+    final static String IP_WS = "ws://121.37.25.71:17778";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements InitSDKListener, 
                 System.out.println("登录成功!");
 
             }
-        }, "13918588195", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiIxMzkxODU4ODE5NSIsIlBsYXRmb3JtIjoiQW5kcm9pZCIsImV4cCI6MTYzNDM3ODE3MSwiaWF0IjoxNjMzNzczMzcxLCJuYmYiOjE2MzM3NzMzNzF9.d6vAIBlbOF2r7Ouz2Opl6GvroDpHkGCp-QNxm5cKiFU");
+        }, "13918588195", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiIxMzkxODU4ODE5NSIsIlBsYXRmb3JtIjoiQW5kcm9pZCIsImV4cCI6MTYzNzU1MDk1OSwibmJmIjoxNjM2OTQ2MTU5LCJpYXQiOjE2MzY5NDYxNTl9.vztWBG0bT3FaA1yKSUuc8WURTOafousbIU8Ixv3eWNo");
     }
 
     public void onGetMessageHistory(View view) {
@@ -245,5 +246,25 @@ public class MainActivity extends AppCompatActivity implements InitSDKListener, 
                 System.out.println("消息数：" + data.size());
             }
         }, "0b55c23c7fac2b34", "", null, 20);
+    }
+
+    public void onSendMsgTest(View view) {
+        Message message = OpenIMClient.getInstance().messageManager.createTextMessage("哟，这是测试消息");
+        OpenIMClient.getInstance().messageManager.sendMessage(new OnMsgSendCallback() {
+            @Override
+            public void onError(long code, String error) {
+                System.out.println("========onError==========="+ error);
+            }
+
+            @Override
+            public void onProgress(long progress) {
+                System.out.println("========progress==========="+ progress);
+            }
+
+            @Override
+            public void onSuccess(String s) {
+                System.out.println("========onSuccess==========="+ s);
+            }
+        }, message, "17396220460", null, false);
     }
 }
