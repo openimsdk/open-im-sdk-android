@@ -148,7 +148,7 @@ public class ConversationManager {
     }
 
     /**
-     * 会话排序
+     * 会话排序比较器
      */
     public Comparator<ConversationInfo> simpleComparator() {
         return (a, b) -> {
@@ -175,6 +175,10 @@ public class ConversationManager {
      */
     public void setOnConversationListener(OnConversationListener listener) {
         Open_im_sdk.setConversationListener(new open_im_sdk.OnConversationListener() {
+
+            /**
+             * 返回当前发生改变的会话列表
+             **/
             @Override
             public void onConversationChanged(String s) {
                 if (null != listener) {
@@ -183,6 +187,9 @@ public class ConversationManager {
                 }
             }
 
+            /**
+             * 返回当前新增的会话列表
+             **/
             @Override
             public void onNewConversation(String s) {
                 if (null != listener) {
