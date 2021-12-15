@@ -1,5 +1,6 @@
 package io.openim.android.sdk.manager;
 
+import java.util.Comparator;
 import java.util.List;
 
 import io.openim.android.sdk.listener.BaseImpl;
@@ -109,6 +110,15 @@ public class ConversationManager {
     }
 
     /**
+     * 获取会话记录
+     *
+     * @param base callback List<{@link ConversationInfo}>
+     */
+    public void getConversationListSplit(OnBase<List<ConversationInfo>> base, long offset, long count) {
+        Open_im_sdk.getConversationListSplit(BaseImpl.arrayBase(base, ConversationInfo.class), offset, count);
+    }
+
+    /**
      * 获取会话id；
      * 在从群列表进入聊天窗口后退群，这时候需要根据此方法获取会话id删除会话。
      *
@@ -135,6 +145,24 @@ public class ConversationManager {
      */
     public void getConversationRecvMessageOpt(OnBase<List<NotDisturbInfo>> base, List<String> conversationIDs) {
         Open_im_sdk.getConversationRecvMessageOpt(BaseImpl.arrayBase(base, NotDisturbInfo.class), JsonUtil.toString(conversationIDs));
+    }
+
+    /**
+     * 会话排序
+     */
+    public Comparator<ConversationInfo> simpleComparator() {
+        return (a, b) -> {
+            if ((a.getIsPinned() == 1 && b.getIsPinned() == 1) ||
+                (a.getIsPinned() != 1 && b.getIsPinned() != 1)) {
+                long aCompare = Math.max(a.getDraftTimestamp(), a.getLatestMsgSendTime());
+                long bCompare = Math.max(b.getDraftTimestamp(), b.getLatestMsgSendTime());
+                return Long.compare(bCompare, aCompare);
+            } else if (a.getIsPinned() == 1 && b.getIsPinned() != 1) {
+                return -1;
+            } else {
+                return 1;
+            }
+        };
     }
 
     /**
