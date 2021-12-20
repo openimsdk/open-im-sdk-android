@@ -18,6 +18,7 @@ public class ImManager {
     public FriendshipManager friendshipManager;
     public GroupManager groupManager;
     public MessageManager messageManager;
+    private String uid;
 
     public ImManager() {
         conversationManager = new ConversationManager();
@@ -112,7 +113,7 @@ public class ImManager {
      * @param base  callback String
      */
     public void login(OnBase<String> base, String uid, String token) {
-        Open_im_sdk.login(uid, token, BaseImpl.stringBase(base));
+        Open_im_sdk.login(this.uid = uid, token, BaseImpl.stringBase(base));
     }
 
     /**
@@ -133,12 +134,12 @@ public class ImManager {
         return Open_im_sdk.getLoginStatus();
     }
 
-//    /**
-//     * 获取登录用户uid
-//     */
-//    public String getLoginUid() {
-//        return Open_im_sdk.getLoginUid();
-//    }
+    /**
+     * 获取登录用户uid
+     */
+    public String getLoginUid() {
+        return uid;
+    }
 
     /**
      * 根据uid批量查询用户信息

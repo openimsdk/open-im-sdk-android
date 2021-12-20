@@ -132,7 +132,7 @@ public class ConversationManager {
     /**
      * 设置会话免打扰状态
      *
-     * @param status 1:屏蔽消息; 2:接收消息但不提示; 3:正常
+     * @param status 1:屏蔽消息; 2:接收消息但不提示; 0:正常
      */
     public void setConversationRecvMessageOpt(OnBase<String> base, List<String> conversationIDs, long status) {
         Open_im_sdk.setConversationRecvMessageOpt(BaseImpl.stringBase(base), JsonUtil.toString(conversationIDs), status);

@@ -33,6 +33,18 @@ public class MessageType {
      */
     public static final int MERGER = 107;
     /**
+     * 名片
+     */
+    public static final int CARD = 108;
+    /**
+     * 位置
+     */
+    public static final int LOCATION = 109;
+    /**
+     * 自定义类型
+     */
+    public static final int CUSTOM = 110;
+    /**
      * 撤回
      */
     public static final int REVOKE = 111;
@@ -44,7 +56,10 @@ public class MessageType {
      * 正在输入
      */
     public static final int TYPING = 113;
-
+    /**
+     * 引用
+     */
+    public static final int QUOTE = 114;
     ///
     public static final int ACCEPT_FRIEND = 201;
     public static final int ADD_FRIEND = 202;
