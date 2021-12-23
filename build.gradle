@@ -9,7 +9,6 @@ buildscript {
             allowInsecureProtocol = true
             url 'http://47.112.160.66:8081/repository/maven-releases'
         }
-//        maven { url 'https://127.0.0.1:8081/repository/maven-releases' }
         google()
         mavenCentral()
     }
@@ -31,7 +30,6 @@ allprojects {
             allowInsecureProtocol = true
             url 'http://47.112.160.66:8081/repository/maven-releases'
         }
-//        maven { url 'https://127.0.0.1:8081/repository/maven-releases' }
         google()
         mavenCentral()
     }
