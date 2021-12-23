@@ -7,7 +7,7 @@ import io.openim.android.sdk.models.UserInfo;
  * 只有在调用sdk的login方法后才开始回调
  *
  */
-public interface InitSDKListener {
+public interface OnInitSDKListener {
 
     /**
      * 连接服务器失败

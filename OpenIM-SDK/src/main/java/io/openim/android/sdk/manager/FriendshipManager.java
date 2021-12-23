@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import io.openim.android.sdk.listener.BaseImpl;
+import io.openim.android.sdk.listener._FriendshipListener;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnFriendshipListener;
 import io.openim.android.sdk.models.UserInfo;
-import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
 import open_im_sdk.Open_im_sdk;
 
@@ -32,79 +32,7 @@ public class FriendshipManager {
      * 好友被删除时回调onFriendListDeleted
      **/
     public void setOnFriendshipListener(OnFriendshipListener listener) {
-        Open_im_sdk.setFriendListener(new open_im_sdk.OnFriendshipListener() {
-            @Override
-            public void onBlackListAdd(String s) {
-                if (null != listener) {
-                    UserInfo u = JsonUtil.toObj(s, UserInfo.class);
-                    CommonUtil.runMainThread(() -> listener.onBlackListAdd(u));
-                }
-            }
-
-            @Override
-            public void onBlackListDeleted(String s) {
-                if (null != listener) {
-                    UserInfo u = JsonUtil.toObj(s, UserInfo.class);
-                    CommonUtil.runMainThread(() -> listener.onBlackListDeleted(u));
-                }
-            }
-
-            @Override
-            public void onFriendApplicationListAccept(String s) {
-                if (null != listener) {
-                    UserInfo u = JsonUtil.toObj(s, UserInfo.class);
-                    CommonUtil.runMainThread(() -> listener.onFriendApplicationListAccept(u));
-                }
-            }
-
-            @Override
-            public void onFriendApplicationListAdded(String s) {
-                if (null != listener) {
-                    UserInfo u = JsonUtil.toObj(s, UserInfo.class);
-                    CommonUtil.runMainThread(() -> listener.onFriendApplicationListAdded(u));
-                }
-            }
-
-            @Override
-            public void onFriendApplicationListDeleted(String s) {
-                if (null != listener) {
-                    UserInfo u = JsonUtil.toObj(s, UserInfo.class);
-                    CommonUtil.runMainThread(() -> listener.onFriendApplicationListDeleted(u));
-                }
-            }
-
-            @Override
-            public void onFriendApplicationListReject(String s) {
-                if (null != listener) {
-                    UserInfo u = JsonUtil.toObj(s, UserInfo.class);
-                    CommonUtil.runMainThread(() -> listener.onFriendApplicationListReject(u));
-                }
-            }
-
-            @Override
-            public void onFriendInfoChanged(String s) {
-                if (null != listener) {
-                    UserInfo u = JsonUtil.toObj(s, UserInfo.class);
-                    CommonUtil.runMainThread(() -> listener.onFriendInfoChanged(u));
-                }
-            }
-
-            @Override
-            public void onFriendListAdded(String s) {
-                if (null != listener) {
-                    UserInfo u = JsonUtil.toObj(s, UserInfo.class);
-                    CommonUtil.runMainThread(() -> listener.onFriendListAdded(u));
-                }
-            }
-
-            @Override
-            public void onFriendListDeleted(String s) {
-                if (null != listener) {
-                    UserInfo u = JsonUtil.toObj(s, UserInfo.class);
-                    CommonUtil.runMainThread(() -> listener.onFriendListDeleted(u));
-                }
-            }
-        });
+        Open_im_sdk.setFriendListener(new _FriendshipListener(listener));
     }
 
     /**

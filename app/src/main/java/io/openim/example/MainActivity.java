@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.List;
 
 import io.openim.android.sdk.OpenIMClient;
-import io.openim.android.sdk.listener.InitSDKListener;
+import io.openim.android.sdk.listener.OnInitSDKListener;
 import io.openim.android.sdk.listener.OnAdvanceMsgListener;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnConversationListener;
@@ -23,7 +23,7 @@ import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.UserInfo;
 import io.openim.android.sdk.utils.JsonUtil;
 
-public class MainActivity extends AppCompatActivity implements InitSDKListener, OnAdvanceMsgListener, OnConversationListener, OnFriendshipListener,
+public class MainActivity extends AppCompatActivity implements OnInitSDKListener, OnAdvanceMsgListener, OnConversationListener, OnFriendshipListener,
     OnGroupListener {
 
     /// api地址

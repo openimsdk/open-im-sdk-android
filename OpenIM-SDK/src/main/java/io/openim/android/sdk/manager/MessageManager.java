@@ -3,26 +3,24 @@ package io.openim.android.sdk.manager;
 
 import androidx.collection.ArrayMap;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnAdvanceMsgListener;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnMsgSendCallback;
-import io.openim.android.sdk.models.HaveReadInfo;
+import io.openim.android.sdk.listener._AdvanceMsgListener;
+import io.openim.android.sdk.listener._MsgSendProgressListener;
 import io.openim.android.sdk.models.Message;
-import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
 import open_im_sdk.Open_im_sdk;
-import open_im_sdk.SendMsgCallBack;
 
 /**
  * 消息管理器
  */
 public class MessageManager {
+    /*
     private static final List<WeakReference<OnAdvanceMsgListener>> listeners = new CopyOnWriteArrayList<>();
     private static boolean initialized = false;
     private static final open_im_sdk.OnAdvancedMsgListener sdkListener = new open_im_sdk.OnAdvancedMsgListener() {
@@ -58,7 +56,7 @@ public class MessageManager {
 
         }
     };
-
+*/
     /**
      * 添加消息监听
      * <p>
@@ -72,34 +70,13 @@ public class MessageManager {
 //            initialized = true;
 //            Open_im_sdk.addAdvancedMsgListener(sdkListener);
 //        }
-        Open_im_sdk.addAdvancedMsgListener(new open_im_sdk.OnAdvancedMsgListener() {
-            @Override
-            public void onRecvC2CReadReceipt(String s) {
-                if (listener != null) {
-                    List<HaveReadInfo> list = JsonUtil.toArray(s, HaveReadInfo.class);
-                    listener.onRecvC2CReadReceipt(list);
-                }
-            }
-
-            @Override
-            public void onRecvMessageRevoked(String s) {
-                if (listener != null) {
-                    listener.onRecvMessageRevoked(s);
-                }
-            }
-
-            @Override
-            public void onRecvNewMessage(String s) {
-                Message msg = JsonUtil.toObj(s, Message.class);
-                listener.onRecvNewMessage(msg);
-            }
-        });
+        Open_im_sdk.addAdvancedMsgListener(new _AdvanceMsgListener(listener));
     }
 
-    /**
-     * 移除消息监听
-     */
-    public void removeAdvancedMsgListener(OnAdvanceMsgListener listener) {
+//    /**
+//     * 移除消息监听
+//     */
+//    public void removeAdvancedMsgListener(OnAdvanceMsgListener listener) {
 //        final Iterator<WeakReference<OnAdvanceMsgListener>> it = listeners.iterator();
 //        while (it.hasNext()) {
 //            if (it.next().get() == listener) {
@@ -111,7 +88,7 @@ public class MessageManager {
 //            initialized = false;
 //            Open_im_sdk.removeAdvancedMsgListener(sdkListener);
 //        }
-    }
+//    }
 
     /**
      * 发送消息
@@ -124,28 +101,7 @@ public class MessageManager {
      *                       onProgress:消息发送进度，如图片，文件，视频等消息
      */
     public void sendMessage(OnMsgSendCallback base, Message message, String recvUid, String recvGid, boolean onlineUserOnly) {
-        Open_im_sdk.sendMessage(new SendMsgCallBack() {
-            @Override
-            public void onError(long l, String s) {
-                if (null != base) {
-                    CommonUtil.returnError(base, l, s);
-                }
-            }
-
-            @Override
-            public void onProgress(long l) {
-                if (null != base) {
-                    CommonUtil.runMainThread(() -> base.onProgress(l));
-                }
-            }
-
-            @Override
-            public void onSuccess(String s) {
-                if (null != base) {
-                    CommonUtil.returnSuccess(base, s);
-                }
-            }
-        }, JsonUtil.toString(message), recvUid, recvGid, onlineUserOnly);
+        Open_im_sdk.sendMessage(new _MsgSendProgressListener(base), JsonUtil.toString(message), recvUid, recvGid, onlineUserOnly);
     }
 
     /**

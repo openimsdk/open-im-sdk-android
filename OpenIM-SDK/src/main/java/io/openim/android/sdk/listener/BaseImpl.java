@@ -5,7 +5,7 @@ import java.util.List;
 import io.openim.android.sdk.utils.CommonUtil;
 import open_im_sdk.Base;
 
-public class BaseImpl {
+final public class BaseImpl {
 
     public static Base stringBase(OnBase<String> base) {
         return new StringBase(base);

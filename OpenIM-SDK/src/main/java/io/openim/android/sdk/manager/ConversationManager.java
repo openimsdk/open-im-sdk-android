@@ -4,11 +4,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import io.openim.android.sdk.listener.BaseImpl;
+import io.openim.android.sdk.listener._ConversationListener;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnConversationListener;
 import io.openim.android.sdk.models.ConversationInfo;
 import io.openim.android.sdk.models.NotDisturbInfo;
-import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
 import open_im_sdk.Open_im_sdk;
 
@@ -18,24 +18,35 @@ import open_im_sdk.Open_im_sdk;
  */
 public class ConversationManager {
     /**
-     * 标记单聊会话为已读
-     *
-     * @param userID 单聊对象ID
-     * @param base   callback String
+     * 设置会话监听器
+     * 如果会话改变，会触发onConversationChanged方法回调
+     * 如果新增会话，会触发onNewConversation回调
+     * 如果未读消息数改变，会触发onTotalUnreadMessageCountChanged回调
+     * <p>
+     * 启动app时主动拉取一次会话记录，后续会话改变可以根据监听器回调再刷新数据
      */
-    public void markSingleMessageHasRead(OnBase<String> base, String userID) {
-        Open_im_sdk.markSingleMessageHasRead(BaseImpl.stringBase(base), userID);
+    public void setOnConversationListener(OnConversationListener listener) {
+        Open_im_sdk.setConversationListener(new _ConversationListener(listener));
     }
 
     /**
-     * 标记群组会话已读
+     * 获取会话记录
      *
-     * @param groupID 群组ID
-     * @param base    callback String
+     * @param base callback List<{@link ConversationInfo}>
      */
-    public void markGroupMessageHasRead(OnBase<String> base, String groupID) {
-        Open_im_sdk.markGroupMessageHasRead(BaseImpl.stringBase(base), groupID);
+    public void getAllConversationList(OnBase<List<ConversationInfo>> base) {
+        Open_im_sdk.getAllConversationList(BaseImpl.arrayBase(base, ConversationInfo.class));
     }
+
+    /**
+     * 获取会话记录
+     *
+     * @param base callback List<{@link ConversationInfo}>
+     */
+    public void getConversationListSplit(OnBase<List<ConversationInfo>> base, long offset, long count) {
+        Open_im_sdk.getConversationListSplit(BaseImpl.arrayBase(base, ConversationInfo.class), offset, count);
+    }
+
 
     /**
      * 得到消息未读总数
@@ -80,6 +91,26 @@ public class ConversationManager {
     }
 
     /**
+     * 标记单聊会话为已读
+     *
+     * @param userID 单聊对象ID
+     * @param base   callback String
+     */
+    public void markSingleMessageHasRead(OnBase<String> base, String userID) {
+        Open_im_sdk.markSingleMessageHasRead(BaseImpl.stringBase(base), userID);
+    }
+
+    /**
+     * 标记群组会话已读
+     *
+     * @param groupID 群组ID
+     * @param base    callback String
+     */
+    public void markGroupMessageHasRead(OnBase<String> base, String groupID) {
+        Open_im_sdk.markGroupMessageHasRead(BaseImpl.stringBase(base), groupID);
+    }
+
+    /**
      * 根据会话id获取多个会话
      *
      * @param conversationIDs 会话ID 集合
@@ -100,23 +131,6 @@ public class ConversationManager {
         Open_im_sdk.getOneConversation(sourceId, sessionType, BaseImpl.objectBase(base, ConversationInfo.class));
     }
 
-    /**
-     * 获取会话记录
-     *
-     * @param base callback List<{@link ConversationInfo}>
-     */
-    public void getAllConversationList(OnBase<List<ConversationInfo>> base) {
-        Open_im_sdk.getAllConversationList(BaseImpl.arrayBase(base, ConversationInfo.class));
-    }
-
-    /**
-     * 获取会话记录
-     *
-     * @param base callback List<{@link ConversationInfo}>
-     */
-    public void getConversationListSplit(OnBase<List<ConversationInfo>> base, long offset, long count) {
-        Open_im_sdk.getConversationListSplit(BaseImpl.arrayBase(base, ConversationInfo.class), offset, count);
-    }
 
     /**
      * 获取会话id；
@@ -165,67 +179,5 @@ public class ConversationManager {
         };
     }
 
-    /**
-     * 设置会话监听器
-     * 如果会话改变，会触发onConversationChanged方法回调
-     * 如果新增会话，会触发onNewConversation回调
-     * 如果未读消息数改变，会触发onTotalUnreadMessageCountChanged回调
-     * <p>
-     * 启动app时主动拉取一次会话记录，后续会话改变可以根据监听器回调再刷新数据
-     */
-    public void setOnConversationListener(OnConversationListener listener) {
-        Open_im_sdk.setConversationListener(new open_im_sdk.OnConversationListener() {
 
-            /**
-             * 返回当前发生改变的会话列表
-             **/
-            @Override
-            public void onConversationChanged(String s) {
-                if (null != listener) {
-                    List<ConversationInfo> list = JsonUtil.toArray(s, ConversationInfo.class);
-                    CommonUtil.runMainThread(() -> listener.onConversationChanged(list));
-                }
-            }
-
-            /**
-             * 返回当前新增的会话列表
-             **/
-            @Override
-            public void onNewConversation(String s) {
-                if (null != listener) {
-                    List<ConversationInfo> list = JsonUtil.toArray(s, ConversationInfo.class);
-                    CommonUtil.runMainThread(() -> listener.onNewConversation(list));
-
-                }
-            }
-
-            @Override
-            public void onSyncServerFailed() {
-                if (null != listener) {
-                    CommonUtil.runMainThread(listener::onSyncServerFailed);
-                }
-            }
-
-            @Override
-            public void onSyncServerFinish() {
-                if (null != listener) {
-                    CommonUtil.runMainThread(listener::onSyncServerFinish);
-                }
-            }
-
-            @Override
-            public void onSyncServerStart() {
-                if (null != listener) {
-                    CommonUtil.runMainThread(listener::onSyncServerStart);
-                }
-            }
-
-            @Override
-            public void onTotalUnreadMessageCountChanged(int i) {
-                if (null != listener) {
-                    CommonUtil.runMainThread(() -> listener.onTotalUnreadMessageCountChanged(i));
-                }
-            }
-        });
-    }
 }
