@@ -27,9 +27,9 @@ public class ConversationInfo {
     private String faceUrl;
     /**
      * 接收消息选项：<br/>
-     * 1:在线正常接收消息，离线时进行推送<br/>
-     * 2:不会接收到消息<br/>
-     * 3:在线正常接收消息，离线不会有推送
+     * 0:在线正常接收消息，离线时进行推送<br/>
+     * 1:不会接收到消息<br/>
+     * 2:在线正常接收消息，离线不会有推送
      */
     private int recvMsgOpt;
     /**
