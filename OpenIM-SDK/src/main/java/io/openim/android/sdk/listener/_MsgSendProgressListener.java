@@ -1,9 +1,8 @@
 package io.openim.android.sdk.listener;
 
 import io.openim.android.sdk.utils.CommonUtil;
-import open_im_sdk.SendMsgCallBack;
 
-final public class _MsgSendProgressListener implements SendMsgCallBack {
+final public class _MsgSendProgressListener implements open_im_sdk_callback.SendMsgCallBack {
     private final OnMsgSendCallback base;
 
     public _MsgSendProgressListener(OnMsgSendCallback base) {
@@ -11,9 +10,9 @@ final public class _MsgSendProgressListener implements SendMsgCallBack {
     }
 
     @Override
-    public void onError(long l, String s) {
+    public void onError(int i, String s) {
         if (null != base) {
-            CommonUtil.returnError(base, l, s);
+            CommonUtil.returnError(base, i, s);
         }
     }
 

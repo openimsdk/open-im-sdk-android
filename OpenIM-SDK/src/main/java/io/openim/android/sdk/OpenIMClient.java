@@ -1,17 +1,21 @@
 package io.openim.android.sdk;
 
+import androidx.collection.ArrayMap;
+
+import java.util.Map;
+
 import io.openim.android.sdk.internal.log.LogcatHelper;
 import io.openim.android.sdk.listener.BaseImpl;
-import io.openim.android.sdk.listener._SDKListener;
-import io.openim.android.sdk.listener.OnInitSDKListener;
 import io.openim.android.sdk.listener.OnBase;
+import io.openim.android.sdk.listener.OnConnListener;
+import io.openim.android.sdk.listener._ConnListener;
 import io.openim.android.sdk.manager.ConversationManager;
 import io.openim.android.sdk.manager.FriendshipManager;
 import io.openim.android.sdk.manager.GroupManager;
 import io.openim.android.sdk.manager.MessageManager;
 import io.openim.android.sdk.manager.UserInfoManager;
-import io.openim.android.sdk.utils.CollectionUtils;
 import io.openim.android.sdk.utils.JsonUtil;
+import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
 
 public class OpenIMClient {
@@ -52,11 +56,15 @@ public class OpenIMClient {
      * @param listener   SDK初始化监听
      * @return boolean   true成功; false失败
      */
-    public boolean initSDK(String apiUrl, String wsUrl, String storageDir, OnInitSDKListener listener) {
-        // fastjson is unreliable, should instead with google/gson in android
-        String paramsText = JsonUtil.toString(CollectionUtils.simpleMapOf("platform", 2, "ipApi", apiUrl, "ipWs", wsUrl, "dbDir", storageDir));
-        LogcatHelper.logDInDebug(String.format("init config: %s", paramsText));
-        boolean initialized = Open_im_sdk.initSDK(paramsText, new _SDKListener(listener));
+    public boolean initSDK(String apiUrl, String wsUrl, String storageDir, int logLevel, String objectStorage, OnConnListener listener) {
+        Map<String, Object> map = new ArrayMap<>();
+        map.put("platform", 2);
+        map.put("api_addr", apiUrl);
+        map.put("ws_addr", wsUrl);
+        map.put("data_dir", storageDir);
+        map.put("logLevel", logLevel);
+        map.put("objectStorage", objectStorage);
+        boolean initialized = Open_im_sdk.initSDK(new _ConnListener(listener), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
         LogcatHelper.logDInDebug(String.format("Initialization successful: %s", initialized));
         return initialized;
     }
@@ -76,7 +84,7 @@ public class OpenIMClient {
      * @param base  callback String
      */
     public void login(OnBase<String> base, String uid, String token) {
-        Open_im_sdk.login(uid, token, BaseImpl.stringBase(base));
+        Open_im_sdk.login(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), uid, token);
     }
 
 
@@ -84,7 +92,7 @@ public class OpenIMClient {
      * 登出
      */
     public void logout(OnBase<String> base) {
-        Open_im_sdk.logout(BaseImpl.stringBase(base));
+        Open_im_sdk.logout(BaseImpl.stringBase(base), ParamsUtil.buildOperationID());
     }
 
     /**
@@ -93,18 +101,5 @@ public class OpenIMClient {
     public long getLoginStatus() {
         return Open_im_sdk.getLoginStatus();
     }
-
-//    /**
-//     * 当前登录uid
-//     */
-//    public String getLoginUid() {
-//        return Open_im_sdk.getLoginUid();
-//    }
-
-
-
-//    public void forceReConn() {
-//        clientImpl.forceReConn();
-//    }
 }
 

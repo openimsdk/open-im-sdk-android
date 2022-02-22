@@ -4,7 +4,7 @@ public class PictureInfo {
     /**
      * 唯一ID
      */
-    private String uuID;
+    private String uuid;
     /**
      * 图片类型
      */
@@ -26,12 +26,12 @@ public class PictureInfo {
      */
     private String url;
 
-    public String getUuID() {
-        return uuID;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setUuID(String uuID) {
-        this.uuID = uuID;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getType() {

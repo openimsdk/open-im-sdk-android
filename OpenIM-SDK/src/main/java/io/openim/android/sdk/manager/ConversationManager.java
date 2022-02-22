@@ -10,6 +10,7 @@ import io.openim.android.sdk.listener.OnConversationListener;
 import io.openim.android.sdk.models.ConversationInfo;
 import io.openim.android.sdk.models.NotDisturbInfo;
 import io.openim.android.sdk.utils.JsonUtil;
+import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
 
 
@@ -35,7 +36,7 @@ public class ConversationManager {
      * @param base callback List<{@link ConversationInfo}>
      */
     public void getAllConversationList(OnBase<List<ConversationInfo>> base) {
-        Open_im_sdk.getAllConversationList(BaseImpl.arrayBase(base, ConversationInfo.class));
+        Open_im_sdk.getAllConversationList(BaseImpl.arrayBase(base, ConversationInfo.class), ParamsUtil.buildOperationID());
     }
 
     /**
@@ -44,80 +45,7 @@ public class ConversationManager {
      * @param base callback List<{@link ConversationInfo}>
      */
     public void getConversationListSplit(OnBase<List<ConversationInfo>> base, long offset, long count) {
-        Open_im_sdk.getConversationListSplit(BaseImpl.arrayBase(base, ConversationInfo.class), offset, count);
-    }
-
-
-    /**
-     * 得到消息未读总数
-     *
-     * @param base String
-     */
-    public void getTotalUnreadMsgCount(OnBase<String> base) {
-        Open_im_sdk.getTotalUnreadMsgCount(BaseImpl.stringBase(base));
-    }
-
-    /**
-     * 置顶会话
-     *
-     * @param conversationID 会话ID
-     * @param isPinned       true 置顶； false 取消置顶
-     * @param base           callback String
-     **/
-    public void pinConversation(OnBase<String> base, String conversationID, boolean isPinned) {
-        Open_im_sdk.pinConversation(conversationID, isPinned, BaseImpl.stringBase(base));
-    }
-
-    /**
-     * 设置草稿
-     *
-     * @param conversationID 会话ID
-     * @param draft          草稿
-     * @param base           callback String
-     **/
-    public void setConversationDraft(OnBase<String> base, String conversationID, String draft) {
-        Open_im_sdk.setConversationDraft(conversationID, draft, BaseImpl.stringBase(base));
-    }
-
-    /**
-     * 删除草稿
-     *
-     * @param conversationID 会话ID
-     * @param base           callback String
-     */
-
-    public void deleteConversation(OnBase<String> base, String conversationID) {
-        Open_im_sdk.deleteConversation(conversationID, BaseImpl.stringBase(base));
-    }
-
-    /**
-     * 标记单聊会话为已读
-     *
-     * @param userID 单聊对象ID
-     * @param base   callback String
-     */
-    public void markSingleMessageHasRead(OnBase<String> base, String userID) {
-        Open_im_sdk.markSingleMessageHasRead(BaseImpl.stringBase(base), userID);
-    }
-
-    /**
-     * 标记群组会话已读
-     *
-     * @param groupID 群组ID
-     * @param base    callback String
-     */
-    public void markGroupMessageHasRead(OnBase<String> base, String groupID) {
-        Open_im_sdk.markGroupMessageHasRead(BaseImpl.stringBase(base), groupID);
-    }
-
-    /**
-     * 根据会话id获取多个会话
-     *
-     * @param conversationIDs 会话ID 集合
-     * @param base            callback List<{@link ConversationInfo}>
-     */
-    public void getMultipleConversation(OnBase<List<ConversationInfo>> base, List<String> conversationIDs) {
-        Open_im_sdk.getMultipleConversation(JsonUtil.toString(conversationIDs), BaseImpl.arrayBase(base, ConversationInfo.class));
+        Open_im_sdk.getConversationListSplit(BaseImpl.arrayBase(base, ConversationInfo.class), ParamsUtil.buildOperationID(), offset, count);
     }
 
     /**
@@ -128,7 +56,79 @@ public class ConversationManager {
      * @param base         callback {@link ConversationInfo}
      */
     public void getOneConversation(OnBase<ConversationInfo> base, String sourceId, long sessionType) {
-        Open_im_sdk.getOneConversation(sourceId, sessionType, BaseImpl.objectBase(base, ConversationInfo.class));
+        Open_im_sdk.getOneConversation(BaseImpl.objectBase(base, ConversationInfo.class), ParamsUtil.buildOperationID(), sessionType, sourceId);
+    }
+
+    /**
+     * 根据会话id获取多个会话
+     *
+     * @param conversationIDs 会话ID 集合
+     * @param base            callback List<{@link ConversationInfo}>
+     */
+    public void getMultipleConversation(OnBase<List<ConversationInfo>> base, List<String> conversationIDs) {
+        Open_im_sdk.getMultipleConversation(BaseImpl.arrayBase(base, ConversationInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(conversationIDs));
+    }
+
+    /**
+     * 删除草稿
+     *
+     * @param conversationID 会话ID
+     * @param base           callback String
+     */
+
+    public void deleteConversation(OnBase<String> base, String conversationID) {
+        Open_im_sdk.deleteConversation(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID);
+    }
+
+    /**
+     * 设置草稿
+     *
+     * @param conversationID 会话ID
+     * @param draftText      草稿
+     * @param base           callback String
+     **/
+    public void setConversationDraft(OnBase<String> base, String conversationID, String draftText) {
+        Open_im_sdk.setConversationDraft(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, draftText);
+    }
+
+    /**
+     * 置顶会话
+     *
+     * @param conversationID 会话ID
+     * @param isPinned       true 置顶； false 取消置顶
+     * @param base           callback String
+     **/
+    public void pinConversation(OnBase<String> base, String conversationID, boolean isPinned) {
+        Open_im_sdk.pinConversation(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, isPinned);
+    }
+
+    /**
+     * 标记单聊会话为已读
+     *
+     * @param userID 单聊对象ID
+     * @param base   callback String
+     */
+    /*public void markSingleMessageHasRead(OnBase<String> base, String userID) {
+        Open_im_sdk.markSingleMessageHasRead(BaseImpl.stringBase(base), userID);
+    }*/
+
+    /**
+     * 标记群组会话已读
+     *
+     * @param groupID 群组ID
+     * @param base    callback String
+     */
+    public void markGroupMessageHasRead(OnBase<String> base, String groupID) {
+        Open_im_sdk.markGroupMessageHasRead(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID);
+    }
+
+    /**
+     * 得到消息未读总数
+     *
+     * @param base String
+     */
+    public void getTotalUnreadMsgCount(OnBase<String> base) {
+        Open_im_sdk.getTotalUnreadMsgCount(BaseImpl.stringBase(base), ParamsUtil.buildOperationID());
     }
 
 
@@ -139,7 +139,7 @@ public class ConversationManager {
      * @param sourceId:    聊值：UserId；聊值：GroupId
      * @param sessionType: 单聊：1；群聊：2
      */
-    public void getConversationID(String sourceId, long sessionType) {
+    public void getConversationIDBySessionType(String sourceId, long sessionType) {
         Open_im_sdk.getConversationIDBySessionType(sourceId, sessionType);
     }
 
@@ -149,7 +149,7 @@ public class ConversationManager {
      * @param status 1:屏蔽消息; 2:接收消息但不提示; 0:正常
      */
     public void setConversationRecvMessageOpt(OnBase<String> base, List<String> conversationIDs, long status) {
-        Open_im_sdk.setConversationRecvMessageOpt(BaseImpl.stringBase(base), JsonUtil.toString(conversationIDs), status);
+        Open_im_sdk.setConversationRecvMessageOpt(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(conversationIDs), status);
     }
 
     /**
@@ -158,7 +158,7 @@ public class ConversationManager {
      * [{"conversationId":"single_13922222222","result":0}]
      */
     public void getConversationRecvMessageOpt(OnBase<List<NotDisturbInfo>> base, List<String> conversationIDs) {
-        Open_im_sdk.getConversationRecvMessageOpt(BaseImpl.arrayBase(base, NotDisturbInfo.class), JsonUtil.toString(conversationIDs));
+        Open_im_sdk.getConversationRecvMessageOpt(BaseImpl.arrayBase(base, NotDisturbInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(conversationIDs));
     }
 
     /**
@@ -166,18 +166,17 @@ public class ConversationManager {
      */
     public Comparator<ConversationInfo> simpleComparator() {
         return (a, b) -> {
-            if ((a.getIsPinned() == 1 && b.getIsPinned() == 1) ||
-                (a.getIsPinned() != 1 && b.getIsPinned() != 1)) {
-                long aCompare = Math.max(a.getDraftTimestamp(), a.getLatestMsgSendTime());
-                long bCompare = Math.max(b.getDraftTimestamp(), b.getLatestMsgSendTime());
+            if ((a.isPinned() && b.isPinned()) ||
+                (!a.isPinned() && !b.isPinned())) {
+                long aCompare = Math.max(a.getDraftTextTime(), a.getLatestMsgSendTime());
+                long bCompare = Math.max(b.getDraftTextTime(), b.getLatestMsgSendTime());
                 return Long.compare(bCompare, aCompare);
-            } else if (a.getIsPinned() == 1 && b.getIsPinned() != 1) {
+            } else if (a.isPinned() && !b.isPinned()) {
                 return -1;
             } else {
                 return 1;
             }
         };
     }
-
 
 }

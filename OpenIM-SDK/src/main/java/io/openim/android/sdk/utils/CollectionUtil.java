@@ -11,7 +11,7 @@ import java.util.Map;
  *
  * @author alvince.zy@gmail.com
  */
-public final class CollectionUtils {
+public final class CollectionUtil {
 
     @NonNull
     public static Map<String, Object> simpleMapOf(Object... kvPairs) {
@@ -28,7 +28,7 @@ public final class CollectionUtils {
             if (Predicates.isNull(k) || Predicates.isNull(v)) {
                 continue;
             }
-            result.put(StringUtils.asString(k), v);
+            result.put(StringUtil.asString(k), v);
         }
         return result;
     }

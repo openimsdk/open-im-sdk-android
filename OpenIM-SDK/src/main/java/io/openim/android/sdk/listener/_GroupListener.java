@@ -1,10 +1,12 @@
 package io.openim.android.sdk.listener;
 
+import io.openim.android.sdk.models.GroupApplicationInfo;
 import io.openim.android.sdk.models.GroupInfo;
 import io.openim.android.sdk.models.GroupMembersInfo;
+import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
 
-final public class _GroupListener implements open_im_sdk.OnGroupListener {
+final public class _GroupListener implements open_im_sdk_callback.OnGroupListener {
     final private OnGroupListener listener;
 
     public _GroupListener(OnGroupListener listener) {
@@ -12,60 +14,82 @@ final public class _GroupListener implements open_im_sdk.OnGroupListener {
     }
 
     @Override
-    public void onApplicationProcessed(String s, String s1, int i, String s2) {
+    public void onGroupApplicationAccepted(String s) {
         if (null != listener) {
-            listener.onApplicationProcessed(s, JsonUtil.toObj(s1, GroupMembersInfo.class), i, s2);
+            GroupApplicationInfo u = JsonUtil.toObj(s, GroupApplicationInfo.class);
+            CommonUtil.runMainThread(() -> listener.onGroupApplicationAccepted(u));
         }
     }
 
     @Override
-    public void onGroupCreated(String s) {
+    public void onGroupApplicationAdded(String s) {
         if (null != listener) {
-            listener.onGroupCreated(s);
+            GroupApplicationInfo u = JsonUtil.toObj(s, GroupApplicationInfo.class);
+            CommonUtil.runMainThread(() -> listener.onGroupApplicationAdded(u));
         }
     }
 
     @Override
-    public void onGroupInfoChanged(String s, String s1) {
+    public void onGroupApplicationDeleted(String s) {
         if (null != listener) {
-            listener.onGroupInfoChanged(s, JsonUtil.toObj(s1, GroupInfo.class));
+            GroupApplicationInfo u = JsonUtil.toObj(s, GroupApplicationInfo.class);
+            CommonUtil.runMainThread(() -> listener.onGroupApplicationDeleted(u));
         }
     }
 
     @Override
-    public void onMemberEnter(String s, String s1) {
+    public void onGroupApplicationRejected(String s) {
         if (null != listener) {
-            listener.onMemberEnter(s, JsonUtil.toArray(s1, GroupMembersInfo.class));
+            GroupApplicationInfo u = JsonUtil.toObj(s, GroupApplicationInfo.class);
+            CommonUtil.runMainThread(() -> listener.onGroupApplicationRejected(u));
         }
     }
 
     @Override
-    public void onMemberInvited(String s, String s1, String s2) {
+    public void onGroupInfoChanged(String s) {
         if (null != listener) {
-            listener.onMemberInvited(s, JsonUtil.toObj(s1, GroupMembersInfo.class),
-                JsonUtil.toArray(s2, GroupMembersInfo.class));
+            GroupInfo u = JsonUtil.toObj(s, GroupInfo.class);
+            CommonUtil.runMainThread(() -> listener.onGroupInfoChanged(u));
         }
     }
 
     @Override
-    public void onMemberKicked(String s, String s1, String s2) {
+    public void onGroupMemberAdded(String s) {
         if (null != listener) {
-            listener.onMemberKicked(s, JsonUtil.toObj(s1, GroupMembersInfo.class),
-                JsonUtil.toArray(s2, GroupMembersInfo.class));
+            GroupMembersInfo u = JsonUtil.toObj(s, GroupMembersInfo.class);
+            CommonUtil.runMainThread(() -> listener.onGroupMemberAdded(u));
         }
     }
 
     @Override
-    public void onMemberLeave(String s, String s1) {
+    public void onGroupMemberDeleted(String s) {
         if (null != listener) {
-            listener.onMemberLeave(s, JsonUtil.toObj(s1, GroupMembersInfo.class));
+            GroupMembersInfo u = JsonUtil.toObj(s, GroupMembersInfo.class);
+            CommonUtil.runMainThread(() -> listener.onGroupMemberDeleted(u));
         }
     }
 
     @Override
-    public void onReceiveJoinApplication(String s, String s1, String s2) {
+    public void onGroupMemberInfoChanged(String s) {
         if (null != listener) {
-            listener.onReceiveJoinApplication(s, JsonUtil.toObj(s1, GroupMembersInfo.class), s2);
+            GroupMembersInfo u = JsonUtil.toObj(s, GroupMembersInfo.class);
+            CommonUtil.runMainThread(() -> listener.onGroupMemberInfoChanged(u));
+        }
+    }
+
+    @Override
+    public void onJoinedGroupAdded(String s) {
+        if (null != listener) {
+            GroupInfo u = JsonUtil.toObj(s, GroupInfo.class);
+            CommonUtil.runMainThread(() -> listener.onJoinedGroupAdded(u));
+        }
+    }
+
+    @Override
+    public void onJoinedGroupDeleted(String s) {
+        if (null != listener) {
+            GroupInfo u = JsonUtil.toObj(s, GroupInfo.class);
+            CommonUtil.runMainThread(() -> listener.onJoinedGroupDeleted(u));
         }
     }
 }

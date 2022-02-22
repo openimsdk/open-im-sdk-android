@@ -4,15 +4,15 @@ public class UserInfo {
     /**
      * 用户id
      */
-    private String uid;
+    private String userID;
     /**
      * 用户名
      */
-    private String name;
+    private String nickname;
     /**
      * 用户头像
      */
-    private String icon;
+    private String faceURL;
     /**
      * 性别：1男，2女
      */
@@ -20,11 +20,11 @@ public class UserInfo {
     /**
      * 手机号
      */
-    private String mobile;
+    private String phoneNumber;
     /**
      * 生日
      */
-    private String birth;
+    private long birth;
     /**
      * 邮箱
      */
@@ -36,50 +36,79 @@ public class UserInfo {
     /**
      * 备注
      */
-    private String comment;
+    private String remark;
     /**
-     * 黑名单：1已拉入黑名单
+     * 公开的信息
      */
-    private int isInBlackList;
+    private PublicUserInfo publicInfo;
     /**
-     * 验证消息
+     * 仅好友可见的信息
      */
-    private String reqMessage;
+    private FriendInfo friendInfo;
     /**
-     * 申请时间
+     * 黑名单信息
      */
-    private String applyTime;
-    /**
-     * 好友申请列表：0等待处理；1已同意；2已拒绝<br />
-     * 好友关系：1已经是好友
-     */
-    private int flag;
+    private BlacklistInfo blackInfo;
 
-    public String getUid() {
-        return uid;
+    public String getUserID() {
+        if (null == userID) {
+            if ((isFriendship())) {
+                return friendInfo.getUserID();
+            } else if (isBlacklist()) {
+                return blackInfo.getUserID();
+            } else if (null != publicInfo) {
+                return publicInfo.getUserID();
+            }
+        }
+        return userID;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        if (null == nickname) {
+            if ((isFriendship())) {
+                return friendInfo.getNickname();
+            } else if (isBlacklist()) {
+                return blackInfo.getNickname();
+            } else if (null != publicInfo) {
+                return publicInfo.getNickname();
+            }
+        }
+        return nickname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getFaceURL() {
+        if (null == faceURL) {
+            if ((isFriendship())) {
+                return friendInfo.getFaceURL();
+            } else if (isBlacklist()) {
+                return blackInfo.getFaceURL();
+            } else if (null != publicInfo) {
+                return publicInfo.getFaceURL();
+            }
+        }
+        return faceURL;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setFaceURL(String faceURL) {
+        this.faceURL = faceURL;
     }
 
     public int getGender() {
+        if ((isFriendship())) {
+            return friendInfo.getGender();
+        } else if (isBlacklist()) {
+            return blackInfo.getGender();
+        } else if (null != publicInfo) {
+            return publicInfo.getGender();
+        }
         return gender;
     }
 
@@ -87,23 +116,36 @@ public class UserInfo {
         this.gender = gender;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getPhoneNumber() {
+        if (null == phoneNumber) {
+            if ((isFriendship())) {
+                return friendInfo.getPhoneNumber();
+            }
+        }
+        return phoneNumber;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public String getBirth() {
+    public long getBirth() {
+        if ((isFriendship())) {
+            return friendInfo.getBirth();
+        }
         return birth;
     }
 
-    public void setBirth(String birth) {
+    public void setBirth(long birth) {
         this.birth = birth;
     }
 
     public String getEmail() {
+        if (null == email) {
+            if ((isFriendship())) {
+                return friendInfo.getEmail();
+            }
+        }
         return email;
     }
 
@@ -112,6 +154,13 @@ public class UserInfo {
     }
 
     public String getEx() {
+        if (null == ex) {
+            if ((isFriendship())) {
+                return friendInfo.getEx();
+            } else if (isBlacklist()) {
+                return blackInfo.getEx();
+            }
+        }
         return ex;
     }
 
@@ -119,43 +168,55 @@ public class UserInfo {
         this.ex = ex;
     }
 
-    public String getComment() {
-        return comment;
+    public String getRemark() {
+        if (null == remark) {
+            if ((isFriendship())) {
+                return friendInfo.getRemark();
+            }
+        }
+        return remark;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
-    public int getIsInBlackList() {
-        return isInBlackList;
+    public PublicUserInfo getPublicInfo() {
+        return publicInfo;
     }
 
-    public void setIsInBlackList(int isInBlackList) {
-        this.isInBlackList = isInBlackList;
+    public void setPublicInfo(PublicUserInfo publicInfo) {
+        this.publicInfo = publicInfo;
     }
 
-    public String getReqMessage() {
-        return reqMessage;
+    public FriendInfo getFriendInfo() {
+        return friendInfo;
     }
 
-    public void setReqMessage(String reqMessage) {
-        this.reqMessage = reqMessage;
+    public void setFriendInfo(FriendInfo friendInfo) {
+        this.friendInfo = friendInfo;
     }
 
-    public String getApplyTime() {
-        return applyTime;
+    public BlacklistInfo getBlackInfo() {
+        return blackInfo;
     }
 
-    public void setApplyTime(String applyTime) {
-        this.applyTime = applyTime;
+    public void setBlackInfo(BlacklistInfo blackInfo) {
+        this.blackInfo = blackInfo;
     }
 
-    public int getFlag() {
-        return flag;
+    /**
+     * true：黑名单
+     */
+    public boolean isBlacklist() {
+        return null != blackInfo;
     }
 
-    public void setFlag(int flag) {
-        this.flag = flag;
+    /**
+     * true：是好友
+     */
+    public boolean isFriendship() {
+        return null != friendInfo;
     }
+
 }

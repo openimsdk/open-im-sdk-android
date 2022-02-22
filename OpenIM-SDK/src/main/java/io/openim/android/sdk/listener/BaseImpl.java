@@ -3,7 +3,7 @@ package io.openim.android.sdk.listener;
 import java.util.List;
 
 import io.openim.android.sdk.utils.CommonUtil;
-import open_im_sdk.Base;
+import open_im_sdk_callback.Base;
 
 final public class BaseImpl {
 
@@ -29,7 +29,7 @@ final public class BaseImpl {
         }
 
         @Override
-        public void onError(long l, String s) {
+        public void onError(int l, String s) {
             CommonUtil.returnError(base, l, s);
 
         }
@@ -40,7 +40,7 @@ final public class BaseImpl {
         }
     }
 
-    private static class ObjectBase<T> implements Base {
+    private static class ObjectBase<T> implements  Base {
         OnBase<T> base;
         Class<T> clazz;
 
@@ -50,7 +50,7 @@ final public class BaseImpl {
         }
 
         @Override
-        public void onError(long l, String s) {
+        public void onError(int l, String s) {
             CommonUtil.returnError(base, l, s);
 
         }
@@ -61,7 +61,7 @@ final public class BaseImpl {
         }
     }
 
-    private static class StringBase implements Base {
+    private static class StringBase implements  Base {
         OnBase<String> base;
 
 
@@ -70,7 +70,7 @@ final public class BaseImpl {
         }
 
         @Override
-        public void onError(long l, String s) {
+        public void onError(int l, String s) {
             CommonUtil.returnError(base, l, s);
 
         }

@@ -4,7 +4,7 @@ public class SoundElem {
     /**
      * 唯一ID
      */
-    private String uuID;
+    private String uuid;
     /**
      * 本地资源地址
      */
@@ -22,12 +22,12 @@ public class SoundElem {
      */
     private long duration;
 
-    public String getUuID() {
-        return uuID;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setUuID(String uuID) {
-        this.uuID = uuID;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getSoundPath() {

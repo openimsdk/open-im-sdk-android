@@ -8,15 +8,7 @@ public class GroupMembersInfo {
     /**
      * 用户id
      */
-    private String userId;
-    /**
-     * 群角色
-     */
-    private int role;
-    /**
-     * 入群时间
-     */
-    private int joinTime;
+    private String userID;
     /**
      * 群内昵称
      */
@@ -24,8 +16,19 @@ public class GroupMembersInfo {
     /**
      * 头像
      */
-    private String faceUrl;
-    private Object ext;
+    private String faceURL;
+    /**
+     * 群角色
+     */
+    private int roleLevel;
+    /**
+     * 入群时间
+     */
+    private long joinTime;
+
+    private int joinSource;
+    private String operatorUserID;
+    private String ext;
 
     public String getGroupID() {
         return groupID;
@@ -35,28 +38,12 @@ public class GroupMembersInfo {
         this.groupID = groupID;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public int getRole() {
-        return role;
-    }
-
-    public void setRole(int role) {
-        this.role = role;
-    }
-
-    public int getJoinTime() {
-        return joinTime;
-    }
-
-    public void setJoinTime(int joinTime) {
-        this.joinTime = joinTime;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getNickName() {
@@ -67,19 +54,51 @@ public class GroupMembersInfo {
         this.nickName = nickName;
     }
 
-    public String getFaceUrl() {
-        return faceUrl;
+    public String getFaceURL() {
+        return faceURL;
     }
 
-    public void setFaceUrl(String faceUrl) {
-        this.faceUrl = faceUrl;
+    public void setFaceURL(String faceURL) {
+        this.faceURL = faceURL;
     }
 
-    public Object getExt() {
+    public int getRoleLevel() {
+        return roleLevel;
+    }
+
+    public void setRoleLevel(int roleLevel) {
+        this.roleLevel = roleLevel;
+    }
+
+    public long getJoinTime() {
+        return joinTime;
+    }
+
+    public void setJoinTime(long joinTime) {
+        this.joinTime = joinTime;
+    }
+
+    public int getJoinSource() {
+        return joinSource;
+    }
+
+    public void setJoinSource(int joinSource) {
+        this.joinSource = joinSource;
+    }
+
+    public String getOperatorUserID() {
+        return operatorUserID;
+    }
+
+    public void setOperatorUserID(String operatorUserID) {
+        this.operatorUserID = operatorUserID;
+    }
+
+    public String getExt() {
         return ext;
     }
 
-    public void setExt(Object ext) {
+    public void setExt(String ext) {
         this.ext = ext;
     }
 }

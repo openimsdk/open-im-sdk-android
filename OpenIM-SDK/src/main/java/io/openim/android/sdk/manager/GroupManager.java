@@ -11,14 +11,12 @@ import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnGroupListener;
 import io.openim.android.sdk.listener._GroupListener;
 import io.openim.android.sdk.models.GroupApplicationInfo;
-import io.openim.android.sdk.models.GroupApplicationList;
 import io.openim.android.sdk.models.GroupInfo;
 import io.openim.android.sdk.models.GroupInviteResult;
 import io.openim.android.sdk.models.GroupMemberRole;
 import io.openim.android.sdk.models.GroupMembersInfo;
-import io.openim.android.sdk.models.GroupMembersList;
 import io.openim.android.sdk.utils.JsonUtil;
-import io.openim.android.sdk.utils.Predicates;
+import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
 
 /**
@@ -27,15 +25,6 @@ import open_im_sdk.Open_im_sdk;
 public class GroupManager {
     /**
      * 设置组监听器
-     * <p>
-     * 群申请被处理：onApplicationProcessed
-     * 群创建完成：onGroupCreated
-     * 群资料发生变化：onGroupInfoChanged
-     * 进群：onMemberEnter
-     * 接受邀请：onMemberInvited
-     * 成员被踢出：onMemberKicked
-     * 群成员退群：onMemberLeave
-     * 收到入群申请：onReceiveJoinApplication
      */
     public void setOnGroupListener(OnGroupListener listener) {
         Open_im_sdk.setGroupListener(new _GroupListener(listener));
@@ -50,7 +39,7 @@ public class GroupManager {
      * @param base    callback List<{@link GroupInviteResult}>>
      */
     public void inviteUserToGroup(OnBase<List<GroupInviteResult>> base, String groupId, List<String> uidList, String reason) {
-        Open_im_sdk.inviteUserToGroup(groupId, reason, JsonUtil.toString(uidList), BaseImpl.arrayBase(base, GroupInviteResult.class));
+        Open_im_sdk.inviteUserToGroup(BaseImpl.arrayBase(base, GroupInviteResult.class), ParamsUtil.buildOperationID(), groupId, reason, JsonUtil.toString(uidList));
     }
 
     /**
@@ -62,7 +51,7 @@ public class GroupManager {
      * @param base    callback List<{@link GroupInviteResult}>>
      */
     public void kickGroupMember(OnBase<List<GroupInviteResult>> base, String groupId, List<String> uidList, String reason) {
-        Open_im_sdk.kickGroupMember(groupId, reason, JsonUtil.toString(uidList), BaseImpl.arrayBase(base, GroupInviteResult.class));
+        Open_im_sdk.kickGroupMember(BaseImpl.arrayBase(base, GroupInviteResult.class), ParamsUtil.buildOperationID(), groupId, reason, JsonUtil.toString(uidList));
     }
 
 
@@ -74,18 +63,17 @@ public class GroupManager {
      * @param base    callback List<{@link GroupMembersInfo}>
      **/
     public void getGroupMembersInfo(OnBase<List<GroupMembersInfo>> base, String groupId, List<String> uidList) {
-        Open_im_sdk.getGroupMembersInfo(groupId, JsonUtil.toString(uidList), BaseImpl.arrayBase(base, GroupMembersInfo.class));
+        Open_im_sdk.getGroupMembersInfo(BaseImpl.arrayBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupId, JsonUtil.toString(uidList));
     }
 
     /**
      * 获取群成员
      *
      * @param groupId 群组ID
-     * @param filter  过滤成员，0不过滤，1群的创建者，2管理员；默认值0
-     * @param next    分页，从next条开始获取，默认值0。参照{@link GroupMembersList}的nextSeq字段的值。
+     * @param filter  过滤成员
      */
-    public void getGroupMemberList(OnBase<GroupMembersList> base, String groupId, int filter, int next) {
-        Open_im_sdk.getGroupMemberList(groupId, filter, next, BaseImpl.objectBase(base, GroupMembersList.class));
+    public void getGroupMemberList(OnBase<GroupMembersInfo> base, String groupId, int filter, int offset, int count) {
+        Open_im_sdk.getGroupMemberList(BaseImpl.objectBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupId, filter, offset, count);
     }
 
 
@@ -95,7 +83,7 @@ public class GroupManager {
      * @param base callback List<{@link GroupInfo}></>
      */
     public void getJoinedGroupList(OnBase<List<GroupInfo>> base) {
-        Open_im_sdk.getJoinedGroupList(BaseImpl.arrayBase(base, GroupInfo.class));
+        Open_im_sdk.getJoinedGroupList(BaseImpl.arrayBase(base, GroupInfo.class), ParamsUtil.buildOperationID());
     }
 
     /**
@@ -104,16 +92,18 @@ public class GroupManager {
      * @param groupName    群名称
      * @param notification 群公告
      * @param introduction 群简介
-     * @param faceUrl      群icon
+     * @param faceURL      群icon
      * @param list         List<{@link GroupMemberRole}> 创建群是选择的成员. setRole：0:普通成员 2:管理员；1：群主
      */
-    public void createGroup(OnBase<String> base, String groupName, String notification, String introduction, String faceUrl, List<GroupMemberRole> list) {
+    public void createGroup(OnBase<GroupInfo> base, String groupName, String notification, String introduction, String faceURL, int groupType, String ex, List<GroupMemberRole> list) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("groupName", groupName);
         map.put("notification", notification);
         map.put("introduction", introduction);
-        map.put("faceUrl", faceUrl);
-        Open_im_sdk.createGroup(JsonUtil.toString(map), JsonUtil.toString(list), BaseImpl.stringBase(base));
+        map.put("faceURL", faceURL);
+        map.put("groupType", groupType);
+        map.put("ex", ex);
+        Open_im_sdk.createGroup(BaseImpl.objectBase(base, GroupInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map), JsonUtil.toString(list));
     }
 
     /**
@@ -123,17 +113,17 @@ public class GroupManager {
      * @param groupName    群名称
      * @param notification 群公告
      * @param introduction 群简介
-     * @param faceUrl      群icon
+     * @param faceURL      群icon
      * @param base         callback String
      */
-    public void setGroupInfo(OnBase<String> base, String groupID, String groupName, String notification, String introduction, String faceUrl) {
+    public void setGroupInfo(OnBase<String> base, String groupID, String groupName, String notification, String introduction, String faceURL, String ex) {
         Map<String, Object> map = new ArrayMap<>();
-        map.put("groupID", Predicates.requireNonNull(groupID));
         map.put("groupName", groupName);
         map.put("notification", notification);
         map.put("introduction", introduction);
-        map.put("faceUrl", faceUrl);
-        Open_im_sdk.setGroupInfo(JsonUtil.toString(map), BaseImpl.stringBase(base));
+        map.put("faceURL", faceURL);
+        map.put("ex", ex);
+        Open_im_sdk.setGroupInfo(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, JsonUtil.toString(map));
     }
 
 
@@ -144,7 +134,7 @@ public class GroupManager {
      * @param base    callback List<{@link GroupInfo}>
      */
     public void getGroupsInfo(OnBase<List<GroupInfo>> base, List<String> gidList) {
-        Open_im_sdk.getGroupsInfo(JsonUtil.toString(gidList), BaseImpl.arrayBase(base, GroupInfo.class));
+        Open_im_sdk.getGroupsInfo(BaseImpl.arrayBase(base, GroupInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(gidList));
     }
 
     /**
@@ -155,7 +145,7 @@ public class GroupManager {
      * @param base   callback String
      */
     public void joinGroup(OnBase<String> base, String gid, String reason) {
-        Open_im_sdk.joinGroup(gid, reason, BaseImpl.stringBase(base));
+        Open_im_sdk.joinGroup(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, reason);
     }
 
     /**
@@ -165,7 +155,7 @@ public class GroupManager {
      * @param base callback String
      */
     public void quitGroup(OnBase<String> base, String gid) {
-        Open_im_sdk.quitGroup(gid, BaseImpl.stringBase(base));
+        Open_im_sdk.quitGroup(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid);
     }
 
     /**
@@ -176,55 +166,46 @@ public class GroupManager {
      * @param base callback String
      */
     public void transferGroupOwner(OnBase<String> base, String gid, String uid) {
-        Open_im_sdk.transferGroupOwner(gid, uid, BaseImpl.stringBase(base));
+        Open_im_sdk.transferGroupOwner(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, uid);
     }
 
     /**
-     * 获取群申请列表
+     * 收到群申请列表
      *
-     * @param base callback {@link GroupApplicationList}
+     * @param base callback {@link GroupApplicationInfo}
      */
-    public void getGroupApplicationList(OnBase<GroupApplicationList> base) {
-        Open_im_sdk.getGroupApplicationList(BaseImpl.objectBase(base, GroupApplicationList.class));
+    public void getRecvGroupApplicationList(OnBase<GroupApplicationInfo> base) {
+        Open_im_sdk.getRecvGroupApplicationList(BaseImpl.objectBase(base, GroupApplicationInfo.class), ParamsUtil.buildOperationID());
+    }
+
+    /**
+     * 发出群申请列表
+     *
+     * @param base callback {@link GroupApplicationInfo}
+     */
+    public void getSendGroupApplicationList(OnBase<GroupApplicationInfo> base) {
+        Open_im_sdk.getSendGroupApplicationList(BaseImpl.objectBase(base, GroupApplicationInfo.class), ParamsUtil.buildOperationID());
     }
 
     /**
      * 接受入群申请
      *
-     * @param info   getGroupApplicationList返回值的item
-     * @param reason 说明
-     * @param base   callback String
+     * @param handleMsg 说明
+     * @param base      callback String
      */
-    public void acceptGroupApplication(OnBase<String> base, GroupApplicationInfo info, String reason) {
-        Open_im_sdk.acceptGroupApplication(JsonUtil.toString(info), reason, BaseImpl.stringBase(base));
+    public void acceptGroupApplication(OnBase<String> base, String gid, String uid, String handleMsg) {
+        Open_im_sdk.acceptGroupApplication(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, uid, handleMsg);
 
     }
 
     /**
      * 拒绝入群申请
      *
-     * @param info   getGroupApplicationList返回值的item
-     * @param reason 说明
-     * @param base   callback String
+     * @param handleMsg 说明
+     * @param base      callback String
      */
-    public void refuseGroupApplication(OnBase<String> base, GroupApplicationInfo info, String reason) {
-        Open_im_sdk.refuseGroupApplication(JsonUtil.toString(info), reason, BaseImpl.stringBase(base));
+    public void refuseGroupApplication(OnBase<String> base, String gid, String uid, String handleMsg) {
+        Open_im_sdk.refuseGroupApplication(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, uid, handleMsg);
 
     }
-
-//    public void forceSyncApplyGroupRequest() {
-//        Open_im_sdk.forceSyncApplyGroupRequest();
-//    }
-//
-//    public void forceSyncGroupRequest() {
-//        Open_im_sdk.forceSyncGroupRequest();
-//    }
-//
-//    public void forceSyncJoinedGroup() {
-//        Open_im_sdk.forceSyncJoinedGroup();
-//    }
-//
-//    public void forceSyncJoinedGroupMember() {
-//        Open_im_sdk.forceSyncJoinedGroupMember();
-//    }
 }

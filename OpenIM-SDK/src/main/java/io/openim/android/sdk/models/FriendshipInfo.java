@@ -1,7 +1,10 @@
 package io.openim.android.sdk.models;
 
-public class GroupInviteResult {
+public class FriendshipInfo {
     private String userID;
+
+    /// 1 means friend (and not blacklist)
+    /// 1表示好友（并且不是黑名单）
     private int result;
 
     public String getUserID() {

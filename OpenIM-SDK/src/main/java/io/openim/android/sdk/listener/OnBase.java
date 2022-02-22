@@ -7,7 +7,7 @@ public interface OnBase<T> {
     /**
      * 失败
      */
-    void onError(long code, String error);
+    void onError(int code, String error);
 
     /**
      * 成功

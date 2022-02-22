@@ -7,11 +7,23 @@ import java.util.Map;
 
 import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnBase;
+import io.openim.android.sdk.listener.OnGroupListener;
+import io.openim.android.sdk.listener.OnUserListener;
+import io.openim.android.sdk.listener._GroupListener;
+import io.openim.android.sdk.listener._UserListener;
 import io.openim.android.sdk.models.UserInfo;
 import io.openim.android.sdk.utils.JsonUtil;
+import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
 
 public class UserInfoManager {
+    /**
+     * 设置当前用户资料变更监听器
+     */
+    public void setOnUserListener(OnUserListener listener) {
+        Open_im_sdk.setUserListener(new _UserListener(listener));
+    }
+
     /**
      * 根据uid 批量查询用户信息
      *
@@ -19,32 +31,37 @@ public class UserInfoManager {
      * @param base    callback List<{@link UserInfo}>
      */
     public void getUsersInfo(OnBase<List<UserInfo>> base, List<String> uidList) {
-        Open_im_sdk.getUsersInfo(JsonUtil.toString(uidList), BaseImpl.arrayBase(base, UserInfo.class));
+        Open_im_sdk.getUsersInfo(BaseImpl.arrayBase(base, UserInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(uidList));
     }
 
     /**
      * 修改资料
      *
-     * @param name   名字
-     * @param icon   头像
-     * @param gender 性别
-     * @param mobile 手机号
-     * @param birth  出生日期
-     * @param email  邮箱
-     * @param base   callback String
+     * @param nickname    名字
+     * @param faceURL     头像
+     * @param gender      性别
+     * @param phoneNumber 手机号
+     * @param birth       出生日期
+     * @param email       邮箱
+     * @param base        callback String
      */
-    public void setSelfInfo(OnBase<String> base, String name, String icon, int gender, String mobile, String birth, String email) {
+    public void setSelfInfo(OnBase<String> base, String nickname, String faceURL, int gender, int appMangerLevel, String phoneNumber, long birth, String email, String ex) {
         Map<String, Object> map = new ArrayMap<>();
-        map.put("name", name);
-        map.put("icon", icon);
+        map.put("nickname", nickname);
+        map.put("faceURL", faceURL);
         map.put("gender", gender);
-        map.put("mobile", mobile);
+        map.put("appMangerLevel", appMangerLevel);
+        map.put("phoneNumber", phoneNumber);
         map.put("birth", birth);
         map.put("email", email);
-        Open_im_sdk.setSelfInfo(JsonUtil.toString(map), BaseImpl.stringBase(base));
+        map.put("ex", ex);
+        Open_im_sdk.setSelfInfo(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
-    public void forceSyncLoginUerInfo() {
-        Open_im_sdk.forceSyncLoginUerInfo();
+    /**
+     * 获取当前用户信息
+     */
+    public void getSelfUserInfo(OnBase<UserInfo> base) {
+        Open_im_sdk.getSelfUserInfo(BaseImpl.objectBase(base, UserInfo.class), ParamsUtil.buildOperationID());
     }
 }

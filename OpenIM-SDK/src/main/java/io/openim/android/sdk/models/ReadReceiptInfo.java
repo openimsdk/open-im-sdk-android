@@ -2,7 +2,7 @@ package io.openim.android.sdk.models;
 
 import java.util.List;
 
-public class HaveReadInfo {
+public class ReadReceiptInfo {
     /**
      * 用户id
      */

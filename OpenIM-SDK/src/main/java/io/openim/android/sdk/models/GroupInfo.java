@@ -20,11 +20,11 @@ public class GroupInfo {
     /**
      * 群头像
      */
-    private String faceUrl;
+    private String faceURL;
     /**
      * 群主id
      */
-    private String ownerId;
+    private String ownerUserID;
     /**
      * 创建时间
      */
@@ -33,6 +33,10 @@ public class GroupInfo {
      * 群成员数量
      */
     private int memberCount;
+    private int status;
+    private String creatorUserID;
+    private int groupType;
+    private String ex;
 
     public String getGroupID() {
         return groupID;
@@ -66,20 +70,20 @@ public class GroupInfo {
         this.introduction = introduction;
     }
 
-    public String getFaceUrl() {
-        return faceUrl;
+    public String getFaceURL() {
+        return faceURL;
     }
 
-    public void setFaceUrl(String faceUrl) {
-        this.faceUrl = faceUrl;
+    public void setFaceURL(String faceURL) {
+        this.faceURL = faceURL;
     }
 
-    public String getOwnerId() {
-        return ownerId;
+    public String getOwnerUserID() {
+        return ownerUserID;
     }
 
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
+    public void setOwnerUserID(String ownerUserID) {
+        this.ownerUserID = ownerUserID;
     }
 
     public long getCreateTime() {
@@ -96,5 +100,37 @@ public class GroupInfo {
 
     public void setMemberCount(int memberCount) {
         this.memberCount = memberCount;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getCreatorUserID() {
+        return creatorUserID;
+    }
+
+    public void setCreatorUserID(String creatorUserID) {
+        this.creatorUserID = creatorUserID;
+    }
+
+    public int getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(int groupType) {
+        this.groupType = groupType;
+    }
+
+    public String getEx() {
+        return ex;
+    }
+
+    public void setEx(String ex) {
+        this.ex = ex;
     }
 }

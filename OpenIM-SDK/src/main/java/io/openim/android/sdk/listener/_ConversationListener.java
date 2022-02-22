@@ -6,7 +6,7 @@ import io.openim.android.sdk.models.ConversationInfo;
 import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
 
-final public class _ConversationListener implements open_im_sdk.OnConversationListener {
+final public class _ConversationListener implements open_im_sdk_callback.OnConversationListener {
     private final OnConversationListener listener;
 
     public _ConversationListener(OnConversationListener listener) {

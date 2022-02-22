@@ -24,7 +24,7 @@ public class ConversationInfo {
     /**
      * 用户头像或群聊头像
      */
-    private String faceUrl;
+    private String faceURL;
     /**
      * 接收消息选项：<br/>
      * 0:在线正常接收消息，离线时进行推送<br/>
@@ -36,6 +36,10 @@ public class ConversationInfo {
      * 未读消息数量
      */
     private int unreadCount;
+    /**
+     *
+     */
+    private int groupAtType;
     /**
      * 最后一条消息 消息对象json字符串
      */
@@ -51,11 +55,15 @@ public class ConversationInfo {
     /**
      * 会话草稿设置时间
      */
-    private long draftTimestamp;
+    private long draftTextTime;
     /**
      * 是否置顶，1置顶
      */
-    private int isPinned;
+    private boolean isPinned;
+    /**
+     * 扩展预留字段
+     */
+    private String ext;
 
     public String getConversationID() {
         return conversationID;
@@ -97,12 +105,12 @@ public class ConversationInfo {
         this.showName = showName;
     }
 
-    public String getFaceUrl() {
-        return faceUrl;
+    public String getFaceURL() {
+        return faceURL;
     }
 
-    public void setFaceUrl(String faceUrl) {
-        this.faceUrl = faceUrl;
+    public void setFaceURL(String faceURL) {
+        this.faceURL = faceURL;
     }
 
     public int getRecvMsgOpt() {
@@ -119,6 +127,14 @@ public class ConversationInfo {
 
     public void setUnreadCount(int unreadCount) {
         this.unreadCount = unreadCount;
+    }
+
+    public int getGroupAtType() {
+        return groupAtType;
+    }
+
+    public void setGroupAtType(int groupAtType) {
+        this.groupAtType = groupAtType;
     }
 
     public String getLatestMsg() {
@@ -145,19 +161,27 @@ public class ConversationInfo {
         this.draftText = draftText;
     }
 
-    public long getDraftTimestamp() {
-        return draftTimestamp;
+    public long getDraftTextTime() {
+        return draftTextTime;
     }
 
-    public void setDraftTimestamp(long draftTimestamp) {
-        this.draftTimestamp = draftTimestamp;
+    public void setDraftTextTime(long draftTextTime) {
+        this.draftTextTime = draftTextTime;
     }
 
-    public int getIsPinned() {
+    public boolean isPinned() {
         return isPinned;
     }
 
-    public void setIsPinned(int isPinned) {
-        this.isPinned = isPinned;
+    public void setPinned(boolean pinned) {
+        isPinned = pinned;
+    }
+
+    public String getExt() {
+        return ext;
+    }
+
+    public void setExt(String ext) {
+        this.ext = ext;
     }
 }

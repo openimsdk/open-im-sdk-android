@@ -1,78 +1,31 @@
 package io.openim.android.sdk.models;
 
 public class GroupApplicationInfo {
-    /**
-     *
-     */
-    private String id;
-    /**
-     * 群组ID
-     */
     private String groupID;
-    /**
-     * 申请用户的ID
-     */
-    private String fromUserID;
-    /**
-     * 接收用户的ID
-     */
-    private String toUserID;
-    /**
-     * 0：未处理，1：拒绝，2：同意
-     */
-    private int flag; //INIT = 0, REFUSE = -1, AGREE = 1
-    /**
-     * 原因
-     */
+    private String groupName;
+    private String notification;
+    private String introduction;
+    private String groupFaceURL;
+    private long createTime;
+    private int status;
+    private String creatorUserID;
+    private int groupType;
+    private String ownerUserID;
+    private int memberCount;
+    private String userID;
+    private String nickname;
+    private String userFaceURL;
+    private int gender;
+
+    /// REFUSE = -1, AGREE = 1
+    /// -1：拒绝，1：同意
+    private int handleResult;
     private String reqMsg;
-    /**
-     * 处理反馈
-     */
     private String handledMsg;
-    /**
-     * 时间
-     */
-    private int createTime;
-    /**
-     * 申请用户的昵称
-     */
-    private String fromUserNickName;
-    /**
-     * 接收用户的昵称
-     */
-    private String toUserNickName;
-    /**
-     * 申请用户的头像
-     */
-    private String fromUserFaceURL;
-    /**
-     * 接收用户的昵称
-     */
-    private String toUserFaceURL;
-    /**
-     * 处理人
-     */
-    private String handledUser;
-    /**
-     * 0：申请进群, 1：邀请进群
-     */
-    private int type; //APPLICATION = 0, INVITE = 1
-    /**
-     * 0：未处理, 1：被其他人处理, 2：被自己处理
-     */
-    private int handleStatus; //UNHANDLED = 0, BY_OTHER = 1, BY_SELF = 2
-    /**
-     * 0：拒绝，1：同意
-     */
-    private int handleResult; //REFUSE = 0, AGREE = 1
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private long reqTime;
+    private String handleUserID;
+    private long handledTime;
+    private String ex;
 
     public String getGroupID() {
         return groupID;
@@ -82,28 +35,124 @@ public class GroupApplicationInfo {
         this.groupID = groupID;
     }
 
-    public String getFromUserID() {
-        return fromUserID;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setFromUserID(String fromUserID) {
-        this.fromUserID = fromUserID;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
-    public String getToUserID() {
-        return toUserID;
+    public String getNotification() {
+        return notification;
     }
 
-    public void setToUserID(String toUserID) {
-        this.toUserID = toUserID;
+    public void setNotification(String notification) {
+        this.notification = notification;
     }
 
-    public int getFlag() {
-        return flag;
+    public String getIntroduction() {
+        return introduction;
     }
 
-    public void setFlag(int flag) {
-        this.flag = flag;
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public String getGroupFaceURL() {
+        return groupFaceURL;
+    }
+
+    public void setGroupFaceURL(String groupFaceURL) {
+        this.groupFaceURL = groupFaceURL;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getCreatorUserID() {
+        return creatorUserID;
+    }
+
+    public void setCreatorUserID(String creatorUserID) {
+        this.creatorUserID = creatorUserID;
+    }
+
+    public int getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(int groupType) {
+        this.groupType = groupType;
+    }
+
+    public String getOwnerUserID() {
+        return ownerUserID;
+    }
+
+    public void setOwnerUserID(String ownerUserID) {
+        this.ownerUserID = ownerUserID;
+    }
+
+    public int getMemberCount() {
+        return memberCount;
+    }
+
+    public void setMemberCount(int memberCount) {
+        this.memberCount = memberCount;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getUserFaceURL() {
+        return userFaceURL;
+    }
+
+    public void setUserFaceURL(String userFaceURL) {
+        this.userFaceURL = userFaceURL;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public int getHandleResult() {
+        return handleResult;
+    }
+
+    public void setHandleResult(int handleResult) {
+        this.handleResult = handleResult;
     }
 
     public String getReqMsg() {
@@ -122,75 +171,35 @@ public class GroupApplicationInfo {
         this.handledMsg = handledMsg;
     }
 
-    public int getCreateTime() {
-        return createTime;
+    public long getReqTime() {
+        return reqTime;
     }
 
-    public void setCreateTime(int createTime) {
-        this.createTime = createTime;
+    public void setReqTime(long reqTime) {
+        this.reqTime = reqTime;
     }
 
-    public String getFromUserNickName() {
-        return fromUserNickName;
+    public String getHandleUserID() {
+        return handleUserID;
     }
 
-    public void setFromUserNickName(String fromUserNickName) {
-        this.fromUserNickName = fromUserNickName;
+    public void setHandleUserID(String handleUserID) {
+        this.handleUserID = handleUserID;
     }
 
-    public String getToUserNickName() {
-        return toUserNickName;
+    public long getHandledTime() {
+        return handledTime;
     }
 
-    public void setToUserNickName(String toUserNickName) {
-        this.toUserNickName = toUserNickName;
+    public void setHandledTime(long handledTime) {
+        this.handledTime = handledTime;
     }
 
-    public String getFromUserFaceURL() {
-        return fromUserFaceURL;
+    public String getEx() {
+        return ex;
     }
 
-    public void setFromUserFaceURL(String fromUserFaceURL) {
-        this.fromUserFaceURL = fromUserFaceURL;
-    }
-
-    public String getToUserFaceURL() {
-        return toUserFaceURL;
-    }
-
-    public void setToUserFaceURL(String toUserFaceURL) {
-        this.toUserFaceURL = toUserFaceURL;
-    }
-
-    public String getHandledUser() {
-        return handledUser;
-    }
-
-    public void setHandledUser(String handledUser) {
-        this.handledUser = handledUser;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
-    public int getHandleStatus() {
-        return handleStatus;
-    }
-
-    public void setHandleStatus(int handleStatus) {
-        this.handleStatus = handleStatus;
-    }
-
-    public int getHandleResult() {
-        return handleResult;
-    }
-
-    public void setHandleResult(int handleResult) {
-        this.handleResult = handleResult;
+    public void setEx(String ex) {
+        this.ex = ex;
     }
 }

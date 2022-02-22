@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
  *
  * @author alvince.zy@gmail.com
  */
-public final class StringUtils {
+public final class StringUtil {
 
     @NonNull
     public static String asString(@NonNull Object obj) {

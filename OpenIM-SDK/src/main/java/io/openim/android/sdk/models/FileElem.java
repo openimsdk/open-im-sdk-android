@@ -8,7 +8,7 @@ public class FileElem {
     /**
      *
      */
-    private String uuID;
+    private String uuid;
     /**
      * oss地址
      */
@@ -30,12 +30,12 @@ public class FileElem {
         this.filePath = filePath;
     }
 
-    public String getUuID() {
-        return uuID;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setUuID(String uuID) {
-        this.uuID = uuID;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getSourceUrl() {

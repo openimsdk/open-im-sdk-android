@@ -14,7 +14,7 @@ public class CommonUtil {
         MAIN_HANDLER.post(runnable);
     }
 
-    public static <T> void returnError(OnBase<T> onBase, long code, String error) {
+    public static <T> void returnError(OnBase<T> onBase, int code, String error) {
         if (onBase != null) {
             CommonUtil.runMainThread(() -> onBase.onError(code, error));
         }

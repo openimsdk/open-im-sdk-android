@@ -1,22 +1,24 @@
 package io.openim.android.sdk.models;
 
 public class GroupMemberRole {
-    private String uid;
-    private int setRole;
+    private String userID;
+    /// 1 ordinary member, 2 group owners, 3 administrators
+    /// 1普通成员, 2群主，3管理员
+    private int roleLevel;
 
-    public String getUid() {
-        return uid;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
-    public int getSetRole() {
-        return setRole;
+    public int getRoleLevel() {
+        return roleLevel;
     }
 
-    public void setSetRole(int setRole) {
-        this.setRole = setRole;
+    public void setRoleLevel(int roleLevel) {
+        this.roleLevel = roleLevel;
     }
 }

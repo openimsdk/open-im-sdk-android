@@ -20,6 +20,10 @@ public class Message {
      */
     private long sendTime;
     /**
+     * 会话类型 1:单聊 2:群聊
+     */
+    private int sessionType;
+    /**
      * 发送者ID
      */
     private String sendID;
@@ -53,10 +57,6 @@ public class Message {
      */
     private int platformID;
     /**
-     * 强制推送列表(被@的用户)
-     */
-    private List<String> forceList;
-    /**
      * 发送者昵称
      */
     private String senderNickName;
@@ -85,17 +85,17 @@ public class Message {
      */
     private int status;
     /**
-     * 消息备注
+     * 离线消息推送内容
      */
-    private String remark;
+    private OfflinePushInfo offlinePush;
+    /**
+     * 附加信息
+     */
+    private String attachedInfo;
     /**
      *
      */
     private Object ext;
-    /**
-     * 会话类型 1:单聊 2:群聊
-     */
-    private int sessionType;
     /**
      * 图片信息
      */
@@ -132,6 +132,10 @@ public class Message {
      * 合并信息
      */
     private MergeElem mergeElem;
+    /**
+     * 通知
+     */
+    private NotificationElem notificationElem;
 
     public String getClientMsgID() {
         return clientMsgID;
@@ -163,6 +167,14 @@ public class Message {
 
     public void setSendTime(long sendTime) {
         this.sendTime = sendTime;
+    }
+
+    public int getSessionType() {
+        return sessionType;
+    }
+
+    public void setSessionType(int sessionType) {
+        this.sessionType = sessionType;
     }
 
     public String getSendID() {
@@ -203,14 +215,6 @@ public class Message {
 
     public void setPlatformID(int platformID) {
         this.platformID = platformID;
-    }
-
-    public List<String> getForceList() {
-        return forceList;
-    }
-
-    public void setForceList(List<String> forceList) {
-        this.forceList = forceList;
     }
 
     public String getSenderNickName() {
@@ -269,12 +273,20 @@ public class Message {
         this.status = status;
     }
 
-    public String getRemark() {
-        return remark;
+    public OfflinePushInfo getOfflinePush() {
+        return offlinePush;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setOfflinePush(OfflinePushInfo offlinePush) {
+        this.offlinePush = offlinePush;
+    }
+
+    public String getAttachedInfo() {
+        return attachedInfo;
+    }
+
+    public void setAttachedInfo(String attachedInfo) {
+        this.attachedInfo = attachedInfo;
     }
 
     public Object getExt() {
@@ -283,14 +295,6 @@ public class Message {
 
     public void setExt(Object ext) {
         this.ext = ext;
-    }
-
-    public int getSessionType() {
-        return sessionType;
-    }
-
-    public void setSessionType(int sessionType) {
-        this.sessionType = sessionType;
     }
 
     public PictureElem getPictureElem() {
@@ -363,6 +367,14 @@ public class Message {
 
     public void setMergeElem(MergeElem mergeElem) {
         this.mergeElem = mergeElem;
+    }
+
+    public NotificationElem getNotificationElem() {
+        return notificationElem;
+    }
+
+    public void setNotificationElem(NotificationElem notificationElem) {
+        this.notificationElem = notificationElem;
     }
 }
 

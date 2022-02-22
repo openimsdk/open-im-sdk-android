@@ -13,50 +13,15 @@ import io.openim.android.sdk.listener.OnMsgSendCallback;
 import io.openim.android.sdk.listener._AdvanceMsgListener;
 import io.openim.android.sdk.listener._MsgSendProgressListener;
 import io.openim.android.sdk.models.Message;
+import io.openim.android.sdk.models.OfflinePushInfo;
 import io.openim.android.sdk.utils.JsonUtil;
+import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
 
 /**
  * 消息管理器
  */
 public class MessageManager {
-    /*
-    private static final List<WeakReference<OnAdvanceMsgListener>> listeners = new CopyOnWriteArrayList<>();
-    private static boolean initialized = false;
-    private static final open_im_sdk.OnAdvancedMsgListener sdkListener = new open_im_sdk.OnAdvancedMsgListener() {
-        @Override
-        public void onRecvC2CReadReceipt(String s) {
-            for (WeakReference<OnAdvanceMsgListener> r : listeners) {
-                if (r.get() != null) {
-                    List<HaveReadInfo> list = JsonUtil.toArray(s, HaveReadInfo.class);
-                    r.get().onRecvC2CReadReceipt(list);
-                }
-            }
-
-        }
-
-        @Override
-        public void onRecvMessageRevoked(String s) {
-            for (WeakReference<OnAdvanceMsgListener> r : listeners) {
-                if (r.get() != null) {
-                    r.get().onRecvMessageRevoked(s);
-                }
-            }
-
-        }
-
-        @Override
-        public void onRecvNewMessage(String s) {
-            for (WeakReference<OnAdvanceMsgListener> r : listeners) {
-                if (r.get() != null) {
-                    Message msg = JsonUtil.toObj(s, Message.class);
-                    r.get().onRecvNewMessage(msg);
-                }
-            }
-
-        }
-    };
-*/
     /**
      * 添加消息监听
      * <p>
@@ -64,44 +29,22 @@ public class MessageManager {
      * 当对方阅读了消息：onRecvC2CReadReceipt，通过回调将已读的消息更改状态。
      * 新增消息：onRecvNewMessage，向界面添加消息
      */
-    public void addAdvancedMsgListener(OnAdvanceMsgListener listener) {
-//        listeners.add(new WeakReference<>(listener));
-//        if (!initialized) {
-//            initialized = true;
-//            Open_im_sdk.addAdvancedMsgListener(sdkListener);
-//        }
-        Open_im_sdk.addAdvancedMsgListener(new _AdvanceMsgListener(listener));
+    public void setAdvancedMsgListener(OnAdvanceMsgListener listener) {
+        Open_im_sdk.setAdvancedMsgListener(new _AdvanceMsgListener(listener));
     }
-
-//    /**
-//     * 移除消息监听
-//     */
-//    public void removeAdvancedMsgListener(OnAdvanceMsgListener listener) {
-//        final Iterator<WeakReference<OnAdvanceMsgListener>> it = listeners.iterator();
-//        while (it.hasNext()) {
-//            if (it.next().get() == listener) {
-//                it.remove();
-//                break;
-//            }
-//        }
-//        if (listeners.isEmpty()) {
-//            initialized = false;
-//            Open_im_sdk.removeAdvancedMsgListener(sdkListener);
-//        }
-//    }
 
     /**
      * 发送消息
      *
-     * @param message        消息体{@link Message}
-     * @param recvUid        接受者用户id
-     * @param recvGid        群id
-     * @param onlineUserOnly 仅在线用户接受
-     * @param base           callback
-     *                       onProgress:消息发送进度，如图片，文件，视频等消息
+     * @param message         消息体{@link Message}
+     * @param recvUid         接受者用户id
+     * @param recvGid         群id
+     * @param offlinePushInfo 离线推送内容
+     * @param base            callback
+     *                        onProgress:消息发送进度，如图片，文件，视频等消息
      */
-    public void sendMessage(OnMsgSendCallback base, Message message, String recvUid, String recvGid, boolean onlineUserOnly) {
-        Open_im_sdk.sendMessage(new _MsgSendProgressListener(base), JsonUtil.toString(message), recvUid, recvGid, onlineUserOnly);
+    public void sendMessage(OnMsgSendCallback base, Message message, String recvUid, String recvGid, OfflinePushInfo offlinePushInfo) {
+        Open_im_sdk.sendMessage(new _MsgSendProgressListener(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message), recvUid, recvGid, JsonUtil.toString(offlinePushInfo));
     }
 
     /**
@@ -119,9 +62,11 @@ public class MessageManager {
         Map<String, Object> map = new ArrayMap<>();
         map.put("userID", userID);
         map.put("groupID", groupID);
-        map.put("startMsg", startMsg);
+        if (null != startMsg) {
+            map.put("startClientMsgID", startMsg.getClientMsgID());
+        }
         map.put("count", count);
-        Open_im_sdk.getHistoryMessageList(BaseImpl.arrayBase(base, Message.class), JsonUtil.toString(map));
+        Open_im_sdk.getHistoryMessageList(BaseImpl.arrayBase(base, Message.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
     /**
@@ -132,7 +77,7 @@ public class MessageManager {
      *                撤回成功需要将已显示到界面的消息类型替换为revoke类型并刷新界面
      */
     public void revokeMessage(OnBase<String> base, Message message) {
-        Open_im_sdk.revokeMessage(BaseImpl.stringBase(base), JsonUtil.toString(message));
+        Open_im_sdk.revokeMessage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
     }
 
     /**
@@ -143,12 +88,12 @@ public class MessageManager {
      *                删除成功需要将已显示到界面的消息移除
      */
     public void deleteMessageFromLocalStorage(OnBase<String> base, Message message) {
-        Open_im_sdk.deleteMessageFromLocalStorage(BaseImpl.stringBase(base), JsonUtil.toString(message));
+        Open_im_sdk.deleteMessageFromLocalStorage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
     }
 
-    public void deleteMessages(OnBase<String> base, List<Message> message) {
+//    public void deleteMessages(OnBase<String> base, List<Message> message) {
 //        Open_im_sdk.deleteMessages(BaseImpl.stringBase(base), JSON.toJSONString(message));
-    }
+//    }
 
     /**
      * 插入单挑消息到本地
@@ -159,7 +104,7 @@ public class MessageManager {
      * @param base     callback String
      */
     public void insertSingleMessageToLocalStorage(OnBase<String> base, Message message, String receiver, String sender) {
-        Open_im_sdk.insertSingleMessageToLocalStorage(BaseImpl.stringBase(base), JsonUtil.toString(message), receiver, sender);
+        Open_im_sdk.insertSingleMessageToLocalStorage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message), receiver, sender);
     }
 
     /**
@@ -168,9 +113,9 @@ public class MessageManager {
      * @param messageIDList 消息id(clientMsgID)集合
      * @param base          callback List<{@link Message}>
      */
-    public void findMessages(OnBase<List<Message>> base, List<String> messageIDList) {
-        Open_im_sdk.findMessages(BaseImpl.arrayBase(base, Message.class), JsonUtil.toString(messageIDList));
-    }
+//    public void findMessages(OnBase<List<Message>> base, List<String> messageIDList) {
+//        Open_im_sdk.findMessages(BaseImpl.arrayBase(base, Message.class), JsonUtil.toString(messageIDList));
+//    }
 
     /**
      * 标记消息已读
@@ -181,17 +126,17 @@ public class MessageManager {
      * @param base          callback String
      */
     public void markC2CMessageAsRead(OnBase<String> base, String userID, List<String> messageIDList) {
-        Open_im_sdk.markC2CMessageAsRead(BaseImpl.stringBase(base), userID, JsonUtil.toString(messageIDList));
+        Open_im_sdk.markC2CMessageAsRead(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), userID, JsonUtil.toString(messageIDList));
     }
 
     /**
      * 提示对方我正在输入
      *
      * @param userID 用户ID
-     * @param typing true：输入中 false：输入停止
+     * @param msgTip 提示信息
      */
-    public void typingStatusUpdate(String userID, boolean typing) {
-        Open_im_sdk.typingStatusUpdate(userID, typing ? "YES" : "NO");
+    public void typingStatusUpdate(OnBase<String> base, String userID, String msgTip) {
+        Open_im_sdk.typingStatusUpdate(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), userID, msgTip);
     }
 
     /**
@@ -201,7 +146,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createTextMessage(String text) {
-        return parse(Open_im_sdk.createTextMessage(text));
+        return parse(Open_im_sdk.createTextMessage(ParamsUtil.buildOperationID(), text));
     }
 
     /**
@@ -212,7 +157,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createTextAtMessage(String text, List<String> atUidList) {
-        return parse(Open_im_sdk.createTextAtMessage(text, JsonUtil.toString(atUidList)));
+        return parse(Open_im_sdk.createTextAtMessage(ParamsUtil.buildOperationID(), text, JsonUtil.toString(atUidList)));
     }
 
     /**
@@ -223,7 +168,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createImageMessage(String imagePath) {
-        return parse(Open_im_sdk.createImageMessage(imagePath));
+        return parse(Open_im_sdk.createImageMessage(ParamsUtil.buildOperationID(), imagePath));
     }
 
     /**
@@ -233,7 +178,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createImageMessageFromFullPath(String imagePath) {
-        return parse(Open_im_sdk.createImageMessageFromFullPath(imagePath));
+        return parse(Open_im_sdk.createImageMessageFromFullPath(ParamsUtil.buildOperationID(), imagePath));
     }
 
     /**
@@ -245,7 +190,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createSoundMessage(String soundPath, long duration) {
-        return parse(Open_im_sdk.createSoundMessage(soundPath, duration));
+        return parse(Open_im_sdk.createSoundMessage(ParamsUtil.buildOperationID(), soundPath, duration));
     }
 
     /**
@@ -256,7 +201,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createSoundMessageFromFullPath(String soundPath, long duration) {
-        return parse(Open_im_sdk.createSoundMessageFromFullPath(soundPath, duration));
+        return parse(Open_im_sdk.createSoundMessageFromFullPath(ParamsUtil.buildOperationID(), soundPath, duration));
     }
 
     /**
@@ -270,7 +215,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createVideoMessage(String videoPath, String videoType, long duration, String snapshotPath) {
-        return parse(Open_im_sdk.createVideoMessage(videoPath, videoType, duration, snapshotPath));
+        return parse(Open_im_sdk.createVideoMessage(ParamsUtil.buildOperationID(), videoPath, videoType, duration, snapshotPath));
     }
 
     /**
@@ -283,7 +228,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createVideoMessageFromFullPath(String videoPath, String videoType, long duration, String snapshotPath) {
-        return parse(Open_im_sdk.createVideoMessageFromFullPath(videoPath, videoType, duration, snapshotPath));
+        return parse(Open_im_sdk.createVideoMessageFromFullPath(ParamsUtil.buildOperationID(), videoPath, videoType, duration, snapshotPath));
     }
 
     /**
@@ -295,7 +240,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createFileMessage(String filePath, String fileName) {
-        return parse(Open_im_sdk.createFileMessage(filePath, fileName));
+        return parse(Open_im_sdk.createFileMessage(ParamsUtil.buildOperationID(), filePath, fileName));
     }
 
     /**
@@ -307,7 +252,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createFileMessageFromFullPath(String filePath, String fileName) {
-        return parse(Open_im_sdk.createFileMessageFromFullPath(filePath, fileName));
+        return parse(Open_im_sdk.createFileMessageFromFullPath(ParamsUtil.buildOperationID(), filePath, fileName));
     }
 
     /**
@@ -319,7 +264,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createMergerMessage(List<Message> messageList, String title, List<String> summaryList) {
-        return parse(Open_im_sdk.createMergerMessage(JsonUtil.toString(messageList), title, JsonUtil.toString(summaryList)));
+        return parse(Open_im_sdk.createMergerMessage(ParamsUtil.buildOperationID(), JsonUtil.toString(messageList), title, JsonUtil.toString(summaryList)));
     }
 
     /**
@@ -329,7 +274,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createForwardMessage(List<Message> messageList) {
-        return parse(Open_im_sdk.createForwardMessage(JsonUtil.toString(messageList)));
+        return parse(Open_im_sdk.createForwardMessage(ParamsUtil.buildOperationID(), JsonUtil.toString(messageList)));
     }
 
     /**
@@ -341,7 +286,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createLocationMessage(double latitude, double longitude, String description) {
-        return parse(Open_im_sdk.createLocationMessage(description, longitude, latitude));
+        return parse(Open_im_sdk.createLocationMessage(ParamsUtil.buildOperationID(), description, longitude, latitude));
     }
 
     /**
@@ -353,7 +298,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createCustomMessage(String data, String extension, String description) {
-        return parse(Open_im_sdk.createCustomMessage(data, extension, description));
+        return parse(Open_im_sdk.createCustomMessage(ParamsUtil.buildOperationID(), data, extension, description));
     }
 
     /**
@@ -364,7 +309,7 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createQuoteMessage(String text, Message message) {
-        return parse(Open_im_sdk.createQuoteMessage(text, JsonUtil.toString(message)));
+        return parse(Open_im_sdk.createQuoteMessage(ParamsUtil.buildOperationID(), text, JsonUtil.toString(message)));
     }
 
     /**
@@ -374,12 +319,9 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createCardMessage(String content) {
-        return parse(Open_im_sdk.createCardMessage(content));
+        return parse(Open_im_sdk.createCardMessage(ParamsUtil.buildOperationID(), content));
     }
 
-    public void forceSyncMsg() {
-        Open_im_sdk.forceSyncMsg();
-    }
 
     /**
      * 聊天设置里清除聊天记录
@@ -387,7 +329,7 @@ public class MessageManager {
      * @param uid 用户id
      */
     public void clearC2CHistoryMessage(OnBase<String> base, String uid) {
-        Open_im_sdk.clearC2CHistoryMessage(BaseImpl.stringBase(base), uid);
+        Open_im_sdk.clearC2CHistoryMessage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), uid);
     }
 
     /**
@@ -396,7 +338,7 @@ public class MessageManager {
      * @param gid 群id
      */
     public void clearGroupHistoryMessage(OnBase<String> base, String gid) {
-        Open_im_sdk.clearGroupHistoryMessage(BaseImpl.stringBase(base), gid);
+        Open_im_sdk.clearGroupHistoryMessage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid);
     }
 
     static Message parse(String msg) {
