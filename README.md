@@ -2,17 +2,13 @@
 
 [中文文档](README.zh-cn.md)
 
-##### 1.git clone https://github.com/OpenIMSDK/Open-IM-SDK-Android.git
+##### Use(使用)
+```
+    implementation 'io.openim:android-sdk:2.0.0@aar'
+    implementation 'io.openim:client-sdk:2.0.4@aar'
+```
 
-
-
-##### 2.import module OpenIM-SDK
-
-
-##### 3.sync project
-
-
-#### 混淆规则
+#### Proguard rules(混淆规则)
 ```
 # OpenIM
 -keep class io.openim.**{*;}
