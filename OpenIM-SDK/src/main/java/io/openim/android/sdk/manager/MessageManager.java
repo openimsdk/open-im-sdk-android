@@ -270,11 +270,11 @@ public class MessageManager {
     /**
      * 创建转发消息
      *
-     * @param messageList 消息列表
+     * @param message 消息体
      * @return {@link Message}
      */
-    public Message createForwardMessage(List<Message> messageList) {
-        return parse(Open_im_sdk.createForwardMessage(ParamsUtil.buildOperationID(), JsonUtil.toString(messageList)));
+    public Message createForwardMessage(Message message) {
+        return parse(Open_im_sdk.createForwardMessage(ParamsUtil.buildOperationID(), JsonUtil.toString(message)));
     }
 
     /**

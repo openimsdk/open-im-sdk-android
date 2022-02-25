@@ -1,2220 +1,1372 @@
-Open-IM-SDK-Android
-===
+SDK使用步骤
 
-# 1. 初始化与登录
+##### 1，初始化
 
-## 1.1. initSDK
-
-初始化OpenIM SDK,设置SDK网络连接地址以及本地数据存放目录等。
-
-```java
-OpenIMClient.getInstance().initSDK(platform, ipApi, ipWs, dbPath, new InitSDKListener() {
+```
+String apiUrl = ""; // SDK的API接口地址。如：http:xxx:10000
+String wsUrl = ""; // SDK的API接口地址。如：http:xxx:10000
+String storageDir = ""; // 数据存储路径。如：context.getCacheDir().getAbsolutePath()
+int logLevel = 6; // 日志等级
+String objectStorage = "cos"; // 图片上传服务器如 腾讯cos
+boolean result = OpenIMClient.getInstance().initSDK(apiUrl, wsUrl, storageDir, logLevel, objectStorage,
+    new OnConnListener() {
         @Override
         public void onConnectFailed(long code, String error) {
+            // 连接服务器失败，可以提示用户当前网络连接不可用
         }
 
         @Override
         public void onConnectSuccess() {
+            // 已经成功连接到服务器
         }
 
         @Override
         public void onConnecting() {
+            // 正在连接到服务器，适合在 UI 上展示“正在连接”状态。
         }
 
         @Override
         public void onKickedOffline() {
-        }
-
-        @Override
-        public void onSelfInfoUpdated(UserInfo info) {
+            // 当前用户被踢下线，此时可以 UI 提示用户“您已经在其他端登录了当前账号，是否重新登录？”
         }
 
         @Override
         public void onUserTokenExpired() {
+            // 登录票据已经过期，请使用新签发的 UserSig 进行登录。
         }
+    });
+```
+
+##### 2，设置监听器
+
+```
+OpenIMClient.getInstance().userInfoManager.setOnUserListener(new OnUserListener() {
+    @Override
+    public void onSelfInfoUpdated(UserInfo info) {
+        // 当前登录用户资料变更回调
+    }
+});
+
+OpenIMClient.getInstance().messageManager.setAdvancedMsgListener(new OnAdvanceMsgListener() {
+    @Override
+    public void onRecvNewMessage(Message msg) {
+        // 收到新消息，界面添加新消息
+    }
+
+    @Override
+    public void onRecvC2CReadReceipt(List<ReadReceiptInfo> list) {
+        // 消息被阅读回执，将消息标记为已读
+    }
+
+    @Override
+    public void onRecvMessageRevoked(String msgId) {
+        // 消息成功撤回，从界面移除消息
+    }
+});
+
+OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFriendshipListener() {
+    @Override
+    public void onBlacklistAdded(BlacklistInfo u) {
+        // 拉入黑名单
+    }
+
+    @Override
+    public void onBlacklistDeleted(BlacklistInfo u) {
+        // 从黑名单删除
+    }
+
+    @Override
+    public void onFriendApplicationAccepted(FriendApplicationInfo u) {
+        // 发出或收到的好友申请已同意
+    }
+
+    @Override
+    public void onFriendApplicationAdded(FriendApplicationInfo u) {
+        // 发出或收到的好友申请被添加
+    }
+
+    @Override
+    public void onFriendApplicationDeleted(FriendApplicationInfo u) {
+        // 发出或收到的好友申请被删除
+    }
+
+    @Override
+    public void onFriendApplicationRejected(FriendApplicationInfo u) {
+        // 发出或收到的好友申请被拒绝
+    }
+
+    @Override
+    public void onFriendInfoChanged(FriendInfo u) {
+        // 朋友的资料发生变化
+    }
+
+    @Override
+    public void onFriendAdded(FriendInfo u) {
+        // 好友被添加
+    }
+
+    @Override
+    public void onFriendDeleted(FriendInfo u) {
+        // 好友被删除
+    }
+});
+
+OpenIMClient.getInstance().conversationManager.setOnConversationListener(new OnConversationListener() {
+    @Override
+    public void onConversationChanged(List<ConversationInfo> list) {
+        // 已添加的会话发送改变
+    }
+
+    @Override
+    public void onNewConversation(List<ConversationInfo> list) {
+        // 新增会话
+    }
+
+    @Override
+    public void onSyncServerFailed() {
+
+    }
+
+    @Override
+    public void onSyncServerFinish() {
+
+    }
+
+    @Override
+    public void onSyncServerStart() {
+
+    }
+
+    @Override
+    public void onTotalUnreadMessageCountChanged(int i) {
+        // 未读消息数发送变化
+    }
+});
+
+OpenIMClient.getInstance().groupManager.setOnGroupListener(new OnGroupListener() {
+    @Override
+    public void onGroupApplicationAccepted(GroupApplicationInfo info) {
+        // 发出或收到的组申请被接受
+    }
+
+    @Override
+    public void onGroupApplicationAdded(GroupApplicationInfo info) {
+        // 发出或收到的组申请有新增
+    }
+
+    @Override
+    public void onGroupApplicationDeleted(GroupApplicationInfo info) {
+        // 发出或收到的组申请被删除
+    }
+
+    @Override
+    public void onGroupApplicationRejected(GroupApplicationInfo info) {
+        // 发出或收到的组申请被拒绝
+    }
+
+    @Override
+    public void onGroupInfoChanged(GroupInfo info) {
+        // 组资料变更
+    }
+
+    @Override
+    public void onGroupMemberAdded(GroupMembersInfo info) {
+        // 组成员进入
+    }
+
+    @Override
+    public void onGroupMemberDeleted(GroupMembersInfo info) {
+        // 组成员退出
+    }
+
+    @Override
+    public void onGroupMemberInfoChanged(GroupMembersInfo info) {
+        // 组成员信息发生变化
+    }
+
+    @Override
+    public void onJoinedGroupAdded(GroupInfo info) {
+        // 创建群： 初始成员收到；邀请进群：被邀请者收到
+    }
+
+    @Override
+    public void onJoinedGroupDeleted(GroupInfo info) {
+        // 退出群：退出者收到；踢出群：被踢者收到
+    }
 });
 ```
 
-- 参数说明：
+##### 3，登录
 
-| 名称     | 类型              | 描述                                                      |
-| -------- | ----------------- | --------------------------------------------------------- |
-| platform | int               | 平台类型：IMPlatform类                                    |
-| ipApi    | String            | SDK的API接口地址。如：http:xxx:10000                      |
-| ipWs     | String            | SDK的web socket地址。如： ws:xxx:17778                    |
-| dbPath   | String            | 数据存储路径。如：context.getCacheDir().getAbsolutePath() |
-| listener | OnInitSDKListener | SDK初始化监听                                             |
-
-<font color='red'> 注：在创建图片，语音，视频，文件等需要路径参数的消息体时，如果选择的是非全路径方法如：createSoundMessage（全路径方法为：createSoundMessageFromFullPath），需要将文件自行拷贝到<font color='blue'>dbPath</font>目录下，如果此时文件路径为 apath+"/sound/a.mp3"，则参数path的值为：/sound/a.mp3。如果选择的全路径方法，路径为你文件的实际路径不需要再拷贝。 </font>
-
-- OnInitSDKListener
-
-| 事件回调          | 事件描述                 | 推荐操作                                                           |
-| ----------------- | ------------------------ | ------------------------------------------------------------------ |
-| onConnecting      | 正在连接到服务器         | 适合在 UI 上展示“正在连接”状态。                                   |
-| onConnectSuccess  | 连接服务器失败           | -                                                                  |
-| onConnectFailed   | 已经成功连接到服务器     | 可以提示用户当前网络连接不可用                                     |
-| onKickedOffline   | 当前用户被踢下线         | 此时可以 UI 提示用户“您已经在其他端登录了当前账号，是否重新登录？” |
-| onUserSigExpired  | 登录票据已经过期         | 请使用新签发的 UserSig 进行登录。                                  |
-| onSelfInfoUpdated | 当前用户的资料发生了更新 | 可以在 UI 上更新自己的头像和昵称。                                 |
-
-## 1.2. login
-
-使用用户ID(uid)和token登录，uid来自于自身业务服务器，token需要业务服务器根据secret向OpenIM服务端交换获取。
-
-```java
+```
+String uid = ""; // uid来自于自身业务服务器
+String token = ""; // token需要业务服务器根据secret向OpenIM服务端交换获取
 OpenIMClient.getInstance().login(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
 
     @Override
     public void onSuccess(String data) {
+
     }
 }, uid, token);
 ```
 
-- 参数说明
-
-| 名称  | 类型   | 描述      |
-| ----- | ------ | --------- |
-| uid   | String | 用户ID    |
-| token | String | 用户token |
 
 
+## 方法名、参数、返回值说明
 
-## 1.3. logout
+- ##### logout（ 登出）
 
-登出OpenIM，通常在切换账号的时候调用，清除登录态以及内存中的所有数据。
-
-```java
+```
 OpenIMClient.getInstance().logout(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+        
     }
 
     @Override
     public void onSuccess(String data) {
+
     }
 });
 ```
 
+- ##### getUsersInfo（根据用户ID批量获取用户信息）
 
-
-## 1.4. getLoginStatus
-
-获取当前用户登录状态。
-
-```java
-int value = OpenIMClient.getInstance().getLoginStatus();
 ```
-
-- 返回值说明：
-
-```java
-if (value == 101) {
-    // 登录成功
-}
-```
-
-
-
-## 1.5. getLoginUid
-
-获取当前登录用户ID。
-
-```java
-String uid = OpenIMClient.getInstance().getLoginUid();
-```
-
-
-
-## 1.6. getLoginUserInfo
-
-获取当前登录用户的信息
-
-```java
-List<String> ids = new ArrayList<>();
-ids.add(uid); // uid =  getLoginUid()
-OpenIMClient.getInstance().getUsersInfo(new OnBase<List<UserInfo>>() {
+List<String> uidList = new ArrayList<>(); // 用户ID集合
+OpenIMClient.getInstance().userInfoManager.getUsersInfo(new OnBase<List<UserInfo>>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
 
     @Override
     public void onSuccess(List<UserInfo> data) {
+
     }
-}, ids);
+}, uidList);
 ```
 
+- ##### getSelfUserInfo（获取当前登录用户的资料）
 
-
-## 1.7. setSelfInfo
-
-修改当前登录用户信息
-
-```java
-OpenIMClient.getInstance().setSelfInfo(new OnBase<String>() {
+```
+OpenIMClient.getInstance().userInfoManager.getSelfUserInfo(new OnBase<UserInfo>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
 
     @Override
-    public void onSuccess(String data) {
-    }
-}, name, icon, gender, mobile, birth, email);
-```
-
-参数说明：
-
-| 名称   | 类型   | 描述          |
-| ------ | ------ | ------------- |
-| name   | String | 用户名        |
-| icon   | String | 头像          |
-| gender | int    | 性别:1女，2男 |
-| mobile | String | 手机号        |
-| birth  | String | 出生日期      |
-| email  | String | 邮箱          |
-
-
-
-## 1.8. unInitSDK
-
-取消初始化，一般用于在初始化后需要重新初始化
-
-```java
-OpenIMClient.getInstance().unInitSDK();
-```
-
-
-
-# 2. 用户资料
-
-## 2.1. getUsersInfo
-
-根据用户ID批量获取用户信息
-
-```java
-List<String> ids = new ArrayList<>();
-ids.add(uid1);
-ids.add(uid2);
-OpenIMClient.getInstance().getUsersInfo(new OnBase<List<UserInfo>>() {
-    @Override
-    public void onError(long code, String error) {
-    }
-    
-    @Override
-    public void onSuccess(List<UserInfo> data) {
-    }
-}, ids);
-```
-
-- 参数说明：
-
-| 名称    | 类型           | 描述       |
-| ------- | -------------- | ---------- |
-| uidList | List< String > | 用户ID集合 |
-
-- 返回值说明：
-
-| 类型            | 描述         |
-| --------------- | ------------ |
-| List< UserInfo> | 用户信息列表 |
-
-
-
-# 3. 消息
-
-## 3.1. createTextMessage
-
-创建一条文字消息。
-
-```java
-OpenIMClient.getInstance().messageManager.createTextMessage(text);
-```
-
-- 参数说明：
-
-| 名称 | 类型   | 描述     |
-| ---- | ------ | -------- |
-| text | String | 消息内容 |
-
-返回值说明：
-
-| 类型    | 描述     |
-| ------- | -------- |
-| Message | 消息对象 |
-
-
-
-## 3.2. createTextAtMessage
-
-创建一条@消息
-
-```java
-OpenIMClient.getInstance().messageManager.createTextAtMessage(text,atUidList);
-```
-
-- 参数说明：
-
-| 名称      | 类型          | 描述             |
-| --------- | ------------- | ---------------- |
-| text      | String        | 消息内容         |
-| atUidList | List< String> | 选择的用户id集合 |
-
-
-
-## 3.3. createImageMessage
-
-创建图片消息
-
-```java
-OpenIMClient.getInstance().messageManager.createImageMessage(imagePath);
-```
-
-- 参数说明：
-
-| 名称      | 类型   | 描述           |
-| --------- | ------ | -------------- |
-| imagePath | String | 图片的相对路径 |
-
-<font color='red'>注：initSDK时传入了数据缓存路径，如路径：A，这时需要你将图片复制到A路径下后，如 A/pic/a.png路径，imagePath的值：“/pic/a.png”</font>。
-
-
-
-## 3.4. createImageMessageFromFullPath
-
-创建图片消息（绝对路径）
-
-```java
-OpenIMClient.getInstance().messageManager.createImageMessageFromFullPath(imagePath);
-```
-
-- 参数说明：
-
-| 名称      | 类型   | 描述                     |
-| --------- | ------ | ------------------------ |
-| imagePath | String | 图片在设备上的的绝对路径 |
-
-此方法不需要拷贝，<font color='blue'>推荐使用</font>。
-
-
-
-## 3.5. createSoundMessage
-
-创建语音消息
-
-```java
-OpenIMClient.getInstance().messageManager.createSoundMessage(soundPath, duration);
-```
-
-- 参数说明：
-
-| 名称      | 类型   | 描述             |
-| --------- | ------ | ---------------- |
-| soundPath | String | 相对路径         |
-| duration  | int    | 语音时长，单位秒 |
-
-<font color='red'>注：initSDK时传入了数据缓存路径，如路径：A，这时需要你将语音文件复制到A路径下后，如 A/sound/a.m4a路径，soundPath的值：“/sound/a.m4a”</font>。
-
-
-
-## 3.6. createSoundMessageFromFullPath
-
-创建语音消息（绝对路径）
-
-```java
-OpenIMClient.getInstance().messageManager.createSoundMessageFromFullPath(soundPath, duration);
-```
-
-- 参数说明：
-
-| 名称      | 类型   | 描述                 |
-| --------- | ------ | -------------------- |
-| soundPath | String | 在设备上的的绝对路径 |
-| duration  | int    | 语音时长，单位秒     |
-
-此方法不需要拷贝，<font color='blue'>推荐使用</font>。
-
-
-
-## 3.7. createVideoMessage
-
-创建视频消息
-
-```java
-OpenIMClient.getInstance().messageManager.createVideoMessage(videoPath, videoType, duration, snapshotPath);
-```
-
-- 参数说明：
-
-| 名称         | 类型   | 描述             |
-| ------------ | ------ | ---------------- |
-| videoPath    | String | 相对路径         |
-| videoType    | String | 文件的mineType   |
-| duration     | int    | 视频时长，单位秒 |
-| snapshotPath | String | 视频的缩略图     |
-
-<font color='red'>注：initSDK时传入了数据缓存路径，如路径：A，这时需要你将视频文件复制到A路径下后，如 A/video/a.mp4路径，videoPath的值：“/video/a.mp4”</font>
-
-
-
-## 3.8. createVideoMessageFromFullPath
-
-创建视频消息（绝对路径）
-
-```java
-OpenIMClient.getInstance().messageManager.createVideoMessageFromFullPath(videoPath, videoType, duration, snapshotPath);
-```
-
-- 参数说明：
-
-| 名称         | 类型   | 描述                 |
-| ------------ | ------ | -------------------- |
-| videoPath    | String | 在设备上的的绝对路径 |
-| videoType    | String | 文件的mineType       |
-| duration     | int    | 视频时长，单位秒     |
-| snapshotPath | String | 视频的缩略图         |
-
-此方法不需要拷贝，<font color='blue'>推荐使用</font>。
-
-
-
-## 3.9. createFileMessage
-
-创建文件消息
-
-```java
-OpenIMClient.getInstance().messageManager.createFileMessage(filePath, fileName);
-```
-
-- 参数说明：
-
-| 名称     | 类型   | 描述     |
-| -------- | ------ | -------- |
-| filePath | String | 相对路径 |
-| fileName | String | 文件名   |
-
-<font color='red'>注：initSDK时传入了数据缓存路径，如路径：A，这时需要你将视频文件复制到A路径下后，如 A/file/a.txt路径，filePath的值：“/file/a.txt”</font>
-
-
-
-## 3.10. createFileMessageFromFullPath
-
-创建文件消息（绝对路径）
-
-```java
-OpenIMClient.getInstance().messageManager.createFileMessageFromFullPath(filePath, fileName);
-```
-
-- 参数说明：
-
-| 名称     | 类型   | 描述                 |
-| -------- | ------ | -------------------- |
-| filePath | String | 在设备上的的绝对路径 |
-| fileName | String | 文件名               |
-
-此方法不需要拷贝，<font color='blue'>推荐使用</font>。
-
-
-
-## 3.11. createLocationMessage
-
-创建位置消息
-
-```java
-OpenIMClient.getInstance().messageManager.createLocationMessage(latitude, longitude, description);
-```
-
-- 参数说明：
-
-| 名称        | 类型   | 描述                                   |
-| ----------- | ------ | -------------------------------------- |
-| latitude    | double | 纬度                                   |
-| longitude   | double | 经度                                   |
-| description | String | 描述信息，可以根据自己的需求传任何数据 |
-
-description：在位置消息展示时，有位置名，位置描述，定位图片信息。  
-推荐 description：
-```json
-{"title":"天府新谷","detail":"四川省高新区石羊街道府城大道西段399号","url":"https://apis.map.qq.com/ws/staticmap/v2/?center=%s&zoom=18&size=600*300&maptype=roadmap&markers=size:large|color:0xFFCCFF|label:k|%s&key=TMNBZ-3CGC6-C6SSL-EJA3B-E2P5Q-V7F6Q"}
-```
-
-
-
-## 3.12. createQuoteMessage
-
-创建引用消息
-
-```java
-OpenIMClient.getInstance().messageManager.createQuoteMessage(text, message);
-```
-
-- 参数说明：
-
-| 名称     | 类型        | 描述                    |
-| -------- | ----------- | ----------------------- |
-| text     | String      | 消息内容                |
-| quoteMsg | Message对象 | 被引用的消息对象Message |
-
-
-
-## 3.13. createCardMessage
-
-创建名片消息
-
-```java
-OpenIMClient.getInstance().messageManager.createCardMessage(content);
-```
-
-- 参数说明：
-
-| 名称    | 类型   | 描述                           |
-| ------- | ------ | ------------------------------ |
-| content | String | json字符串，按需求自定义内容。 |
-
-
-
-## 3.14. createMergerMessage
-
-创建合并消息
-
-```java
-OpenIMClient.getInstance().messageManager.createMergerMessage(messageList, title, summaryList);
-```
-
-- 参数说明：
-
-| 名称        | 类型           | 描述             |
-| ----------- | -------------- | ---------------- |
-| title       | String         | 标题             |
-| summaryList | List< String>  | 摘要             |
-| messageList | List< Message> | 被选中的消息集合 |
-
-
-
-## 3.15. createForwardMessage
-
-创建转发消息
-
-```java
-OpenIMClient.getInstance().messageManager.createForwardMessage(message);
-```
-
-- 参数说明：
-
-| 名称    | 类型    | 描述                    |
-| ------- | ------- | ----------------------- |
-| message | Message | 被选择转发的Message对象 |
-
-
-
-## 3.16. createCustomMessage
-
-创建自定义消息
-
-```java
-OpenIMClient.getInstance().messageManager.createCustomMessage(data, extension, description);
-```
-
-- 参数说明：
-
-| 名称        | 类型   | 描述           |
-| ----------- | ------ | -------------- |
-| data        | String | 自定义json数据 |
-| extension   | String | 自定义json数据 |
-| description | String | 自定义json数据 |
-
-## 3.17. sendMessage
-
-发送消息
-
-```java
-OpenIMClient.getInstance().messageManager.sendMessage(new OnMsgSendCallback() {               
-    @Override
-    public void onError(long code, String error) {
-    }
-
-    @Override
-    public void onProgress(long progress) {
-        // 消息发送进度监听，主要用途：图片，视频，文件等上传进度监听。
-    }
-
-    @Override
-    public void onSuccess(String s) {
-    }
-}, message, recvUid, recvGid, onlineUserOnly);
-```
-
-- 参数说明：
-
-| 名称           | 类型    | 描述               |
-| -------------- | ------- | ------------------ |
-| message        | Message | 创建的消息结构体   |
-| userID         | String  | 单聊对象的用户id   |
-| groupID        | String  | 群聊id             |
-| onlineUserOnly | boolean | 是否仅在线用户接收 |
-
-注：如果一对一聊天 `userID` 不能为空。如果群聊天 `groupID` 不能为空。
-
-## 3.18. typingStatusUpdate
-
-提示用户正在输入
-
-```java
-OpenIMClient.getInstance().messageManager.typingStatusUpdate(userID, typing);
-```
-
-- 参数说明：
-
-| 名称   | 类型    | 描述                                |
-| ------ | ------- | ----------------------------------- |
-| userID | String  | 单聊对象的用户id                    |
-| typing | boolean | typing：true正在输入，false停止输入 |
-
-<font color='red'>注：单聊使用此功能，在收到的新消息回调里如果消息类型为typing消息且typing == 'yes'提示正在输入。typing=='no'取消提示</font>
-
-
-
-## 3.19. revokeMessage
-
-撤回消息
-
-```java
-OpenIMClient.getInstance().messageManager.revokeMessage(new OnBase<String>() {
-    @Override
-    public void onError(long code, String error) {
-    }
-    
-    @Override
-    public void onSuccess(String data) {
-    }
-}, message);
-```
-
-- 参数说明：
-
-| 名称    | 类型    | 描述           |
-| ------- | ------- | -------------- |
-| message | Message | 被撤回的消息体 |
-
-<font color='red'>注：调用此方法会触发消息撤回回调，可以在回调里移除界面上的消息显示。也会触发新增消息回调，新增的消息类型为撤回消息类型，可以在界面显示一条xx撤回了一条消息</font>
-
-
-
-## 3.20. markC2CMessageAsRead
-
-标记接收的消息为已读
-
-```java
-OpenIMClient.getInstance().messageManager.markC2CMessageAsRead(new OnBase<String>() {
-    @Override
-    public void onError(long code, String error) {
-    }
-    
-    @Override
-    public void onSuccess(String data) {
-    }
-}, userID, messageIDList);
-```
-
-- 参数说明：
-
-| 名称          | 类型          | 描述                     |
-| ------------- | ------------- | ------------------------ |
-| userID        | String        | 单聊对象的用户id         |
-| messageIDList | List< String> | 被标记为已读消息的消息id |
-
-<font color='red'>注：单聊使用此功能，调用此方法会触发对方的c2c消息已读回调，可以在回调里修改界面上的消息已读状态</font>
-
-
-
-## 3.21. getHistoryMessageList
-
-获取聊天记录
-
-```java
-OpenIMClient.getInstance().messageManager.getHistoryMessageList(new OnBase<List<Message>>() {
-    @Override
-    public void onError(long code, String error) {
-    }
-    
-    @Override
-    public void onSuccess(List<Message> data) {
-    }
-},  userID,  groupID,  startMsg,  count);
-```
-
-- 参数说明：
-
-| 名称     | 类型    | 描述             |
-| -------- | ------- | ---------------- |
-| userID   | String  | 单聊对象的用户id |
-| groupID  | String  | 群聊id           |
-| count    | int     | 拉取的条数       |
-| startMsg | Message | 从哪一个消息开始 |
-
-<font color='red'>注：startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到List< Message> list；下一次拉取消息记录参数：startMsg=list.first && count =20；以此内推，startMsg始终为list的第一条。</font>
-
-## 3.22. addAdvancedMsgListener
-
-添加消息监听
-
-```java
-OpenIMClient.getInstance().messageManager.addAdvancedMsgListener(new OnAdvanceMsgListener() {
-    @Override
-    public void onRecvNewMessage(Message msg) {
-        // 如果是当前窗口的消息
-        if (isCurrentChat(message)) {
-            // 正在输入消息
-            if (message.contentType == MessageType.typing) {
-                //
-            } else {
-                // 新增消息
-                if (!messageList.contains(message)) {
-                    messageList.add(message);
-                }
-            }
-        }
-    }
-    
-    @Override
-    public void onRecvC2CReadReceipt(List<HaveReadInfo> list) {
-        // 消息已读回执
-        messageList.forEach((e) {
-            // 获取当前聊天窗口的已读回执
-            var info = list.firstWhere((element) => element.uid == uid);
-            // 标记消息列表里对应的消息为已读状态
-            if (info.msgIDList?.contains(e.clientMsgID) == true) {
-                e.isRead = true;
-            }
-        });
-    }
-    
-    @Override
-    public void onRecvMessageRevoked(String msgId) {
-        // 消息被撤回回调
-        var revokedMsg = Message(clientMsgID: msgId);
-        messageList.remove(revokedMsg);
+    public void onSuccess(UserInfo data) {
+        // 返回当前登录用户的资料
     }
 });
 ```
 
-| 事件回调           | 事件描述       | 推荐操作         |
-| ------------------ | -------------- | ---------------- |
-| recvMessageRevoked | 消息成功撤回   | 从界面移除消息   |
-| recvC2CReadReceipt | 消息被阅读回执 | 将消息标记为已读 |
-| recvNewMessage     | 收到新消息     | 界面添加新消息   |
+- ##### setSelfInfo（修改当前用登录户资料）
 
+会触发当用户的onSelfInfoUpdated回调，以及好友的onFriendInfoChanged、onConversationChanged回调。
 
-
-## 3.23. removeAdvancedMsgListener
-
-移除消息监听
-
-```java
-OpenIMClient.getInstance().messageManager.removeAdvancedMsgListener(listener);
 ```
-
-- 参数说明：
-
-| 名称     | 类型                      | 描述                       |
-| -------- | ------------------------- | -------------------------- |
-| listener | OnAdvancedMsgListener对象 | listener为3.22中创建的实例 |
-
-
-
-## 3.24. deleteMessageFromLocalStorage
-
-删除本地消息。
-
-```java
-OpenIMClient.getInstance().messageManager.deleteMessageFromLocalStorage(new OnBase<String>() {
+String nickname = ""; // 用户昵称
+String faceURL = ""; // 用户头像 
+int gender = 0; // 性别：1男，0女
+int appMangerLevel = 1;
+String phoneNumber = ""; // 手机号
+long birth = 0L; // 出生日期
+String email = ""; //邮箱
+String ex = ""; // 额外信息
+OpenIMClient.getInstance().userInfoManager.setSelfInfo(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
-}, message);
+}, nickname, faceURL, gender, appMangerLevel, phoneNumber, birth, email, ex);
 ```
 
-- 参数说明：
+- ##### getAllConversationList（获取所有会话）
 
-| 名称    | 类型    | 描述             |
-| ------- | ------- | ---------------- |
-| message | Message | 被删除的消息对象 |
-
-
-
-## 3.25. insertSingleMessageToLocalStorage
-
-插入一条消息到本地。
-
-```java
-OpenIMClient.getInstance().messageManager.insertSingleMessageToLocalStorage(new OnBase<String>() {
-    @Override
-    public void onError(long code, String error) {
-    }
-    
-    @Override
-    public void onSuccess(String data) {
-    }
-}, message,  receiver,  sender);
 ```
-
-- 参数说明：
-
-| 名称     | 类型    | 描述       |
-| -------- | ------- | ---------- |
-| recevier | String  | 接收者ID   |
-| sender   | String  | 发送者ID   |
-| message  | Message | 消息结构体 |
-
-
-
-## 3.26. findMessages
-
-根据消息ID查找本地消息。
-
-```java
-OpenIMClient.getInstance().messageManager.findMessages(new OnBase<List<Message>>() {
-    @Override
-    public void onError(long code, String error) {
-    }
-    
-    @Override
-    public void onSuccess(List<Message> data) {
-    }
-}, messageIDList);
-```
-
-- 参数说明：
-
-| 名称          | 类型          | 描述                      |
-| ------------- | ------------- | ------------------------- |
-| messageIDList | List< String> | 消息id（clientMsgID）集合 |
-
-
-
-# 4. 会话
-
-## 4.1. getAllConversationList
-
-拉取当前所有的会话记录
-
-```java
 OpenIMClient.getInstance().conversationManager.getAllConversationList(new OnBase<List<ConversationInfo>>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+        
     }
-    
+
     @Override
     public void onSuccess(List<ConversationInfo> data) {
+
     }
 });
 ```
 
+- ##### getConversationListSplit（分页获取会话）
 
-
-## 4.2. getOneConversation
-
-根据用户ID或群聊ID和session类型获取单个会话。
-
-```java
-OpenIMClient.getInstance().conversationManager.getOneConversation(new OnBase<ConversationInfo>() {
-    @Override
-    public void onError(long code, String error) {
-    }
-    
-    @Override
-    public void onSuccess(ConversationInfo data) {
-    }
-}, sourceId, sessionType);
 ```
-
-- 参数说明：
-
-| 名称        | 类型   | 描述                                                          |
-| ----------- | ------ | ------------------------------------------------------------- |
-| sourceID    | String | 如果是单聊其值为单聊对象的userId；如果是群聊其值为群的groupId |
-| sessionType | String | 如果是单聊sessionType=1；群聊sessionType=2                    |
-
-## 4.3. getMultipleConversation
-
-根据会话ID获取多个会话。
-
-```java
-OpenIMClient.getInstance().conversationManager.getMultipleConversation(new OnBase<List<ConversationInfo>>() {
+long offset = 0; // 偏移量，如：第1页，offset：0，count：20；第2页：offset：20；
+long count = 0; // 每页数量
+OpenIMClient.getInstance().conversationManager.getConversationListSplit(new OnBase<List<ConversationInfo>>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(List<ConversationInfo> data) {
+
+    }
+}, count, offset);
+```
+
+- ##### getOneConversation（获取一个会话，如果不存在会自动创建）
+
+```
+String sourceID = ""; // 如果是单聊值传userID，如果是群聊groupID
+int sessionType = 1; // 如果是单聊值传1，如果是群聊值传2
+OpenIMClient.getInstance().conversationManager.getOneConversation(new OnBase<ConversationInfo>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(ConversationInfo data) {
+
+    }
+}, sourceID, sessionType);
+```
+
+- ##### getMultipleConversation（根据会话id查询会话）
+
+```
+List<String> conversationIDList = new ArrayList<>(); // 会话ID集合
+OpenIMClient.getInstance().conversationManager.getMultipleConversation(new OnBase<List<ConversationInfo>>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(List<ConversationInfo> data) {
+
     }
 }, conversationIDList);
 ```
 
-- 参数说明：
+- ##### deleteConversation（根据会话id删除指定会话)
 
-| 名称               | 类型          | 描述         |
-| ------------------ | ------------- | ------------ |
-| conversationIDList | List< String> | 会话的id集合 |
+会触onTotalUnreadMessageCountChanged回调
 
-
-
-## 4.4. deleteConversation
-
-删除会话，执行此操作会触发会话记录发生改变回调。
-
-```java
+```
+String conversationID = ""; // 会话id
 OpenIMClient.getInstance().conversationManager.deleteConversation(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
 }, conversationID);
 ```
 
-- 参数说明：
+- ##### setConversationDraft（设置会话草稿）
 
-| 名称           | 类型   | 描述           |
-| -------------- | ------ | -------------- |
-| conversationID | String | 被删除的会话id |
+会触onConversationChanged回调
 
-
-
-##  4.5. setConversationDraft
-
-设置草稿，执行此操作会触发会话记录发生改变回调。
-
-```java
+```
+String conversationID = ""; // 会话id
+String draftText = ""; // 草稿
 OpenIMClient.getInstance().conversationManager.setConversationDraft(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
-}, conversationID,  draftText);
+}, conversationID, draftText);
 ```
 
-- 参数说明：
+- ##### pinConversation（置顶会话）
 
-| 名称           | 类型   | 描述                 |
-| -------------- | ------ | -------------------- |
-| draftText      | String | 未完成发送的消息内容 |
-| conversationID | String | 会话id               |
+会触onConversationChanged回调
 
-
-
-## 4.6. pinConversation
-
-置顶会话，执行此操作会触发会话记录发生改变回调。
-
-```java
+```
+String conversationID = ""; // 会话id
+boolean isPinned = true; // true：置顶；false：取消置顶
 OpenIMClient.getInstance().conversationManager.pinConversation(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
-}, conversationID,  isPinned);
+}, conversationID, isPinned);
 ```
 
-- 参数说明：
+- ##### markGroupMessageHasRead（标记群会话已读，清除未读数）
 
-| 名称           | 类型    | 描述                        |
-| -------------- | ------- | --------------------------- |
-| isPinned       | boolean | true：置顶，false：取消置顶 |
-| conversationID | String  | 会话id                      |
+会触onConversationChanged、onTotalUnreadMessageCountChanged回调
 
-注：ConversationInfo对象里的isPinned字段，isPinned==1代表置顶
-
-
-
-## 4.7. markSingleMessageHasRead
-
-标记单聊会话消息为已读。
-
-```java
-OpenIMClient.getInstance().conversationManager.markSingleMessageHasRead(new OnBase<String>() {
-    @Override
-    public void onError(long code, String error) {
-    }
-    
-    @Override
-    public void onSuccess(String data) {
-    }
-}, userID);
 ```
-
-- 参数说明：
-
-| 名称   | 类型   | 描述       |
-| ------ | ------ | ---------- |
-| userID | String | 单聊用户id |
-
-
-
-## 4.8. markGroupMessageHasRead
-
-标记群聊会话消息已读。
-
-```java
+String groupID = ""; // 组ID
 OpenIMClient.getInstance().conversationManager.markGroupMessageHasRead(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
 }, groupID);
 ```
 
-- 参数说明：
+- ##### getTotalUnreadMsgCount（获取未读消息总数）
 
-| 名称    | 类型   | 描述   |
-| ------- | ------ | ------ |
-| groupID | String | 群组id |
-
-
-
-## 4.9. getTotalUnreadMsgCount
-
-获取消息总未读。
-
-```java
+```
 OpenIMClient.getInstance().conversationManager.getTotalUnreadMsgCount(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+        
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
 });
 ```
 
+- ##### getConversationIDBySessionType（查询会话id）
 
-
-## 4.10. setConversationListener
-
-设置会话监听器，会话记录发生改变时回调。
-
-```java
-OpenIMClient.getInstance().conversationManager.setOnConversationListener(new OnConversationListener() {
-    @Override
-    public void onConversationChanged(List<ConversationInfo> list) {
-        // 会话记录改变
-    }
-    
-    @Override
-    public void onNewConversation(List<ConversationInfo> list) {
-        // 新增会话            
-    }            
-    
-    @Override
-    public void onSyncServerFailed() {
-    }
-    
-    @Override
-    public void onSyncServerFinish() {
-    }
-    
-    @Override
-    public void onSyncServerStart() {
-    }
-    
-    @Override
-    public void onTotalUnreadMessageCountChanged(int i) {
-        // 未读消息总数改变
-    }        
-});
+```
+String sourceID = ""; // 如果是单聊值传userID，如果是群聊groupID
+int sessionType = 1; // 如果是单聊值传1，如果是群聊值传2
+OpenIMClient.getInstance().conversationManager.getConversationIDBySessionType(sourceID, sessionType);
 ```
 
-| 事件回调                   | 事件描述             | 推荐操作       |
-| -------------------------- | -------------------- | -------------- |
-| conversationChanged        | 会话记录发生改变     | 刷新会话列表   |
-| newConversation            | 有新的会话被添加     | 刷新会话列表   |
-| totalUnreadMsgCountChanged | 未读消息总数发生改变 | 刷新消息未读数 |
+- ##### setConversationRecvMessageOpt（设置免打扰模式）
 
-
-
-# 5.好友关系
-
-## 5.1. getFriendList
-
-获取好友列表。
-
-```java
-OpenIMClient.getInstance().friendshipManager.getFriendList(new OnBase<List<UserInfo>>() {
+```
+List<String> conversationIDs = new ArrayList<>(); // 会话id列表
+long status = 0; // 1：不接受消息；2：接受在线消息不接受离线消息；0：正常
+OpenIMClient.getInstance().conversationManager.setConversationRecvMessageOpt(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
-    public void onSuccess(List<UserInfo> data) {
+    public void onSuccess(String data) {
+
     }
-});
+}, conversationIDs, status);
 ```
 
+- ##### getConversationRecvMessageOpt（查询免打扰状态）
 
+```
+List<String> conversationIDs = new ArrayList<>(); // 会话id列表
+OpenIMClient.getInstance().conversationManager.getConversationRecvMessageOpt(new OnBase<List<NotDisturbInfo>>() {
+    @Override
+    public void onError(int code, String error) {
 
-##  5.2. getFriendsInfo
+    }
 
-获取好友信息。
+    @Override
+    public void onSuccess(List<NotDisturbInfo> data) {
 
-```java
+    }
+}, conversationIDs);
+```
+
+- ##### simpleComparator（自定义会话排序规则）
+
+```
+OpenIMClient.getInstance().conversationManager.simpleComparator();
+```
+
+- ##### getFriendsInfo（根据userID查询好友资料）
+
+```
+List<String> uidList = new ArrayList<>(); // userId列表
 OpenIMClient.getInstance().friendshipManager.getFriendsInfo(new OnBase<List<UserInfo>>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(List<UserInfo> data) {
+
     }
 }, uidList);
 ```
 
-- 参数说明：
+- ##### addFriend（发起好友申请）
 
-| 名称    | 类型          | 描述         |
-| ------- | ------------- | ------------ |
-| uidList | List< String> | 用户的ID集合 |
+主动申请者收到OnFriendApplicationAdded
 
+被添加者收到OnFriendApplicationAdded 
 
-
-## 5.3. setFriendInfo
-
-设置好友备注信息。
-
-```java
-OpenIMClient.getInstance().friendshipManager.setFriendInfo(new OnBase<String>() {            
+```
+String uid = ""; // 用户id
+String reqMessage = ""; // 发起好友申请的描述信息
+OpenIMClient.getInstance().friendshipManager.addFriend(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
-}, uid,  comment);
+}, uid, reqMessage);
 ```
 
-- 参数说明：
+- ##### checkFriend（检查是否是好友）
 
-| 名称    | 类型   | 描述     |
-| ------- | ------ | -------- |
-| uid     | String | 用户的ID |
-| comment | String | 备注     |
-
-
-
-## 5.4. checkFriend
-
-检查与用户间是否有好友关系。
-
-```java
-OpenIMClient.getInstance().friendshipManager.checkFriend(new OnBase<List<UserInfo>>() {
+```
+List<String> uidList = new ArrayList<>(); // userId列表
+OpenIMClient.getInstance().friendshipManager.checkFriend(new OnBase<List<FriendshipInfo>>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
-    public void onSuccess(List<UserInfo> data) {
+    public void onSuccess(List<FriendshipInfo> data) {
+
     }
 }, uidList);
 ```
 
-- 参数说明：
+- ##### deleteFriend（删除好友）
 
-| 名称    | 类型          | 描述         |
-| ------- | ------------- | ------------ |
-| uidList | List< String> | 用户的ID集合 |
+操作者收到OnFriendDeleted
 
-根据类UserInfo的flag字段判断。flag == 1：是好友关系，其他非好友关系。
-
-
-
-## 5.5. deleteFromFriendList
-
-从好友列表中删除用户。
-
-```java
-OpenIMClient.getInstance().friendshipManager.deleteFromFriendList(new OnBase<String>() {
+```
+String uid = ""; // 用户id
+OpenIMClient.getInstance().friendshipManager.deleteFriend(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
 }, uid);
 ```
 
-- 参数说明：
+- ##### setFriendRemark（好友备注设置）
 
-| 名称 | 类型   | 描述     |
-| ---- | ------ | -------- |
-| uid  | String | 用户的ID |
+操作者收到OnFriendInfoChanged
 
-
-
-## 5.6. addFriend
-
-发起添加好友申请。
-
-```java
-OpenIMClient.getInstance().friendshipManager.addFriend(new OnBase<String>() {            
+```
+String uid = ""; // 用户id
+String remark = ""; // 备注名
+OpenIMClient.getInstance().friendshipManager.setFriendRemark(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
-}, uid, reason);
+}, uid, remark);
 ```
 
-- 参数说明：
+- ##### getFriendList（好友列表）
 
-| 名称   | 类型   | 描述     |
-| ------ | ------ | -------- |
-| uid    | String | 用户的ID |
-| reason | String | 添加说明 |
+返回的数据里包含已拉入黑名单的好友，可以根据isBlacklist字段筛选。
 
-
-
-## 5.7. getFriendApplicationList
-
-获取好友请求列表。
-
-```java
-OpenIMClient.getInstance().friendshipManager.getFriendApplicationList(new OnBase<List<UserInfo>>() {
+```
+OpenIMClient.getInstance().friendshipManager.getFriendList(new OnBase<List<UserInfo>>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+        
     }
-    
+
     @Override
     public void onSuccess(List<UserInfo> data) {
+
     }
 });
 ```
 
-类 `UserInfo` 的 `flag` 字段：flag == 0：等待处理；flag == 1：已添加；flag == -1：已拒绝。
+- ##### getRecvFriendApplicationList（收到的好友申请）
 
-<font color='red'>注：新朋友的红点数通过计算列表里flag == 0的item的数量。</font>
+```
+OpenIMClient.getInstance().friendshipManager.getRecvFriendApplicationList(new 		OnBase<List<FriendApplicationInfo>>() {
+    @Override
+    public void onError(int code, String error) {
+        
+    }
 
+    @Override
+    public void onSuccess(List<FriendApplicationInfo> data) {
 
+    }
+});
+```
 
-##  5.8. acceptFriendApplication
+- ##### getSendFriendApplicationList（发出的好友申请）
 
-接受好友请求。
+```
+OpenIMClient.getInstance().friendshipManager.getSendFriendApplicationList(new OnBase<List<FriendApplicationInfo>>() {
+    @Override
+    public void onError(int code, String error) {
+        
+    }
 
-```java
+    @Override
+    public void onSuccess(List<FriendApplicationInfo> data) {
+
+    }
+});
+```
+
+- ##### addBlacklist（拉黑好友）
+
+操作者收到OnBlackAdded
+
+```
+String uid = ""; // 用户id
+OpenIMClient.getInstance().friendshipManager.addBlacklist(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, uid);
+```
+
+- ##### getBlacklist（黑名单）
+
+```
+OpenIMClient.getInstance().friendshipManager.getBlacklist(new OnBase<List<UserInfo>>() {
+    @Override
+    public void onError(int code, String error) {
+        
+    }
+
+    @Override
+    public void onSuccess(List<UserInfo> data) {
+
+    }
+});
+```
+
+- ##### removeBlacklist（移除黑名单）
+
+操作者收到OnBlackDeleted
+
+```
+String uid = ""; // 用户id
+OpenIMClient.getInstance().friendshipManager.removeBlacklist(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, uid);
+```
+
+- ##### acceptFriendApplication（接受好友申请）
+
+操作者收到OnFriendApplicationAccepted、OnFriendAdded
+
+申请者收到OnFriendApplicationAccepted、OnFriendAdded
+
+```
+String uid = ""; // 用户id
+String handleMsg = ""; // 描述信息
 OpenIMClient.getInstance().friendshipManager.acceptFriendApplication(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
-}, uid);
+}, uid, handleMsg);
 ```
 
-uid：为好友申请列表返回的数据里 `UserInfo` 类的 `uid` 字段。
+- ##### refuseFriendApplication（拒绝好友申请）
 
+操作者收到OnFriendApplicationRejected
 
+申请者收到OnFriendApplicationRejected 
 
-## 5.9. refuseFriendApplication
-
-拒绝好友请求。
-
-```java
+```
+String uid = ""; // 用户id
+String handleMsg = ""; // 描述信息
 OpenIMClient.getInstance().friendshipManager.refuseFriendApplication(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
-}, uid);
+}, uid, handleMsg);
 ```
 
+- ##### inviteUserToGroup（邀请进组）
 
+直接进组无需同意。
 
-##  5.10. addToBlackList
+被邀请者收到OnJoinedGroupAdded
 
-将用户添加到黑名单。
+群成员（不包括被邀请者）收到OnGroupMemberAdded 
 
-```java
-OpenIMClient.getInstance().friendshipManager.addToBlackList(callback, uid);
+```
+String groupID = ""; // 组ID
+List<String> uidList = new ArrayList<>(); // 成员 userID 列表
+String reason = ""; // 备注信息
+OpenIMClient.getInstance().groupManager.inviteUserToGroup(new OnBase<List<GroupInviteResult>>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(List<GroupInviteResult> data) {
+
+    }
+}, groupID, uidList, reason);
 ```
 
-返回Future，执行then方法为操作成功，执行cathError方法为操作失败。
+- ##### kickGroupMember（移除组成员）
 
+被踢者收到OnJoinedGroupDeleted
 
+群成员收到OnGroupMemberDeleted 
 
-## 5.11. deleteFromBlackList
-
-从黑名单移除用户。
-
-```java
-OpenIMClient.getInstance().friendshipManager.addToBlackList(new OnBase<String>() {            
+```
+String groupID = ""; // 组ID
+List<String> uidList = new ArrayList<>(); // 成员 userID 列表
+String reason = ""; // 备注信息
+OpenIMClient.getInstance().groupManager.kickGroupMember(new OnBase<List<GroupInviteResult>>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
-    public void onSuccess(String data) {
+    public void onSuccess(List<GroupInviteResult> data) {
+
     }
-}, uid);
+}, groupID, uidList, reason);
 ```
 
+- ##### getGroupMembersInfo（查询组成员信息）
 
-
-##  5.12. getBlackList
-
-获取黑名单列表。
-
-```java
-OpenIMClient.getInstance().friendshipManager.getBlackList(new OnBase<List<UserInfo>>() {
+```
+String groupID = ""; // 组ID
+List<String> uidList = new ArrayList<>(); // 成员 userID 列表
+OpenIMClient.getInstance().groupManager.getGroupMembersInfo(new OnBase<List<GroupMembersInfo>>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
-    public void onSuccess(List<UserInfo> data) {
+    public void onSuccess(List<GroupMembersInfo> data) {
+
     }
-});
+}, groupID, uidList);
 ```
 
-<font color='red'>注：如果好友被拉进黑名单，调用<font color='blue'>getFriendList 或 getFriendListMap</font>方法得到好友包含了黑名单的人，需要通过UserInfo类的isInBlackList字段筛选，如果isInBlackList == 1说明被拉入黑名单。</font>
+- ##### getGroupMemberList（组成员列表）
 
+```
+String groupID = ""; // 组ID
+int filter = 0; // 1普通成员, 2群主，3管理员
+int offset = 0; // 偏移量，每次开始的index值
+int count = 0; // 每次拉取的数量
+OpenIMClient.getInstance().groupManager.getGroupMemberList(new OnBase<GroupMembersInfo>() {
+    @Override
+    public void onError(int code, String error) {
 
+    }
 
-## 5.13. setFriendListener
+    @Override
+    public void onSuccess(GroupMembersInfo data) {
 
-设置好友监听器。
-
-```java
-OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFriendshipListener() {
-    @Override
-    public void onBlackListAdd(UserInfo u) {
     }
-    
-    @Override
-    public void onBlackListDeleted(UserInfo u) {
-    }
-    
-    @Override
-    public void onFriendApplicationListAccept(UserInfo u) {
-    }
-    
-    @Override
-    public void onFriendApplicationListAdded(UserInfo u) {
-    }
-    
-    @Override
-    public void onFriendApplicationListDeleted(UserInfo u) {
-    }
-    
-    @Override
-    public void onFriendApplicationListReject(UserInfo u) {
-    }
-    
-    @Override
-    public void onFriendInfoChanged(UserInfo u) {
-    }
-    
-    @Override
-    public void onFriendListAdded(UserInfo u) {
-    }
-    
-    @Override
-    public void onFriendListDeleted(UserInfo u) {
-    }
-});
+}, groupID, filter, offset, count);
 ```
 
-| 事件回调                     | 事件描述             | 推荐操作                           |
-| ---------------------------- | -------------------- | ---------------------------------- |
-| blackListAdd                 | 好友被加入黑名       | 刷新好友列表或黑名单列表           |
-| blackListDeleted             | 好友从黑名单移除     | 刷新好友列表或黑名单列表           |
-| friendApplicationListAccept  | 发起的好友请求被接受 | 刷新好友请求列表                   |
-| friendApplicationListAdded   | 有新的好友申请       | 刷新好友请求列表                   |
-| friendApplicationListDeleted | 删除好友请求         | 刷新好友请求列表                   |
-| friendApplicationListReject  | 请求被拒绝           | 刷新好友请求列表                   |
-| friendInfoChanged            | 好友资料发生变化     | 刷新好友列表，好友信息或黑名单列表 |
-| friendListAdded              | 已成为好友           | 刷新好友列表                       |
-| friendListDeleted            | 好友被删除           | 刷新好友列表                       |
+- ##### getJoinedGroupList（获取已加入的群组）
 
-
-
-# 6. 群关系
-
-## 6.1. createGroup
-
-创建一个群聊，并指定群信息以及群成员。
-
-```java
-OpenIMClient.getInstance().groupManager.createGroup(new OnBase<String>() {            
-    @Override
-    public void onError(long code, String error) {
-    }
-    
-    @Override
-    public void onSuccess(String data) {
-    }
-}, groupName, notification, introduction, faceUrl, list);
 ```
-
-- 参数说明：
-
-| 名称         | 类型                   | 描述                                                                                                          |
-| ------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------- |
-| groupName    | String                 | 群名                                                                                                          |
-| notification | String                 | 群公告                                                                                                        |
-| introduction | String                 | 群介绍                                                                                                        |
-| faceUrl      | String                 | 群icon                                                                                                        |
-| list         | List< GroupMemberRole> | 在发起群聊时选择的群成员列表。<br />GroupMemberRole类字段说明：setRole：0:普通成员 2:管理员；uid：成员的uid。 |
-
-
-
-## 6.2. getGroupsInfo
-
-批量获取群组信息。
-
-```java
-OpenIMClient.getInstance().groupManager.getGroupsInfo(new OnBase<List<GroupInfo>>() {
+OpenIMClient.getInstance().groupManager.getJoinedGroupList(new OnBase<List<GroupInfo>>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+        
     }
-    
+
     @Override
     public void onSuccess(List<GroupInfo> data) {
+
+    }
+});
+```
+
+- ##### createGroup（创建组）
+
+初始成员收到OnJoinedGroupAdded
+
+```
+String groupName = ""; // 组名
+String faceURL = ""; // 头像
+String notification = ""; // 群公告
+String introduction = ""; // 群简介
+int groupType = 0; // 类型
+String ex = ""; // 扩展信息
+List<GroupMemberRole> list = new ArrayList<>(); // 成员角色集合
+OpenIMClient.getInstance().groupManager.createGroup(new OnBase<GroupInfo>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(GroupInfo data) {
+
+    }
+}, groupName, faceURL, notification, introduction, groupType, ex, list);
+```
+
+- ##### setGroupInfo（修改组信息）
+
+群成员收到OnGroupInfoChanged
+
+```
+String groupID = ""; // 组ID
+String groupName = ""; // 组名
+String faceURL = ""; // 头像
+String notification = ""; // 群公告
+String introduction = ""; // 群简介
+String ex = ""; // 扩展信息
+OpenIMClient.getInstance().groupManager.setGroupInfo(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, groupID, groupName, faceURL, notification, introduction, ex);
+```
+
+- ##### getGroupsInfo（根据id查询组信息）
+
+```
+List<String> gidList = new ArrayList<>();
+OpenIMClient.getInstance().groupManager.getGroupsInfo(new OnBase<List<GroupInfo>>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(List<GroupInfo> data) {
+
     }
 }, gidList);
 ```
 
-- 参数说明：
+- ##### joinGroup（申请入群组）
 
-| 名称    | 类型          | 描述       |
-| ------- | ------------- | ---------- |
-| gidList | List< String> | 群组id集合 |
+需要通过管理员同意。
 
+申请者收到OnGroupApplicationAdded
 
+群主+管理员收到OnGroupApplicationAdded 
 
-##  6.3. setGroupInfo
-
-设置、更新群聊信息。
-
-```java
-OpenIMClient.getInstance().groupManager.setGroupInfo(new OnBase<String>() {            
+```
+String groupID = ""; // 组ID
+String reason = ""; // 备注信息
+OpenIMClient.getInstance().groupManager.joinGroup(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
-}, groupName, notification, introduction, faceUrl);
+}, groupID, reason);
 ```
 
+- ##### quitGroup（退出组）
 
+退出者收到OnJoinedGroupDeleted
 
-## 6.4. getJoinedGroupList
+群成员收到OnGroupMemberDeleted
 
-获取已加入的群列表。
-
-```java
-OpenIMClient.getInstance().groupManager.getJoinedGroupList(new OnBase<List<GroupInfo>>() {
+```
+String groupID = ""; // 组ID
+OpenIMClient.getInstance().groupManager.quitGroup(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
-    public void onSuccess(List<GroupInfo> data) {
+    public void onSuccess(String data) {
+
+    }
+}, groupID);
+```
+
+- ##### transferGroupOwner（群转让）
+
+```
+String groupID = ""; // 组ID
+String newOwnerUserID = ""; // 新群主ID
+OpenIMClient.getInstance().groupManager.transferGroupOwner(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, groupID, newOwnerUserID);
+```
+
+- ##### getRecvGroupApplicationList（收到的入群申请）
+
+作为群主或者管理员，获取收到的群成员申请进群列表。
+
+```
+OpenIMClient.getInstance().groupManager.getRecvGroupApplicationList(new OnBase<GroupApplicationInfo>() {
+    @Override
+    public void onError(int code, String error) {
+        
+    }
+
+    @Override
+    public void onSuccess(GroupApplicationInfo data) {
+
     }
 });
 ```
 
-如果类 `GroupInfo` 的 `ownerId` 字段的值跟当前用户的 `uid` 一致，则当前用户就是群的发起者。否则是参与者。
+- ##### getSendGroupApplicationList（发出的入群申请）
 
-
-
-## 6.5. getGroupMemberList
-
-获取群成员列表。
-
-`GroupMembersList` 类的nextSeq字段：下一页的开始 `index`。`data` 字段：群成员。
-
-```java
-OpenIMClient.getInstance().groupManager.getGroupMemberList(new OnBase<GroupMembersList>() {
-    @Override
-    public void onError(long code, String error) {
-    }
-    
-    @Override
-    public void onSuccess(GroupMembersList data) {
-    }
-}, groupId, filter, next);
 ```
-
-- 参数说明：
-
-| 名称    | 类型   | 描述                                                                     |
-| ------- | ------ | ------------------------------------------------------------------------ |
-| groupId | String | 群组id                                                                   |
-| filter  | int    | 过滤成员，0不过滤，1群的创建者，2管理员；默认值0                         |
-| next    | int    | 分页，从哪一条开始获取，默认值0。参照GroupMembersList的nextSeq字段的值。 |
-
-
-
-## 6.6. getGroupMembersInfo
-
-批量获取群成员信息。
-
-```java
-OpenIMClient.getInstance().groupManager.getGroupMembersInfo(new OnBase<List<GroupMembersInfo>>() {
+OpenIMClient.getInstance().groupManager.getSendGroupApplicationList(new OnBase<GroupApplicationInfo>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+        
     }
-    
+
     @Override
-    public void onSuccess(List<GroupMembersInfo> data) {
-    }
-}, groupId, uidList);
-```
+    public void onSuccess(GroupApplicationInfo data) {
 
-- 参数说明：
-
-| 名称    | 类型          | 描述         |
-| ------- | ------------- | ------------ |
-| groupId | String        | 群组id       |
-| uidList | List< String> | 群成员ID集合 |
-
-
-
-## 6.7. joinGroup
-
-申请加入群聊。
-
-```java
-OpenIMClient.getInstance().groupManager.joinGroup(new OnBase<String>() {            
-    @Override
-    public void onError(long code, String error) {
-    }
-    
-    @Override
-    public void onSuccess(String data) {
-    }
-}, gid, reason);
-```
-
-- 参数说明：
-
-| 名称   | 类型   | 描述         |
-| ------ | ------ | ------------ |
-| gid    | String | 群组id       |
-| reason | String | 请求验证信息 |
-
-
-
-## 6.8. getGroupApplicationList
-
-获取加入群聊申请列表。
-
-```java
-OpenIMClient.getInstance().groupManager.getGroupApplicationList(new OnBase<GroupApplicationList>() {
-    @Override
-    public void onError(long code, String error) {
-    }
-    
-    @Override
-    public void onSuccess(GroupApplicationList data) {
     }
 });
 ```
 
-- GroupApplicationList字段说明：
+- ##### acceptGroupApplication（接受入群申请）
 
-| 名称  | 类型                        | 描述     |
-| ----- | --------------------------- | -------- |
-| count | int                         | 未处理数 |
-| user  | List< GroupApplicationInfo> | 申请列表 |
+申请者收到OnJoinedGroupAdded  OnGroupApplicationAccepted
 
+群成员（不包括申请者）收到OnGroupMemberAdded
 
+审批者（群主或者管理员）收到OnGroupMemberAdded OnGroupApplicationAccepted
 
-## 6.9. acceptGroupApplication
-
-同意入群请求。
-
-```java
+```
+String groupID = ""; // 组ID
+String uid = ""; // 申请人userID
+String handleMsg = ""; //备注信息
 OpenIMClient.getInstance().groupManager.acceptGroupApplication(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
-}, info, reason);
+}, groupID, uid, handleMsg);
 ```
 
-- 参数说明：
+- ##### refuseGroupApplication（拒绝入群申请）
 
-| 名称   | 类型                 | 描述                  |
-| ------ | -------------------- | --------------------- |
-| info   | GroupApplicationInfo | 取6.8里申请列表的item |
-| reason | String               | 同意原因              |
+申请者收到OnGroupApplicationRejected
 
+审批者（群主或者管理员）收到OnGroupApplicationRejected 
 
-
-## 6.10. refuseGroupApplication
-
-拒绝入群请求。
-
-```java
+```
+String groupID = ""; // 组ID
+String uid = ""; // 申请人userID
+String handleMsg = ""; //备注信息
 OpenIMClient.getInstance().groupManager.refuseGroupApplication(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
-}, info, reason);
+}, groupID, uid, handleMsg);
 ```
 
-- 参数说明：
+- ##### sendMessage（发送消息）
 
-| 名称   | 类型                 | 描述                  |
-| ------ | -------------------- | --------------------- |
-| info   | GroupApplicationInfo | 取6.8里申请列表的item |
-| reason | String               | 拒绝入群原因          |
-
-
-
-## 6.11. inviteUserToGroup
-
-邀请用户加入群组(可批量)。
-
-```java
-OpenIMClient.getInstance().groupManager.inviteUserToGroup(new OnBase<List<GroupInviteResult>>() {
+```
+Message message = null; // 消息体；不为null，来自创建消息体方法的返回值
+String userID = ""; // 接受消息的userID
+String groupID = ""; // 接受消息的群ID
+OfflinePushInfo offlinePushInfo = new OfflinePushInfo();  // 离线推送的消息备注；不为null
+OpenIMClient.getInstance().messageManager.sendMessage(new OnMsgSendCallback() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
-    public void onSuccess(List<GroupInviteResult> data) {
+    public void onProgress(long progress) {
+				 // 返回新的消息体，替换发送传入的，不然扯回消息会有bug
     }
-}, groupId, uidList, reason);
+
+    @Override
+    public void onSuccess(Message message) {
+ 				// 返回新的消息体；替换发送传入的，不然扯回消息会有bug
+    }
+}, message, userID, groupID, offlinePushInfo);
 ```
 
-- 参数说明：
+- ##### getHistoryMessageList（获取聊天记录）
 
-| 名称    | 类型          | 描述             |
-| ------- | ------------- | ---------------- |
-| groupId | String        | 群聊ID           |
-| uidList | List< String> | 邀请用户的id集合 |
-| reason  | String        | 请求验证信息     |
-
-
-
-## 6.12. kickGroupMember
-
-踢出群聊(可批量)。
-
-```java
-OpenIMClient.getInstance().groupManager.kickGroupMember(new OnBase<List<GroupInviteResult>>() {
+```
+Message startMsg = null; // 消息体，取界面上显示的消息体对象
+String userID = ""; // 接受消息的userID
+String groupID = ""; // 接受消息的群ID
+int count = 20; //  // 每次拉取的数量
+OpenIMClient.getInstance().messageManager.getHistoryMessageList(new OnBase<List<Message>>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
-    public void onSuccess(List<GroupInviteResult> data) {
+    public void onSuccess(List<Message> data) {
+
     }
-}, groupId, uidList, reason);
+}, userID, groupID, startMsg, count);
 ```
 
-- 参数说明：
+注：消息列表list，index == list.length -1 是最新的一条消息。 index == 0 是从最新的这条记录后的第19条。所以startMsg首次传null，
 
-| 名称    | 类型          | 描述           |
-| ------- | ------------- | -------------- |
-| groupId | String        | 群聊ID         |
-| uidList | List< String> | 踢出用户ID集合 |
-| reason  | String        | 踢出原因       |
+下次就是index == 0，以此类推。
 
+- ##### revokeMessage（撤回消息）
 
+撤回成功需要当前用户从列表里移除Message然后更新ui，而另外一方通过撤回监听（onRecvMessageRevoked）移除。
 
-##  6.13. quitGroup
-
-退出群聊。
-
-```java
-OpenIMClient.getInstance().groupManager.quitGroup(new OnBase<String>() {            
+```
+Message message = null; // 消息体，不为null，取界面上显示的消息体对象
+OpenIMClient.getInstance().messageManager.revokeMessage(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
-}, gid);
+}, message);
 ```
 
+- ##### deleteMessageFromLocalStorage（删除单条消息）
 
-
-## 6.14. transferGroupOwner
-
-转让群主。
-
-```java
-OpenIMClient.getInstance().groupManager.transferGroupOwner(new OnBase<String>() {            
+```
+Message message = null; // 消息体，不为null，取界面上显示的消息体对象
+OpenIMClient.getInstance().messageManager.deleteMessageFromLocalStorage(new OnBase<String>() {
     @Override
-    public void onError(long code, String error) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
     public void onSuccess(String data) {
+
     }
-}, gid, uid);
+}, message);
 ```
 
-- 参数说明：
+- ##### insertSingleMessageToLocalStorage（向本地插入一条消息）
 
-| 名称 | 类型   | 描述          |
-| ---- | ------ | ------------- |
-| gid  | String | 群id          |
-| uid  | String | 新的拥有者uid |
-
-注：此方法只有群的发起者（拥有者）才有权限访问，管理员和普通成员无权限访问。如果是发起者群资料展示可显示群权限转移按钮。
-
-
-
-##  6.15. setGroupListener
-
-设置群组监听器。
-
-```java
-OpenIMClient.getInstance().groupManager.setOnGroupListener(new OnGroupListener() {            
+```
+String receiverID = "";// 接收者 userID
+String senderID = ""; // 发送中 userID
+Message message = null; // 不为null，来自创建消息体方法的返回值
+OpenIMClient.getInstance().messageManager.insertSingleMessageToLocalStorage(new OnBase<String>() {
     @Override
-    public void onMemberEnter(String groupId, List<GroupMembersInfo> list) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
-    public void onMemberLeave(String groupId, GroupMembersInfo info) {
+    public void onSuccess(String data) {
+
     }
-    
+}, message, receiverID, senderID);
+```
+
+- ##### markC2CMessageAsRead（标记c2c消息已读）
+
+当调用此方法后，已读的消息会通过已读回执（onRecvC2CReadReceipt）告诉对方。
+
+```
+String userID = ""; // 接收者 userID
+List<String> messageIDList = new ArrayList<>(); // 已读的消息id列表
+OpenIMClient.getInstance().messageManager.markC2CMessageAsRead(new OnBase<String>() {
     @Override
-    public void onMemberInvited(String groupId, GroupMembersInfo opUser, List<GroupMembersInfo> list) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
-    public void onMemberKicked(String groupId, GroupMembersInfo opUser, List<GroupMembersInfo> list) {
+    public void onSuccess(String data) {
+
     }
-    
+}, userID, messageIDList);
+```
+
+- ##### typingStatusUpdate（正在输入提示）
+
+会通过onRecvNewMessage回调
+
+```
+String userID = ""; // 接收者 userID
+String msgTip = ""; // 自定义提示内容
+OpenIMClient.getInstance().messageManager.typingStatusUpdate(new OnBase<String>() {
     @Override
-    public void onGroupCreated(String groupId) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
-    public void onGroupInfoChanged(String groupId, GroupInfo info) {
+    public void onSuccess(String data) {
+
     }
-    
+}, userID, msgTip);
+```
+
+- ##### clearC2CHistoryMessage（清空c2c聊天记录）
+
+```
+String userID = ""; // 接收者 userID
+OpenIMClient.getInstance().messageManager.clearC2CHistoryMessage(new OnBase<String>() {
     @Override
-    public void onReceiveJoinApplication(String groupId, GroupMembersInfo info, String opReason) {
+    public void onError(int code, String error) {
+
     }
-    
+
     @Override
-    public void onApplicationProcessed(String groupId, GroupMembersInfo opUser, int agreeOrReject, String opReason) {
+    public void onSuccess(String data) {
+
     }
-});
+}, userID);
 ```
 
-| 事件回调               | 事件描述       | 推荐操作       |
-| ---------------------- | -------------- | -------------- |
-| applicationProcessed   | 群申请被处理   |                |
-| groupCreated           | 群创建完成     |                |
-| groupInfoChanged       | 群资料发生变化 | 刷新群资料     |
-| memberEnter            | 进群           | 刷新群成员列表 |
-| memberInvited          | 接受邀请       | 刷新群成员列表 |
-| memberKicked           | 成员被踢出     | 刷新群成员列表 |
-| memberLeave            | 群成员退群     | 刷新群成员列表 |
-| receiveJoinApplication | 收到入群申请   |                |
+- ##### clearGroupHistoryMessage（清空群聊天记录）
 
-###
+```
+String groupID = ""; // 组ID
+OpenIMClient.getInstance().messageManager.clearGroupHistoryMessage(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
 
-# 7. 数据对象结构
+    }
 
-## 7.1. 用户信息对象
+    @Override
+    public void onSuccess(String data) {
 
-```java
-class UserInfo {
-    String uid;
-    String name;
-    String icon;
-    int gender;
-    String mobile;
-    String birth;
-    String email;
-    String ex;
-    String comment;
-    int isInBlackList;
-    String reqMessage;
-    String applyTime;
-    int flag;
-}
+    }
+}, groupID);
 ```
 
-| Field         | **Description**                                                      |
-| ------------- | -------------------------------------------------------------------- |
-| uid           | 用户id                                                               |
-| name          | 用户名                                                               |
-| icon          | 用户头像                                                             |
-| gender        | 性别：1男，2女                                                       |
-| mobile        | 手机号                                                               |
-| birth         | 生日                                                                 |
-| email         | 邮箱                                                                 |
-| ex            | 扩展字段                                                             |
-| comment       | 备注                                                                 |
-| isInBlackList | 黑名单：1已拉入黑名单                                                |
-| reqMessage    | 验证消息                                                             |
-| applyTime     | 申请时间                                                             |
-| flag          | 好友申请列表：0等待处理；1已同意；2已拒绝<br />好友关系：1已经是好友 |
+- ##### createTextMessage（文本消息）
 
-
-
-##  7.2. 消息对象
-
-```java
-class Message {
-    String clientMsgID;
-    String serverMsgID;
-    int createTime;
-    int sendTime;
-    String sendID;
-    String recvID;
-    int msgFrom;
-    int contentType; // [MessageType]
-    int platformID;
-    List<String> forceList;
-    String senderNickName;
-    String senderFaceUrl;
-    String groupID;
-    String content;
-    int seq;
-    boolean isRead;
-    int status; // [MessageStatus]
-    String remark;
-    Object ext;
-    int sessionType; // [ConversationType]
-    PictureElem pictureElem;
-    SoundElem soundElem;
-    VideoElem videoElem;
-    FileElem fileElem;
-    AtElem atElem;
-    LocationElem locationElem;
-    CustomElem customElem;
-    QuoteElem quoteElem;
-    MergeElem mergeElem;
-}
-
-class PictureElem {
-    String sourcePath;
-    PictureInfo sourcePicture;
-    PictureInfo bigPicture;
-    PictureInfo snapshotPicture;
-}
-
-class PictureInfo {
-    String uuID;
-    String type;
-    int size;
-    int width;
-    int height;
-    String url;
-}
-
-class SoundElem {
-    String uuID;
-    String soundPath;
-    String sourceUrl;
-    int dataSize;
-    int duration;
-}
-
-class VideoElem {
-    String videoPath;
-    String videoUUID;
-    String videoUrl;
-    String videoType;
-    int videoSize;
-    int duration;
-    String snapshotPath;
-    String snapshotUUID;
-    int snapshotSize;
-    String snapshotUrl;
-    int snapshotWidth;
-    int snapshotHeight;
-}
-
-class FileElem {
-    String filePath;
-    String uuID;
-    String sourceUrl;
-    String fileName;
-    int fileSize;
-}
-
-class AtElem {
-    String text;
-    List<String> atUserList;
-    boolean isAtSelf;
-}
-
-class LocationElem {
-    String description;
-    double longitude;
-    double latitude;
-}
-
-class CustomElem {
-    String data;
-    String extension;
-    String description;
-}
-
-class QuoteElem {
-    String text;
-    Message quoteMessage;
-}
-
-class MergeElem {
-    String title;
-    List<String> abstractList;
-    List<Message> multiMessage;
-}
+```
+String text = ""; // 发送的内容
+Message message = OpenIMClient.getInstance().messageManager.createTextMessage(text);
 ```
 
+- ##### createTextAtMessage（@消息）
 
-
-### 7.2.1. Message
-
-| Field          | Description                                                                                                                                                                                                                                       |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| clientMsgID    | 消息唯一ID                                                                                                                                                                                                                                        |
-| serverMsgID    | 消息服务器ID，暂时不使用                                                                                                                                                                                                                          |
-| createTime     | 消息创建时间，单位纳秒                                                                                                                                                                                                                            |
-| sendTime       | 消息发送时间，单位纳秒                                                                                                                                                                                                                            |
-| sendID         | 发送者ID                                                                                                                                                                                                                                          |
-| recvID         | 接收者ID                                                                                                                                                                                                                                          |
-| msgFrom        | 标识消息是用户级别还是系统级别 100:用户 200:系统                                                                                                                                                                                                  |
-| contentType    | 消息类型：<br/>101:文本消息<br/>102:图片消息<br/>103:语音消息<br/>104:视频消息<br/>105:文件消息<br/>106:@消息<br/>107:合并消息<br/>108:转发消息<br/>109:位置消息<br/>110:自定义消息<br/>111:撤回消息回执<br/>112:C2C已读回执<br/>113:正在输入状态 |
-| platformID     | 平台类型 1:ios 2:android 3:windows 4:osx 5:web 6:mini 7:linux                                                                                                                                                                                     |
-| forceList      | 强制推送列表(被@的用户)                                                                                                                                                                                                                           |
-| senderNickName | 发送者昵称                                                                                                                                                                                                                                        |
-| senderFaceUrl  | 发送者头像                                                                                                                                                                                                                                        |
-| groupID        | 群聊ID                                                                                                                                                                                                                                            |
-| content        | 消息内容                                                                                                                                                                                                                                          |
-| seq            | 消息唯一序列号                                                                                                                                                                                                                                    |
-| isRead         | 是否已读                                                                                                                                                                                                                                          |
-| status         | 消息状态 1:发送中 2:发送成功 3:发送失败 4:已删除 5:已撤回                                                                                                                                                                                         |
-| remark         | 消息备注                                                                                                                                                                                                                                          |
-| sessionType    | 会话类型 1:单聊 2:群聊                                                                                                                                                                                                                            |
-| pictureElem    | 图片信息                                                                                                                                                                                                                                          |
-| soundElem      | 语音信息                                                                                                                                                                                                                                          |
-| videoElem      | 视频信息                                                                                                                                                                                                                                          |
-| fileElem       | 文件信息                                                                                                                                                                                                                                          |
-| atElem         | @信息                                                                                                                                                                                                                                             |
-| locationElem   | 位置信息                                                                                                                                                                                                                                          |
-| customElem     | 自定义信息                                                                                                                                                                                                                                        |
-| quoteElem      | 引用消息                                                                                                                                                                                                                                          |
-| mergeElem      | 合并信息                                                                                                                                                                                                                                          |
-
-
-
-### 7.2.2. PictureElem
-
-| Field           | Description  |
-| --------------- | ------------ |
-| sourcePath      | 本地资源地址 |
-| sourcePicture   | 本地图片详情 |
-| bigPicture      | 大图详情     |
-| snapshotPicture | 缩略图详情   |
-
-
-
-### 7.2.3. PictureInfo
-
-| Field  | Description |
-| ------ | ----------- |
-| uuid   | 唯一ID      |
-| type   | 图片类型    |
-| size   | 图片大小    |
-| width  | 图片宽度    |
-| height | 图片高度    |
-| url    | 图片oss地址 |
-
-
-
-### 7.2.4. SoundElem
-
-| Field     | Description  |
-| --------- | ------------ |
-| uuid      | 唯一ID       |
-| soundPath | 本地资源地址 |
-| sourceUrl | oss地址      |
-| dataSize  | 音频大小     |
-| duration  | 音频时长     |
-
-
-
-### 7.2.5. VideoElem
-
-| Field          | Description      |
-| -------------- | ---------------- |
-| videoPath      | 视频本地资源地址 |
-| videoUUID      | 视频唯一ID       |
-| videoUrl       | 视频oss地址      |
-| videoType      | 视频类型         |
-| videoSize      | 视频大小         |
-| duration       | 视频时长         |
-| snapshotPath   | 视频快照本地地址 |
-| snapshotUUID   | 视频快照唯一ID   |
-| snapshotSize   | 视频快照大小     |
-| snapshotUrl    | 视频快照oss地址  |
-| snapshotWidth  | 视频快照宽度     |
-| snapshotHeight | 视频快照高度     |
-
-
-
-### 7.2.6. FileElem
-
-| Field     | Description      |
-| --------- | ---------------- |
-| filePath  | 文件本地资源地址 |
-| uuid      | 唯一ID           |
-| sourceUrl | oss地址          |
-| fileName  | 文件名称         |
-| fileSize  | 文件大小         |
-
-
-
-### 7.2.7. MergeElem
-
-| Field        | Description  |
-| ------------ | ------------ |
-| title        | 合并消息标题 |
-| abstractList | 摘要列表     |
-| multiMessage | 合并消息列表 |
-
-
-
-### 7.2.8. AtElem
-
-| Field      | Description |
-| ---------- | ----------- |
-| text       | 文本消息    |
-| atUserList | @用户ID列表 |
-| isAtSelf   | 是否@自己   |
-
-
-
-### 7.2.9. LocationElem
-
-| Field       | Description |
-| ----------- | ----------- |
-| description | 描述        |
-| longitude   | 经度        |
-| latitude    | 纬度        |
-
-
-
-### 7.2.10. CustomElem
-
-| Field       | Description            |
-| ----------- | ---------------------- |
-| data        | 自定义消息字节数据     |
-| extension   | 自定义消息扩展字节数据 |
-| description | 描述                   |
-
-
-
-### 7.2.11. QuoteElem
-
-| Field        | Description |
-| ------------ | ----------- |
-| quoteMessage | 引用消息    |
-
-
-
-## 7.3. 会话对象
-
-```java
-class ConversationInfo {
-    String conversationID;
-    int conversationType; // [ConversationType]
-    String userID;
-    String groupID;
-    String showName;
-    String faceUrl;
-    int recvMsgOpt;
-    int unreadCount;
-    Message latestMsg;
-    int latestMsgSendTime;
-    String draftText;
-    int draftTimestamp;
-    int isPinned; // pinned value is 1
-}
+```
+String text = ""; // 发送的内容
+List<String> atUidList = new ArrayList<>(); // 被@的用户id列表
+Message message = OpenIMClient.getInstance().messageManager.createTextAtMessage(text, atUidList);
 ```
 
-| Field             | Description                                                                                                       |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------- |
-| conversationID    | 会话ID                                                                                                            |
-| conversationType  | 会话类型 1:单聊 2:群聊                                                                                            |
-| userID            | 会话对象用户ID                                                                                                    |
-| groupID           | 会话群聊ID                                                                                                        |
-| showName          | 会话对象(用户或群聊)名称                                                                                          |
-| faceUrl           | 用户头像或群聊头像                                                                                                |
-| recvMsgOpt        | 接收消息选项：<br/>1:在线正常接收消息，离线时进行推送<br/>2:不会接收到消息<br/>3:在线正常接收消息，离线不会有推送 |
-| unreadCount       | 未读消息数量                                                                                                      |
-| latestMsg         | 最后一条消息 [消息对象](http://1.14.194.38:13123/client_doc/uni_doc.html)json字符串                               |
-| latestMsgSendTime | 最后一条消息发送时间(ns)                                                                                          |
-| draftText         | 会话草稿                                                                                                          |
-| draftTimestamp    | 会话草稿设置时间                                                                                                  |
-| isPinned          | 是否置顶，1置顶                                                                                                   |
+- ##### createImageMessage（图片消息，相对路径）
 
-
-
-## 7.4. 已读消息回执
-
-```java
-class HaveReadInfo {
-    String uid;
-    List<String> msgIDList;
-    int readTime;
-    int msgFrom;
-    int contentType;
-    int sessionType;
-}
+```
+String imagePath = ""; // 图片路径
+Message message = OpenIMClient.getInstance().messageManager.createImageMessage(imagePath);
 ```
 
-| Field       | Description                                                                                                                                                                                   |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| uid         | 单聊对象的ID                                                                                                                                                                                  |
-| contentType | 消息类型： 101:文本消息 102:图片消息 103:语音消息 104:视频消息 105:文件消息 106:@消息 107:合并消息 108:转发消息 109:位置消息 110:自定义消息 111:撤回消息回执 112:C2C已读回执 113:正在输入状态 |
-| msgFrom     | 标识消息是用户级别还是系统级别 100:用户 200:系统                                                                                                                                              |
-| msgIDList   | 已读消息clientMsgID集合                                                                                                                                                                       |
-| readTime    | 已读时间                                                                                                                                                                                      |
-| sessionType | 会话类型 1:单聊 2:群聊                                                                                                                                                                        |
+注：initSDK时传入了数据缓存（dataDir）路径，如路径：A，这时需要你将图片复制到A路径下后，如 A/pic/a.png路径，imagePath的值：“/pic/a.png”。同以下其他消息的相对路径。
 
+- ##### createImageMessageFromFullPath（图片消息全路径）
 
-
-## 7.5. 群组信息对象
-
-```java
-class GroupInfo {
-    String groupID;
-    String groupName;
-    String notification;
-    String introduction;
-    String faceUrl;
-    String ownerId;
-    int createTime;
-    int memberCount;
-}
+```
+String imagePath = ""; // 图片路径
+Message message = OpenIMClient.getInstance().messageManager.createImageMessageFromFullPath(imagePath);
 ```
 
-| Field        | Description  |
-| ------------ | ------------ |
-| groupID      | 群组ID       |
-| groupName    | 群组名称     |
-| notification | 群公告       |
-| introduction | 群介绍       |
-| faceUrl      | 群头像       |
-| ownerId      | 群主ID       |
-| createTime   | 群组创建时间 |
-| memberCount  | 群成员总数   |
+- ##### createSoundMessage（语音消息，相对路径）
 
-
-
-## 7.6. 群组成员信息
-
-```java
-class GroupMembersInfo {
-    String groupID;
-    String userId;
-    int role;
-    int joinTime;
-    String nickName;
-    String faceUrl;
-    Object ext;
-}
+```
+String soundPath = ""; // 路径
+long duration = 0; // 时长s
+Message message = OpenIMClient.getInstance().messageManager.createSoundMessage(soundPath, duration);
 ```
 
-| Field    | Description                                |
-| -------- | ------------------------------------------ |
-| groupID  | 群id                                       |
-| userId   | 用户id                                     |
-| role     | 用户的角色，0:普通成员  1:发起者  2:管理员 |
-| joinTime | 加入时间                                   |
-| nickName | 群昵称                                     |
-| faceUrl  | 头像                                       |
-| ext      | 扩展字段                                   |
+- ##### createSoundMessageFromFullPath（语音消息全路径）
 
-
-
-## 7.7. 群申请信息
-
-```java
-class GroupApplicationInfo {
-    String id;
-    String groupID;
-    String fromUserID;
-    String toUserID;
-    int flag; // INIT = 0, REFUSE = -1, AGREE = 1
-    String reqMsg;
-    String handledMsg;
-    int createTime;
-    String fromUserNickName;
-    String toUserNickName;
-    String fromUserFaceURL;
-    String toUserFaceURL;
-    String handledUser;
-    int type; //APPLICATION = 0, INVITE = 1
-    int handleStatus; // UNHANDLED = 0, BY_OTHER = 1, BY_SELF = 2
-    int handleResult; // REFUSE = 0, AGREE = 1
-}
+```
+String soundPath = ""; // 路径
+long duration = 0; // 时长s
+Message message = OpenIMClient.getInstance().messageManager.createSoundMessage(soundPath, duration);
 ```
 
-| Field            | Description                               |
-| ---------------- | ----------------------------------------- |
-| groupID          | 群组ID                                    |
-| fromUserID       | 申请用户的ID                              |
-| toUserID         | 接收用户的ID                              |
-| flag             | 0：未处理，1：拒绝，2：同意               |
-| reqMsg           | 入群原因                                  |
-| handledMsg       | 处理反馈                                  |
-| createTime       | 申请事件                                  |
-| fromUserNickName | 申请用户的昵称                            |
-| toUserNickName   | 接收用户的昵称                            |
-| fromUserFaceURL  | 申请用户的头像                            |
-| toUserFaceURL    | 接收用户的头像                            |
-| handledUser      | 处理人                                    |
-| type             | 0：申请进群, 1：邀请进群                  |
-| handleStatus     | 0：未处理, 1：被其他人处理, 2：被自己处理 |
-| handleResult     | 0：拒绝，1：同意                          |
+- ##### createVideoMessage（视频消息，相对路径）
 
+```
+String videoPath = ""; // 路径
+String videoType = ""; // minetype
+String snapshotPath = ""; // 站位缩略图
+long duration = 0; // 时长s
+Message message = OpenIMClient.getInstance().messageManager.createVideoMessage(videoPath, videoType, duration, snapshotPath);
+```
+
+- ##### createVideoMessageFromFullPath（视频消息全路径）
+
+```
+String videoPath = ""; // 路径
+String videoType = ""; // minetype
+String snapshotPath = ""; // 站位缩略图
+long duration = 0; // 时长s
+Message message = OpenIMClient.getInstance().messageManager.createVideoMessage(videoPath, videoType, duration, snapshotPath);
+```
+
+- ##### createFileMessage（文件消息，相对路径）
+
+```
+String fileName = ""; // 文件名
+String filePath = ""; // 路径
+Message message = OpenIMClient.getInstance().messageManager.createFileMessage(filePath, fileName);
+```
+
+- ##### createFileMessageFromFullPath（文件消息全路径）
+
+```
+String fileName = ""; // 文件名
+String filePath = ""; // 路径
+Message message = OpenIMClient.getInstance().messageManager.createFileMessageFromFullPath(filePath, fileName);
+```
+
+- ##### createForwardMessage（转发消息）
+
+```
+Message message = null; // 消息体，不为null，取界面上显示的消息体对象
+Message message1 = OpenIMClient.getInstance().messageManager.createForwardMessage(message);
+```
+
+- ##### createMergerMessage（合并消息）
+
+```
+List<Message> messageList = new ArrayList<>(); // 消息列表
+String title = ""; // 标题
+List<String> summaryList = new ArrayList<>(); // 每条消息的摘要
+Message message = OpenIMClient.getInstance().messageManager.createMergerMessage(messageList, title, summaryList);
+```
+
+- ##### createLocationMessage（位置消息）
+
+```
+long latitude = 0;// 纬度
+long longitude = 0; // 经度
+String description = ""; // 位置描述信息
+Message message = OpenIMClient.getInstance().messageManager.createLocationMessage(latitude, longitude, description);
+```
+
+- ##### createCustomMessage（自定义消息）
+
+```
+String data = "";// 自定义内容
+String extension = ""; // 扩展信息
+String description = "";// 描述消息
+Message message = OpenIMClient.getInstance().messageManager.createCustomMessage(data, extension, description);
+```
+
+- ##### createQuoteMessage（引用消息/消息回复）
+
+```
+String text = ""; // 回复内容
+Message quoteMsg = null;// 不为null；被回复的消息体
+Message message = OpenIMClient.getInstance().messageManager.createQuoteMessage(text,quoteMsg);
+```
+
+- ##### createCardMessage（名片消息）
+
+```
+String content = ""; // 自定义内容
+Message message = OpenIMClient.getInstance().messageManager.createCardMessage(content);
+```

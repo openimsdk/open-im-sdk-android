@@ -34,7 +34,7 @@ public class GroupManager {
      * 邀请进群
      *
      * @param groupId 群组ID
-     * @param uidList 被要用的用户id列表
+     * @param uidList 被邀请的用户id列表
      * @param reason  邀请说明
      * @param base    callback List<{@link GroupInviteResult}>>
      */
@@ -46,7 +46,7 @@ public class GroupManager {
      * 踢出群
      *
      * @param groupId 群组ID
-     * @param uidList 被要踢出群的用户id列表
+     * @param uidList 被踢出群的用户id列表
      * @param reason  说明
      * @param base    callback List<{@link GroupInviteResult}>>
      */
@@ -59,7 +59,7 @@ public class GroupManager {
      * 批量获取群成员信息
      *
      * @param groupId 群组ID
-     * @param uidList 群成员ID
+     * @param uidList 群成员ID集合
      * @param base    callback List<{@link GroupMembersInfo}>
      **/
     public void getGroupMembersInfo(OnBase<List<GroupMembersInfo>> base, String groupId, List<String> uidList) {
@@ -70,7 +70,9 @@ public class GroupManager {
      * 获取群成员
      *
      * @param groupId 群组ID
-     * @param filter  过滤成员
+     * @param filter  过滤成员 1普通成员, 2群主，3管理员，0所有
+     * @param offset  偏移量
+     * @param count   每页数量
      */
     public void getGroupMemberList(OnBase<GroupMembersInfo> base, String groupId, int filter, int offset, int count) {
         Open_im_sdk.getGroupMemberList(BaseImpl.objectBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupId, filter, offset, count);
@@ -90,12 +92,14 @@ public class GroupManager {
      * 创建群
      *
      * @param groupName    群名称
+     * @param faceURL      群icon
      * @param notification 群公告
      * @param introduction 群简介
-     * @param faceURL      群icon
+     * @param groupType
+     * @param ex           其他信息
      * @param list         List<{@link GroupMemberRole}> 创建群是选择的成员. setRole：0:普通成员 2:管理员；1：群主
      */
-    public void createGroup(OnBase<GroupInfo> base, String groupName, String notification, String introduction, String faceURL, int groupType, String ex, List<GroupMemberRole> list) {
+    public void createGroup(OnBase<GroupInfo> base, String groupName, String faceURL, String notification, String introduction, int groupType, String ex, List<GroupMemberRole> list) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("groupName", groupName);
         map.put("notification", notification);
@@ -111,12 +115,13 @@ public class GroupManager {
      *
      * @param groupID      群ID
      * @param groupName    群名称
+     * @param faceURL      群icon
      * @param notification 群公告
      * @param introduction 群简介
-     * @param faceURL      群icon
+     * @param ex           其他信息
      * @param base         callback String
      */
-    public void setGroupInfo(OnBase<String> base, String groupID, String groupName, String notification, String introduction, String faceURL, String ex) {
+    public void setGroupInfo(OnBase<String> base, String groupID, String groupName, String faceURL, String notification, String introduction, String ex) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("groupName", groupName);
         map.put("notification", notification);
@@ -162,7 +167,7 @@ public class GroupManager {
      * 转让群主
      *
      * @param gid  群组ID
-     * @param uid  被转让的用户ID
+     * @param uid  新拥有者（群主）id
      * @param base callback String
      */
     public void transferGroupOwner(OnBase<String> base, String gid, String uid) {
@@ -190,6 +195,8 @@ public class GroupManager {
     /**
      * 接受入群申请
      *
+     * @param gid       群ID
+     * @param uid       申请入群的用户ID
      * @param handleMsg 说明
      * @param base      callback String
      */
@@ -201,6 +208,8 @@ public class GroupManager {
     /**
      * 拒绝入群申请
      *
+     * @param gid       群ID
+     * @param uid       申请入群的用户ID
      * @param handleMsg 说明
      * @param base      callback String
      */

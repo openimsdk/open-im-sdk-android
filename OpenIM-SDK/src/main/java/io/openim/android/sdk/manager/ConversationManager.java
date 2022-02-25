@@ -4,9 +4,9 @@ import java.util.Comparator;
 import java.util.List;
 
 import io.openim.android.sdk.listener.BaseImpl;
-import io.openim.android.sdk.listener._ConversationListener;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnConversationListener;
+import io.openim.android.sdk.listener._ConversationListener;
 import io.openim.android.sdk.models.ConversationInfo;
 import io.openim.android.sdk.models.NotDisturbInfo;
 import io.openim.android.sdk.utils.JsonUtil;
@@ -42,7 +42,9 @@ public class ConversationManager {
     /**
      * 获取会话记录
      *
-     * @param base callback List<{@link ConversationInfo}>
+     * @param base   callback List<{@link ConversationInfo}>
+     * @param offset 偏移量，每次开始的index值
+     * @param count  数量，每次获取的数量总数
      */
     public void getConversationListSplit(OnBase<List<ConversationInfo>> base, long offset, long count) {
         Open_im_sdk.getConversationListSplit(BaseImpl.arrayBase(base, ConversationInfo.class), ParamsUtil.buildOperationID(), offset, count);

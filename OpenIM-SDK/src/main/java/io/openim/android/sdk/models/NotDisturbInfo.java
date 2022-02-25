@@ -8,7 +8,7 @@ public class NotDisturbInfo {
     private String conversationId;
     /*
      * 免打扰状态
-     * 1:屏蔽消息; 2:接收消息但不提示; 3:正常
+     * 1:屏蔽消息; 2:接收消息但不提示; 0:正常
      * */
     private int result;
 

@@ -86,7 +86,7 @@ public class FriendshipManager {
      * 修改好友资料
      *
      * @param uid    用户id
-     * @param remark 备注
+     * @param remark 备注名
      * @param base   callback String
      */
     public void setFriendRemark(OnBase<String> base, String uid, String remark) {
@@ -127,7 +127,6 @@ public class FriendshipManager {
 
     /**
      * 根据用户id检查好友关系
-     * flag == 1 是好友
      *
      * @param uidList 用户ID列表
      * @param base    callback List<{@link UserInfo}>
@@ -149,8 +148,9 @@ public class FriendshipManager {
     /**
      * 拒绝好友申请
      *
-     * @param uid  用户ID
-     * @param base callback String
+     * @param uid       用户ID
+     * @param handleMsg 处理信息
+     * @param base      callback String
      */
     public void refuseFriendApplication(OnBase<String> base, String uid, String handleMsg) {
         Map<String, Object> params = new ArrayMap<>();
@@ -162,8 +162,9 @@ public class FriendshipManager {
     /**
      * 接受好友请求
      *
-     * @param uid  用户ID
-     * @param base callback String
+     * @param uid       用户ID
+     * @param handleMsg 处理信息
+     * @param base      callback String
      */
     public void acceptFriendApplication(OnBase<String> base, String uid, String handleMsg) {
         Map<String, Object> params = new ArrayMap<>();
