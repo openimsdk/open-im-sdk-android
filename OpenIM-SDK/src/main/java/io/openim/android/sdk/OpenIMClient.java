@@ -64,8 +64,8 @@ public class OpenIMClient {
         map.put("api_addr", apiUrl);
         map.put("ws_addr", wsUrl);
         map.put("data_dir", storageDir);
-        map.put("logLevel", logLevel);
-        map.put("objectStorage", objectStorage);
+        map.put("log_level", logLevel);
+        map.put("object_storage", objectStorage);
         boolean initialized = Open_im_sdk.initSDK(new _ConnListener(listener), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
         LogcatHelper.logDInDebug(String.format("Initialization successful: %s", initialized));
         return initialized;

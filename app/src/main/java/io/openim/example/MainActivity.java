@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements OnConnListener, O
     }
 
     public void onLogin(View view) {
+        System.out.println("============login============");
         OpenIMClient.getInstance().login(new OnBase<String>() {
             @Override
             public void onError(int code, String error) {
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements OnConnListener, O
                 System.out.println("登录成功!");
 
             }
-        }, "13918588195", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiIxMzkxODU4ODE5NSIsIlBsYXRmb3JtIjoiQW5kcm9pZCIsImV4cCI6MTYzNzU1MDk1OSwibmJmIjoxNjM2OTQ2MTU5LCJpYXQiOjE2MzY5NDYxNTl9.vztWBG0bT3FaA1yKSUuc8WURTOafousbIU8Ixv3eWNo");
+        }, "13918588195", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiIxMzkxODU4ODE5NSIsIlBsYXRmb3JtIjoiQW5kcm9pZCIsImV4cCI6MTk2MTY1OTkwMSwibmJmIjoxNjQ2Mjk5OTAxLCJpYXQiOjE2NDYyOTk5MDF9.qCpAX4-95pkyrqOfH-FUFbvRUyOpYQegBx6y3QbgonY");
     }
 
     public void onGetMessageHistory(View view) {
