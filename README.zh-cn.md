@@ -4,7 +4,7 @@ SDK使用步骤
 
 ```
 String apiUrl = ""; // SDK的API接口地址。如：http:xxx:10000
-String wsUrl = ""; // SDK的API接口地址。如：http:xxx:10000
+String wsUrl = ""; // SDK的Websocket地址。如：ws:xxx:17778
 String storageDir = ""; // 数据存储路径。如：context.getCacheDir().getAbsolutePath()
 int logLevel = 6; // 日志等级
 String objectStorage = "cos"; // 图片上传服务器如 腾讯cos
