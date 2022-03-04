@@ -4,7 +4,7 @@
 
 ##### Use(使用)
 ```
-    implementation 'io.openim:android-sdk:2.0.0@aar'
+    implementation 'io.openim:android-sdk:2.0.1@aar'
     implementation 'io.openim:client-sdk:2.0.4@aar'
 ```
 
