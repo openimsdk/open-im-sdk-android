@@ -821,14 +821,14 @@ String groupID = ""; // 组ID
 int filter = 0; // 1普通成员, 2群主，3管理员
 int offset = 0; // 偏移量，每次开始的index值
 int count = 0; // 每次拉取的数量
-OpenIMClient.getInstance().groupManager.getGroupMemberList(new OnBase<GroupMembersInfo>() {
+OpenIMClient.getInstance().groupManager.getGroupMemberList(new OnBase<List<GroupMembersInfo>>() {
     @Override
     public void onError(int code, String error) {
 
     }
 
     @Override
-    public void onSuccess(GroupMembersInfo data) {
+    public void onSuccess(List<GroupMembersInfo> data) {
 
     }
 }, groupID, filter, offset, count);
