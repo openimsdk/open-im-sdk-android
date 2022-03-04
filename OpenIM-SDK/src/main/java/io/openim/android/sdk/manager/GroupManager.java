@@ -74,8 +74,8 @@ public class GroupManager {
      * @param offset  偏移量
      * @param count   每页数量
      */
-    public void getGroupMemberList(OnBase<GroupMembersInfo> base, String groupId, int filter, int offset, int count) {
-        Open_im_sdk.getGroupMemberList(BaseImpl.objectBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupId, filter, offset, count);
+    public void getGroupMemberList(OnBase<List<GroupMembersInfo>> base, String groupId, int filter, int offset, int count) {
+        Open_im_sdk.getGroupMemberList(BaseImpl.arrayBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupId, filter, offset, count);
     }
 
 
