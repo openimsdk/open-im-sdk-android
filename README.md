@@ -2,13 +2,25 @@
 
 [中文文档](README.zh-cn.md)
 
-##### Use(使用)
+#### Use（使用）
+
+##### 1，Add repositories（添加仓库地址）
+
 ```
-    implementation 'io.openim:android-sdk:2.0.1@aar'
-    implementation 'io.openim:client-sdk:2.0.4@aar'
+maven {
+    allowInsecureProtocol = true
+    url 'http://121.37.25.71:8081/repository/maven-releases/'
+}
 ```
 
-#### Proguard rules(混淆规则)
+##### 2，Add dependencies（添加依赖）
+
+```
+    implementation 'io.openim:android-sdk:2.0.1@aar'
+    implementation 'io.openim:client-sdk:2.0.5@aar'
+```
+
+#### Proguard rules（混淆规则）
 ```
 # OpenIM
 -keep class io.openim.**{*;}
