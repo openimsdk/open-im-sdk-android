@@ -141,8 +141,8 @@ public class ConversationManager {
      * @param sourceId:    聊值：UserId；聊值：GroupId
      * @param sessionType: 单聊：1；群聊：2
      */
-    public void getConversationIDBySessionType(String sourceId, long sessionType) {
-        Open_im_sdk.getConversationIDBySessionType(sourceId, sessionType);
+    public String getConversationIDBySessionType(String sourceId, long sessionType) {
+        return Open_im_sdk.getConversationIDBySessionType(sourceId, sessionType);
     }
 
     /**
