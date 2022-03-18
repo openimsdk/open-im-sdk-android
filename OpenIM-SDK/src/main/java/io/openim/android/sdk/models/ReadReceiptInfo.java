@@ -14,7 +14,7 @@ public class ReadReceiptInfo {
     /**
      * 阅读时间
      */
-    private int readTime;
+    private long readTime;
     /**
      * 标识消息是用户级别还是系统级别 100:用户 200:系统
      */
@@ -57,11 +57,11 @@ public class ReadReceiptInfo {
         this.msgIDList = msgIDList;
     }
 
-    public int getReadTime() {
+    public long getReadTime() {
         return readTime;
     }
 
-    public void setReadTime(int readTime) {
+    public void setReadTime(long readTime) {
         this.readTime = readTime;
     }
 
