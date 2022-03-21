@@ -1,7 +1,5 @@
 package io.openim.android.sdk.models;
 
-import java.util.List;
-
 public class Message {
     /**
      * 消息唯一ID
@@ -136,6 +134,16 @@ public class Message {
      * 通知
      */
     private NotificationElem notificationElem;
+
+    /**
+     * 自定义表情
+     */
+    private FaceElem faceElem;
+
+    /**
+     * 附加信息 如：群消息已读
+     */
+    private AttachedInfoElem attachedInfoElem;
 
     public String getClientMsgID() {
         return clientMsgID;
@@ -375,6 +383,22 @@ public class Message {
 
     public void setNotificationElem(NotificationElem notificationElem) {
         this.notificationElem = notificationElem;
+    }
+
+    public FaceElem getFaceElem() {
+        return faceElem;
+    }
+
+    public void setFaceElem(FaceElem faceElem) {
+        this.faceElem = faceElem;
+    }
+
+    public AttachedInfoElem getAttachedInfoElem() {
+        return attachedInfoElem;
+    }
+
+    public void setAttachedInfoElem(AttachedInfoElem attachedInfoElem) {
+        this.attachedInfoElem = attachedInfoElem;
     }
 }
 

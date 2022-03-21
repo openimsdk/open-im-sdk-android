@@ -130,6 +130,18 @@ public class MessageManager {
     }
 
     /**
+     * 标记消息已读
+     * 会触发userid的onRecvGroupReadReceipt方法
+     *
+     * @param groupID       聊天组id
+     * @param messageIDList 消息clientMsgID列表
+     * @param base          callback String
+     */
+    public void markGroupMessageAsRead(OnBase<String> base, String groupID, List<String> messageIDList) {
+        Open_im_sdk.markGroupMessageAsRead(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, JsonUtil.toString(messageIDList));
+    }
+
+    /**
      * 提示对方我正在输入
      *
      * @param userID 用户ID
@@ -322,6 +334,16 @@ public class MessageManager {
         return parse(Open_im_sdk.createCardMessage(ParamsUtil.buildOperationID(), content));
     }
 
+    /**
+     * 创建自定义表情
+     *
+     * @param index 位置表情，表情的位置
+     * @param data  url表情，json String : {"url":"","width":0,"height":0}
+     * @return {@link Message}
+     */
+    public Message createFaceMessage(long index, String data) {
+        return parse(Open_im_sdk.createFaceMessage(ParamsUtil.buildOperationID(), index, data));
+    }
 
     /**
      * 聊天设置里清除聊天记录

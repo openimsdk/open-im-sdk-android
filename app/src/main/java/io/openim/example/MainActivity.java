@@ -91,6 +91,11 @@ public class MainActivity extends AppCompatActivity implements OnConnListener, O
     }
 
     @Override
+    public void onRecvGroupMessageReadReceipt(List<ReadReceiptInfo> list) {
+
+    }
+
+    @Override
     public void onRecvMessageRevoked(String msgId) {
         System.out.println("=======onRecvMessageRevoked=================");
     }

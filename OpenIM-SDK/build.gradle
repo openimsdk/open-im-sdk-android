@@ -33,7 +33,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation 'io.openim:client-sdk:2.0.4@aar'
+    implementation 'io.openim:client-sdk:2.0.15@aar'
     implementation 'com.alibaba:fastjson:1.1.72.android'
 //    implementation 'com.google.code.gson:gson:2.8.7'
 }

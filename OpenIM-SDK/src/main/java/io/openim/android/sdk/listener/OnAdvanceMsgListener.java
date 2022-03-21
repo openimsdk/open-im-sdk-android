@@ -2,8 +2,8 @@ package io.openim.android.sdk.listener;
 
 import java.util.List;
 
-import io.openim.android.sdk.models.ReadReceiptInfo;
 import io.openim.android.sdk.models.Message;
+import io.openim.android.sdk.models.ReadReceiptInfo;
 
 /**
  * 消息监听
@@ -20,6 +20,12 @@ public interface OnAdvanceMsgListener {
      * 需更新界面已读状态
      */
     void onRecvC2CReadReceipt(List<ReadReceiptInfo> list);
+
+    /**
+     * 群成员已阅读消息回执
+     * 需更新界面已读状态
+     */
+    void onRecvGroupMessageReadReceipt(List<ReadReceiptInfo> list);
 
     /**
      * 对方撤回了消息

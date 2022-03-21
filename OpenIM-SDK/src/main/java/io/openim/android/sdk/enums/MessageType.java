@@ -61,24 +61,39 @@ public class MessageType {
      */
     public static final int QUOTE = 114;
     ///
-    public static final int ACCEPT_FRIEND = 201;
-    public static final int ADD_FRIEND = 202;
-    public static final int REFUSE_FRIEND_APPLICATION = 203;
-    public static final int SET_SELF_INFO = 204;
-    public static final int REVOKE_MESSAGE = 205;
-    public static final int C2C_MESSAGE_AS_READ = 206;
-    public static final int KICK_ONLINE = 303;
 
-    ///
-    public static final int TRANSFER_GROUP_OWNER = 501;
-    public static final int CREATE_GROUP = 502;
+    public static final int NOTIFICATION_BEGIN = 1000;
+    public static final int FRIEND_NOTIFICATION_BEGIN = 1200;
+    public static final int FRIEND_APPLICATION_APPROVED_NOTIFICATION = 1201; //add_friend_response
+    public static final int FRIEND_APPLICATION_REJECTED_NOTIFICATION = 1202; //add_friend_response
+    public static final int FRIEND_APPLICATION_NOTIFICATION = 1203; //add_friend
+    public static final int FRIEND_ADDED_NOTIFICATION = 1204;
+    public static final int FRIEND_DELETED_NOTIFICATION = 1205; //delete_friend
+    public static final int FRIEND_REMARK_SET_NOTIFICATION = 1206; //set_friend_remark
+    public static final int BLACK_ADDED_NOTIFICATION = 1207; //add_black
+    public static final int BLACK_DELETED_NOTIFICATION = 1208; //remove_black
+    public static final int FRIEND_NOTIFICATION_END = 1299;
+    public static final int CONVERSATION_CHANGE_NOTIFICATION = 1300;
+    public static final int USER_NOTIFICATION_BEGIN = 1301;
+    public static final int USERINFO_UPDATED_NOTIFICATION = 1303; //SetSelfInfoTip
+    public static final int USER_NOTIFICATION_END = 1399;
 
-    // static const create_group = 503;
-    public static final int JOIN_GROUP = 504;
-    public static final int QUIT_GROUP = 505;
-    public static final int SET_GROUP_INFO = 506;
-    public static final int ACCEPT_GROUP_APPLICATION = 507;
-    public static final int REFUSE_GROUP_APPLICATION = 508;
-    public static final int KICK_GROUP_MEMBER = 509;
-    public static final int INVITED_USER_TO_GROUP = 510;
+    public static final int GROUP_NOTIFICATION_BEGIN = 1500;
+
+    public static final int GROUP_CREATED_NOTIFICATION = 1501;
+    public static final int GROUP_INFO_SET_NOTIFICATION = 1502;
+    public static final int JOIN_GROUP_APPLICATION_NOTIFICATION = 1503;
+    public static final int MEMBER_QUIT_NOTIFICATION = 1504;
+    public static final int GROUP_APPLICATION_ACCEPTED_NOTIFICATION = 1505;
+    public static final int GROUP_APPLICATION_REJECTED_NOTIFICATION = 1506;
+    public static final int GROUP_OWNER_TRANSFERRED_NOTIFICATION = 1507;
+    public static final int MEMBER_KICKED_NOTIFICATION = 1508;
+    public static final int MEMBER_INVITED_NOTIFICATION = 1509;
+    public static final int MEMBER_ENTER_NOTIFICATION = 1510;
+    public static final int GROUP_NOTIFICATION_END = 1599;
+
+    public static final int SIGNALING_NOTIFICATION_BEGIN = 1600;
+    public static final int SIGNALING_NOTIFICATION = 1601;
+    public static final int SIGNALING_NOTIFICATION_END = 1699;
+    public static final int NOTIFICATION_END = 2000;
 }

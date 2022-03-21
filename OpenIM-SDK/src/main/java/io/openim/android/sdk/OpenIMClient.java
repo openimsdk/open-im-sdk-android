@@ -13,6 +13,7 @@ import io.openim.android.sdk.manager.ConversationManager;
 import io.openim.android.sdk.manager.FriendshipManager;
 import io.openim.android.sdk.manager.GroupManager;
 import io.openim.android.sdk.manager.MessageManager;
+import io.openim.android.sdk.manager.SignalingManager;
 import io.openim.android.sdk.manager.UserInfoManager;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
@@ -25,6 +26,7 @@ public class OpenIMClient {
     public GroupManager groupManager;
     public MessageManager messageManager;
     public UserInfoManager userInfoManager;
+    public SignalingManager signalingManager;
 
     private OpenIMClient() {
 //        imManager = new ImManager();
@@ -33,6 +35,7 @@ public class OpenIMClient {
         groupManager = new GroupManager();
         messageManager = new MessageManager();
         userInfoManager = new UserInfoManager();
+        signalingManager = new SignalingManager();
     }
 
     private static class Singleton {

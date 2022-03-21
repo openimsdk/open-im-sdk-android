@@ -6,7 +6,11 @@ public class ReadReceiptInfo {
     /**
      * 用户id
      */
-    private String uid;
+    private String userID;
+    /**
+     * 组id
+     */
+    private String groupID;
     /**
      * 已读消息id
      */
@@ -41,12 +45,20 @@ public class ReadReceiptInfo {
      */
     private int sessionType;
 
-    public String getUid() {
-        return uid;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public String getGroupID() {
+        return groupID;
+    }
+
+    public void setGroupID(String groupID) {
+        this.groupID = groupID;
     }
 
     public List<String> getMsgIDList() {
