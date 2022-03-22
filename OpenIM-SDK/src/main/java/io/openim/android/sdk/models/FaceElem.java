@@ -1,14 +1,14 @@
 package io.openim.android.sdk.models;
 
 public class FaceElem {
-    private String index;
+    private int index;
     private String data;
 
-    public String getIndex() {
+    public int getIndex() {
         return index;
     }
 
-    public void setIndex(String index) {
+    public void setIndex(int index) {
         this.index = index;
     }
 
