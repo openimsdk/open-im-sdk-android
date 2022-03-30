@@ -57,7 +57,7 @@ public class Message {
     /**
      * 发送者昵称
      */
-    private String senderNickName;
+    private String senderNickname;
     /**
      * 发送者头像
      */
@@ -225,12 +225,12 @@ public class Message {
         this.platformID = platformID;
     }
 
-    public String getSenderNickName() {
-        return senderNickName;
+    public String getSenderNickname() {
+        return senderNickname;
     }
 
-    public void setSenderNickName(String senderNickName) {
-        this.senderNickName = senderNickName;
+    public void setSenderNickname(String senderNickname) {
+        this.senderNickname = senderNickname;
     }
 
     public String getSenderFaceUrl() {
