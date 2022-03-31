@@ -217,4 +217,35 @@ public class GroupManager {
         Open_im_sdk.refuseGroupApplication(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, uid, handleMsg);
 
     }
+
+    /**
+     * 解散群
+     *
+     * @param gid 群ID
+     */
+    public void dismissGroup(OnBase<String> base, String gid) {
+        Open_im_sdk.dismissGroup(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid);
+    }
+
+    /**
+     * 开启群禁言
+     *
+     * @param gid  群ID
+     * @param mute true开启
+     */
+    public void changeGroupMute(OnBase<String> base, String gid, boolean mute) {
+        Open_im_sdk.changeGroupMute(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, mute);
+
+    }
+
+    /**
+     * 禁言群成员
+     *
+     * @param gid     群ID
+     * @param uid     群成员userID
+     * @param seconds 禁言时间s
+     */
+    public void changeGroupMemberMute(OnBase<String> base, String gid, String uid, long seconds) {
+        Open_im_sdk.changeGroupMemberMute(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, uid, seconds);
+    }
 }

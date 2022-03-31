@@ -31,9 +31,9 @@ public class MainActivity extends AppCompatActivity implements OnConnListener, O
     OnGroupListener {
 
     /// api地址
-    final static String IP_API = "http://121.37.25.71:10000";
+    final static String IP_API = "http://43.128.5.63:10000";
     /// websocket地址
-    final static String IP_WS = "ws://121.37.25.71:17778";
+    final static String IP_WS = "ws://43.128.5.63:17778";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements OnConnListener, O
                 System.out.println("登录成功!");
 
             }
-        }, "13918588195", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiIxMzkxODU4ODE5NSIsIlBsYXRmb3JtIjoiQW5kcm9pZCIsImV4cCI6MTk2MTY1OTkwMSwibmJmIjoxNjQ2Mjk5OTAxLCJpYXQiOjE2NDYyOTk5MDF9.qCpAX4-95pkyrqOfH-FUFbvRUyOpYQegBx6y3QbgonY");
+        }, "13900000000", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVSUQiOiIxMzkwMDAwMDAwMCIsIlBsYXRmb3JtIjoiQW5kcm9pZCIsImV4cCI6MTk2Mzk3MjE0NCwibmJmIjoxNjQ4NjEyMTQ0LCJpYXQiOjE2NDg2MTIxNDR9.BEqWSNHV4P6d9NrA1Ji_kyHx1WnZY7R1Iket_6Oqpns");
     }
 
     public void onGetMessageHistory(View view) {

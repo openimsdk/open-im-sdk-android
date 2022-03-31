@@ -14,6 +14,7 @@ import io.openim.android.sdk.listener._AdvanceMsgListener;
 import io.openim.android.sdk.listener._MsgSendProgressListener;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.OfflinePushInfo;
+import io.openim.android.sdk.models.SearchResult;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
@@ -361,6 +362,46 @@ public class MessageManager {
      */
     public void clearGroupHistoryMessage(OnBase<String> base, String gid) {
         Open_im_sdk.clearGroupHistoryMessage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid);
+    }
+
+    /**
+     * 搜索消息
+     *
+     * @param sourceID             单聊为用户ID，群聊为群ID
+     * @param sessionType          会话类型，单聊为1，群聊为2，如果为0，则代表搜索全部
+     * @param keywordList          搜索关键词列表，目前仅支持一个关键词搜索
+     * @param keywordListMatchType 关键词匹配模式，1代表与，2代表或，暂时未用
+     * @param senderUserIDList     指定消息发送的uid列表 暂时未用
+     * @param messageTypeList      消息类型列表
+     * @param searchTimePosition   搜索的起始时间点。默认为0即代表从现在开始搜索。UTC 时间戳，单位：秒
+     * @param searchTimePeriod     从起始时间点开始的过去时间范围，单位秒。默认为0即代表不限制时间范围，传24x60x60代表过去一天
+     * @param pageIndex            当前页数
+     * @param count                每页数量
+     */
+    public void searchLocalMessages(OnBase<SearchResult> base,
+                                    String sourceID,
+                                    int sessionType,
+                                    List<String> keywordList,
+                                    int keywordListMatchType,
+                                    List<String> senderUserIDList,
+                                    List<Integer> messageTypeList,
+                                    int searchTimePosition,
+                                    int searchTimePeriod,
+                                    int pageIndex,
+                                    int count) {
+
+        Map<String, Object> map = new ArrayMap<>();
+        map.put("sourceID", sourceID);
+        map.put("sessionType", sessionType);
+        map.put("keywordList", keywordList);
+        map.put("keywordListMatchType", keywordListMatchType);
+        map.put("senderUserIDList", senderUserIDList);
+        map.put("messageTypeList", messageTypeList);
+        map.put("searchTimePosition", searchTimePosition);
+        map.put("searchTimePeriod", searchTimePeriod);
+        map.put("pageIndex", pageIndex);
+        map.put("count", count);
+        Open_im_sdk.searchLocalMessages(BaseImpl.objectBase(base, SearchResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
     static Message parse(String msg) {

@@ -61,9 +61,14 @@ public class ConversationInfo {
      */
     private boolean isPinned;
     /**
+     * 是否开启私聊
+     */
+    private boolean isPrivateChat;
+    /**
      * 扩展预留字段
      */
     private String ext;
+
 
     public String getConversationID() {
         return conversationID;
@@ -183,5 +188,13 @@ public class ConversationInfo {
 
     public void setExt(String ext) {
         this.ext = ext;
+    }
+
+    public boolean isPrivateChat() {
+        return isPrivateChat;
+    }
+
+    public void setPrivateChat(boolean privateChat) {
+        isPrivateChat = privateChat;
     }
 }

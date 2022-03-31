@@ -33,6 +33,9 @@ public class GroupInfo {
      * 群成员数量
      */
     private int memberCount;
+    /**
+     * ok = 0 blocked = 1 Dismissed = 2 Muted  = 3
+     */
     private int status;
     private String creatorUserID;
     private int groupType;

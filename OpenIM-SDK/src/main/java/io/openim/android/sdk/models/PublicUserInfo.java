@@ -6,6 +6,7 @@ public class PublicUserInfo {
     private String faceURL;
     private int gender;
     private int appMangerLevel;
+    private String ex;
 
     public String getUserID() {
         return userID;
@@ -45,5 +46,13 @@ public class PublicUserInfo {
 
     public void setAppMangerLevel(int appMangerLevel) {
         this.appMangerLevel = appMangerLevel;
+    }
+
+    public String getEx() {
+        return ex;
+    }
+
+    public void setEx(String ex) {
+        this.ex = ex;
     }
 }

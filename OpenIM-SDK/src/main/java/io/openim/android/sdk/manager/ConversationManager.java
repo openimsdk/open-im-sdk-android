@@ -163,6 +163,15 @@ public class ConversationManager {
         Open_im_sdk.getConversationRecvMessageOpt(BaseImpl.arrayBase(base, NotDisturbInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(conversationIDs));
     }
 
+    /***
+     * 设置私聊
+     * @param conversionID 会话ID
+     * @param isPrivate true开启
+     * */
+    public void setOneConversationPrivateChat(OnBase<String> base, String conversionID, boolean isPrivate) {
+        Open_im_sdk.setOneConversationPrivateChat(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversionID, isPrivate);
+    }
+
     /**
      * 会话排序比较器
      */

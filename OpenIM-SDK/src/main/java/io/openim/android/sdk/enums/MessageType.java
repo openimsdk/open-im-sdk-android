@@ -60,9 +60,14 @@ public class MessageType {
      * 引用
      */
     public static final int QUOTE = 114;
-    ///
+    /**
+     * 自定义表情包
+     */
+    public static final int CUSTOM_FACE = 115;
+
 
     public static final int NOTIFICATION_BEGIN = 1000;
+
     public static final int FRIEND_NOTIFICATION_BEGIN = 1200;
     public static final int FRIEND_APPLICATION_APPROVED_NOTIFICATION = 1201; //add_friend_response
     public static final int FRIEND_APPLICATION_REJECTED_NOTIFICATION = 1202; //add_friend_response
@@ -73,13 +78,14 @@ public class MessageType {
     public static final int BLACK_ADDED_NOTIFICATION = 1207; //add_black
     public static final int BLACK_DELETED_NOTIFICATION = 1208; //remove_black
     public static final int FRIEND_NOTIFICATION_END = 1299;
+
     public static final int CONVERSATION_CHANGE_NOTIFICATION = 1300;
+
     public static final int USER_NOTIFICATION_BEGIN = 1301;
     public static final int USERINFO_UPDATED_NOTIFICATION = 1303; //SetSelfInfoTip
     public static final int USER_NOTIFICATION_END = 1399;
 
     public static final int GROUP_NOTIFICATION_BEGIN = 1500;
-
     public static final int GROUP_CREATED_NOTIFICATION = 1501;
     public static final int GROUP_INFO_SET_NOTIFICATION = 1502;
     public static final int JOIN_GROUP_APPLICATION_NOTIFICATION = 1503;
@@ -92,8 +98,14 @@ public class MessageType {
     public static final int MEMBER_ENTER_NOTIFICATION = 1510;
     public static final int GROUP_NOTIFICATION_END = 1599;
 
+    public static final int GROUP_MEMBER_MUTED_NOTIFICATION = 1512;
+    public static final int GROUP_MEMBER_CANCEL_MUTED_NOTIFICATION = 1513;
+    public static final int GROUP_MUTED_NOTIFICATION = 1514;
+    public static final int GROUP_CANCEL_MUTED_NOTIFICATION = 1515;
+
     public static final int SIGNALING_NOTIFICATION_BEGIN = 1600;
     public static final int SIGNALING_NOTIFICATION = 1601;
     public static final int SIGNALING_NOTIFICATION_END = 1699;
+
     public static final int NOTIFICATION_END = 2000;
 }

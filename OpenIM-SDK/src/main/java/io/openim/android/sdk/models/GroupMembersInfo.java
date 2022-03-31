@@ -12,7 +12,7 @@ public class GroupMembersInfo {
     /**
      * 群内昵称
      */
-    private String nickName;
+    private String nickname;
     /**
      * 头像
      */
@@ -29,6 +29,10 @@ public class GroupMembersInfo {
     private int joinSource;
     private String operatorUserID;
     private String ext;
+    /**
+     * 禁言结束时间
+     */
+    private long muteEndTime;
 
     public String getGroupID() {
         return groupID;
@@ -44,14 +48,6 @@ public class GroupMembersInfo {
 
     public void setUserID(String userID) {
         this.userID = userID;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
     }
 
     public String getFaceURL() {
@@ -100,5 +96,21 @@ public class GroupMembersInfo {
 
     public void setExt(String ext) {
         this.ext = ext;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public long getMuteEndTime() {
+        return muteEndTime;
+    }
+
+    public void setMuteEndTime(long muteEndTime) {
+        this.muteEndTime = muteEndTime;
     }
 }

@@ -17,8 +17,10 @@ public class GroupApplicationInfo {
     private String userFaceURL;
     private int gender;
 
-    /// REFUSE = -1, AGREE = 1
-    /// -1：拒绝，1：同意
+    /**
+     * REFUSE = -1, AGREE = 1
+     * -1：拒绝，1：同意
+     */
     private int handleResult;
     private String reqMsg;
     private String handledMsg;

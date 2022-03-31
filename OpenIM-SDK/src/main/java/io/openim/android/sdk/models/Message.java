@@ -94,6 +94,7 @@ public class Message {
      *
      */
     private Object ext;
+    private Object ex;
     /**
      * 图片信息
      */
@@ -119,13 +120,13 @@ public class Message {
      */
     private LocationElem locationElem;
     /**
-     * 引用消息
-     */
-    private QuoteElem quoteElem;
-    /**
      * 自定义信息
      */
     private CustomElem customElem;
+    /**
+     * 引用消息
+     */
+    private QuoteElem quoteElem;
     /**
      * 合并信息
      */
@@ -299,6 +300,14 @@ public class Message {
 
     public Object getExt() {
         return ext;
+    }
+
+    public Object getEx() {
+        return ex;
+    }
+
+    public void setEx(Object ex) {
+        this.ex = ex;
     }
 
     public void setExt(Object ext) {
