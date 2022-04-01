@@ -172,6 +172,14 @@ public class ConversationManager {
         Open_im_sdk.setOneConversationPrivateChat(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversionID, isPrivate);
     }
 
+    /***
+     * 从本地和服务器删除会话跟历史消息
+     * @param conversionID 会话ID
+     * */
+    public void deleteConversationMsgFromLocalAndSvr(OnBase<String> base, String conversionID) {
+        Open_im_sdk.deleteConversationMsgFromLocalAndSvr(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversionID);
+    }
+
     /**
      * 会话排序比较器
      */

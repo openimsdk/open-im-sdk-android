@@ -404,6 +404,39 @@ public class MessageManager {
         Open_im_sdk.searchLocalMessages(BaseImpl.objectBase(base, SearchResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
+    /**
+     * 删除本地跟服务器消息
+     *
+     * @param message 消息体
+     */
+    public void deleteMessageFromLocalAndSvr(OnBase<String> base, Message message) {
+        Open_im_sdk.deleteMessageFromLocalAndSvr(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
+    }
+
+    /**
+     * 删除本地所有消息
+     */
+    public void deleteAllMsgFromLocal(OnBase<String> base) {
+        Open_im_sdk.deleteAllMsgFromLocal(BaseImpl.stringBase(base), ParamsUtil.buildOperationID());
+    }
+
+    /**
+     * 删除本地跟服务器所有消息
+     */
+    public void deleteAllMsgFromLocalAndSvr(OnBase<String> base) {
+        Open_im_sdk.deleteAllMsgFromLocalAndSvr(BaseImpl.stringBase(base), ParamsUtil.buildOperationID());
+    }
+
+    /**
+     * 标记会话全部已读，用于OA通知类消息
+     *
+     * @param conversationID 会话id
+     * @param messageIDList  消息clientID列表
+     */
+    public void markMessageAsReadByConID(OnBase<String> base, String conversationID, List<String> messageIDList) {
+        Open_im_sdk.markMessageAsReadByConID(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, JsonUtil.toString(messageIDList));
+    }
+
     static Message parse(String msg) {
         return JsonUtil.toObj(msg, Message.class);
     }

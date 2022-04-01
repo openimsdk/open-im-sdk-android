@@ -106,5 +106,10 @@ public class OpenIMClient {
     public long getLoginStatus() {
         return Open_im_sdk.getLoginStatus();
     }
+
+
+    public void wakeUp(OnBase<String> base) {
+        Open_im_sdk.wakeUp(BaseImpl.stringBase(base), ParamsUtil.buildOperationID());
+    }
 }
 
