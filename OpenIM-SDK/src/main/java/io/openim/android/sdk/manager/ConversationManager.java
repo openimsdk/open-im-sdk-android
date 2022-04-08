@@ -176,8 +176,15 @@ public class ConversationManager {
      * 从本地和服务器删除会话跟历史消息
      * @param conversionID 会话ID
      * */
-    public void deleteConversationMsgFromLocalAndSvr(OnBase<String> base, String conversionID) {
-        Open_im_sdk.deleteConversationMsgFromLocalAndSvr(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversionID);
+    public void deleteConversationFromLocalAndSvr(OnBase<String> base, String conversionID) {
+        Open_im_sdk.deleteConversationFromLocalAndSvr(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversionID);
+    }
+
+    /***
+     * 从本地删除所有会话
+     * */
+    public void deleteAllConversationFromLocal(OnBase<String> base) {
+        Open_im_sdk.deleteAllConversationFromLocal(BaseImpl.stringBase(base), ParamsUtil.buildOperationID());
     }
 
     /**

@@ -437,6 +437,24 @@ public class MessageManager {
         Open_im_sdk.markMessageAsReadByConID(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, JsonUtil.toString(messageIDList));
     }
 
+    /**
+     * 聊天设置里清除聊天记录
+     *
+     * @param uid 用户id
+     */
+    public void clearC2CHistoryMessageFromLocalAndSvr(OnBase<String> base, String uid) {
+        Open_im_sdk.clearC2CHistoryMessageFromLocalAndSvr(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), uid);
+    }
+
+    /**
+     * 聊天设置里清除聊天记录
+     *
+     * @param gid 群id
+     */
+    public void clearGroupHistoryMessageFromLocalAndSvr(OnBase<String> base, String gid) {
+        Open_im_sdk.clearGroupHistoryMessageFromLocalAndSvr(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid);
+    }
+
     static Message parse(String msg) {
         return JsonUtil.toObj(msg, Message.class);
     }
