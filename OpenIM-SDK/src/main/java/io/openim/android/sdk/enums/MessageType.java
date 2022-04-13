@@ -85,6 +85,8 @@ public class MessageType {
     public static final int USERINFO_UPDATED_NOTIFICATION = 1303; //SetSelfInfoTip
     public static final int USER_NOTIFICATION_END = 1399;
 
+    public static final int OA_NOTIFICATION = 1400;
+
     public static final int GROUP_NOTIFICATION_BEGIN = 1500;
     public static final int GROUP_CREATED_NOTIFICATION = 1501;
     public static final int GROUP_INFO_SET_NOTIFICATION = 1502;
@@ -96,6 +98,7 @@ public class MessageType {
     public static final int MEMBER_KICKED_NOTIFICATION = 1508;
     public static final int MEMBER_INVITED_NOTIFICATION = 1509;
     public static final int MEMBER_ENTER_NOTIFICATION = 1510;
+    public static final int GROUP_DISBAND_NOTIFICATION = 1511;
     public static final int GROUP_NOTIFICATION_END = 1599;
 
     public static final int GROUP_MEMBER_MUTED_NOTIFICATION = 1512;
@@ -106,6 +109,8 @@ public class MessageType {
     public static final int SIGNALING_NOTIFICATION_BEGIN = 1600;
     public static final int SIGNALING_NOTIFICATION = 1601;
     public static final int SIGNALING_NOTIFICATION_END = 1699;
+
+    public static final int BURN_AFTER_READING_NOTIFICATION = 1701;
 
     public static final int NOTIFICATION_END = 2000;
 }
