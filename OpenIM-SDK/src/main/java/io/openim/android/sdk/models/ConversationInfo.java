@@ -69,6 +69,8 @@ public class ConversationInfo {
      */
     private String ext;
 
+    private boolean isNotInGroup;
+
 
     public String getConversationID() {
         return conversationID;
@@ -196,5 +198,13 @@ public class ConversationInfo {
 
     public void setPrivateChat(boolean privateChat) {
         isPrivateChat = privateChat;
+    }
+
+    public boolean isNotInGroup() {
+        return isNotInGroup;
+    }
+
+    public void setNotInGroup(boolean notInGroup) {
+        isNotInGroup = notInGroup;
     }
 }

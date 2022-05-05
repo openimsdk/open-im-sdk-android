@@ -16,8 +16,8 @@ maven {
 ##### 2，Add dependencies（添加依赖）
 
 ```
-    implementation 'io.openim:android-sdk:2.0.10@aar'
-    implementation 'io.openim:client-sdk:2.0.32@aar'
+    implementation 'io.openim:android-sdk:2.0.11@aar'
+    implementation 'io.openim:client-sdk:2.0.48@aar'
 ```
 
 #### Proguard rules（混淆规则）

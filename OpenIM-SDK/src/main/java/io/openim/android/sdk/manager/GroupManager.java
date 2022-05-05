@@ -248,4 +248,31 @@ public class GroupManager {
     public void changeGroupMemberMute(OnBase<String> base, String gid, String uid, long seconds) {
         Open_im_sdk.changeGroupMemberMute(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, uid, seconds);
     }
+
+    /**
+     * 修改所在群的昵称
+     *
+     * @param gid           群ID
+     * @param uid           群成员userID
+     * @param groupNickname 群内显示名称
+     */
+    public void setGroupMemberNickname(OnBase<String> base, String gid, String uid, String groupNickname) {
+        Open_im_sdk.setGroupMemberNickname(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, uid, groupNickname);
+    }
+
+    /**
+     * 根据关键词搜索群组
+     * 群ID跟群名二者互斥
+     *
+     * @param keywordList       关键词
+     * @param isSearchGroupID   是通过群组id进行查询
+     * @param isSearchGroupName 是通过群名称查询
+     */
+    public void searchGroups(OnBase<String> base, List<String> keywordList, boolean isSearchGroupID, boolean isSearchGroupName) {
+        Map<String, Object> map = new ArrayMap<>();
+        map.put("keywordList", keywordList);
+        map.put("isSearchGroupID", isSearchGroupID);
+        map.put("isSearchGroupName", isSearchGroupName);
+        Open_im_sdk.searchGroups(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+    }
 }

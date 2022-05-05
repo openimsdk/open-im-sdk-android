@@ -12,6 +12,7 @@ import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnMsgSendCallback;
 import io.openim.android.sdk.listener._AdvanceMsgListener;
 import io.openim.android.sdk.listener._MsgSendProgressListener;
+import io.openim.android.sdk.models.AtUserInfo;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.OfflinePushInfo;
 import io.openim.android.sdk.models.SearchResult;
@@ -165,12 +166,14 @@ public class MessageManager {
     /**
      * 创建@文本消息
      *
-     * @param text      内容
-     * @param atUidList 用户id列表
+     * @param text           内容
+     * @param atUserIDList   用户id列表
+     * @param atUserInfoList 被@的用户id跟昵称映射
+     * @param quoteMessage   @消息带引用消息
      * @return {@link Message}
      */
-    public Message createTextAtMessage(String text, List<String> atUidList) {
-        return parse(Open_im_sdk.createTextAtMessage(ParamsUtil.buildOperationID(), text, JsonUtil.toString(atUidList)));
+    public Message createTextAtMessage(String text, List<String> atUserIDList, List<AtUserInfo> atUserInfoList, Message quoteMessage) {
+        return parse(Open_im_sdk.createTextAtMessage(ParamsUtil.buildOperationID(), text, JsonUtil.toString(atUserIDList), JsonUtil.toString(atUserInfoList), JsonUtil.toString(quoteMessage)));
     }
 
     /**
@@ -367,8 +370,7 @@ public class MessageManager {
     /**
      * 搜索消息
      *
-     * @param sourceID             单聊为用户ID，群聊为群ID
-     * @param sessionType          会话类型，单聊为1，群聊为2，如果为0，则代表搜索全部
+     * @param conversationID       根据会话查询，如果是全局搜索传null
      * @param keywordList          搜索关键词列表，目前仅支持一个关键词搜索
      * @param keywordListMatchType 关键词匹配模式，1代表与，2代表或，暂时未用
      * @param senderUserIDList     指定消息发送的uid列表 暂时未用
@@ -379,8 +381,7 @@ public class MessageManager {
      * @param count                每页数量
      */
     public void searchLocalMessages(OnBase<SearchResult> base,
-                                    String sourceID,
-                                    int sessionType,
+                                    String conversationID,
                                     List<String> keywordList,
                                     int keywordListMatchType,
                                     List<String> senderUserIDList,
@@ -391,8 +392,7 @@ public class MessageManager {
                                     int count) {
 
         Map<String, Object> map = new ArrayMap<>();
-        map.put("sourceID", sourceID);
-        map.put("sessionType", sessionType);
+        map.put("conversationID", conversationID);
         map.put("keywordList", keywordList);
         map.put("keywordListMatchType", keywordListMatchType);
         map.put("senderUserIDList", senderUserIDList);
@@ -453,6 +453,30 @@ public class MessageManager {
      */
     public void clearGroupHistoryMessageFromLocalAndSvr(OnBase<String> base, String gid) {
         Open_im_sdk.clearGroupHistoryMessageFromLocalAndSvr(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid);
+    }
+
+    /**
+     * 获取历史消息
+     * 在搜索消息时定位到消息位置，获取新消息列表
+     * getHistoryMessageList是获取该条消息之前的记录（旧消息），getHistoryMessageListReverse是获取该条消息之后的记录（新消息）
+     *
+     * @param userID   用户id
+     * @param groupID  组ID
+     * @param startMsg 从startMsg {@link Message}开始拉取消息
+     *                 startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到 list；
+     *                 下一次拉取消息记录参数：startMsg=list.last && count =20；以此内推，startMsg始终为list的最后一条。
+     * @param count    一次拉取count条
+     * @param base     callback List<{@link Message}>
+     */
+    public void getHistoryMessageListReverse(OnBase<List<Message>> base, String userID, String groupID, Message startMsg, int count) {
+        Map<String, Object> map = new ArrayMap<>();
+        map.put("userID", userID);
+        map.put("groupID", groupID);
+        if (null != startMsg) {
+            map.put("startClientMsgID", startMsg.getClientMsgID());
+        }
+        map.put("count", count);
+        Open_im_sdk.getHistoryMessageListReverse(BaseImpl.arrayBase(base, Message.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
     static Message parse(String msg) {

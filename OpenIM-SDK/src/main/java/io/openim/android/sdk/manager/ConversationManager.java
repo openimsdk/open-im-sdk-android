@@ -188,6 +188,22 @@ public class ConversationManager {
     }
 
     /**
+     * 清除@消息标志位
+     *
+     * @param conversationID 会话ID
+     */
+    public void resetConversationGroupAtType(OnBase<String> base, String conversationID) {
+        Open_im_sdk.resetConversationGroupAtType(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID);
+    }
+
+    /**
+     * 查询at所有人标识
+     */
+    public String getAtAllTag() {
+        return Open_im_sdk.getAtAllTag();
+    }
+
+    /**
      * 会话排序比较器
      */
     public Comparator<ConversationInfo> simpleComparator() {
