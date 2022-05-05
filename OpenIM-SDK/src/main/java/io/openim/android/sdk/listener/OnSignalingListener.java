@@ -6,7 +6,6 @@ public interface OnSignalingListener {
 
     void onInvitationCancelled(SignalingInfo s);
 
-
     void onInvitationTimeout(SignalingInfo s);
 
     void onInviteeAccepted(SignalingInfo s);
@@ -18,4 +17,6 @@ public interface OnSignalingListener {
     void onInviteeRejectedByOtherDevice(SignalingInfo s);
 
     void onReceiveNewInvitation(SignalingInfo s);
+
+    void onHangup(SignalingInfo s);
 }

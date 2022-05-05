@@ -12,6 +12,14 @@ final public class _SignalingListener implements open_im_sdk_callback.OnSignalin
     }
 
     @Override
+    public void onHangUp(String s) {
+        if (listener != null) {
+            SignalingInfo info = JsonUtil.toObj(s, SignalingInfo.class);
+            listener.onHangup(info);
+        }
+    }
+
+    @Override
     public void onInvitationCancelled(String s) {
         if (listener != null) {
             SignalingInfo info = JsonUtil.toObj(s, SignalingInfo.class);
