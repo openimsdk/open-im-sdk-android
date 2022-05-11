@@ -268,11 +268,11 @@ public class GroupManager {
      * @param isSearchGroupID   是通过群组id进行查询
      * @param isSearchGroupName 是通过群名称查询
      */
-    public void searchGroups(OnBase<String> base, List<String> keywordList, boolean isSearchGroupID, boolean isSearchGroupName) {
+    public void searchGroups(OnBase<List<GroupInfo>> base, List<String> keywordList, boolean isSearchGroupID, boolean isSearchGroupName) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("keywordList", keywordList);
         map.put("isSearchGroupID", isSearchGroupID);
         map.put("isSearchGroupName", isSearchGroupName);
-        Open_im_sdk.searchGroups(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+        Open_im_sdk.searchGroups(BaseImpl.arrayBase(base, GroupInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 }

@@ -40,6 +40,7 @@ boolean result = OpenIMClient.getInstance().initSDK(apiUrl, wsUrl, storageDir, l
 ##### 2，设置监听器
 
 ```
+// 用户资料变更监听
 OpenIMClient.getInstance().userInfoManager.setOnUserListener(new OnUserListener() {
     @Override
     public void onSelfInfoUpdated(UserInfo info) {
@@ -47,6 +48,7 @@ OpenIMClient.getInstance().userInfoManager.setOnUserListener(new OnUserListener(
     }
 });
 
+// 收到新消息，已读回执，消息撤回监听。
 OpenIMClient.getInstance().messageManager.setAdvancedMsgListener(new OnAdvanceMsgListener() {
     @Override
     public void onRecvNewMessage(Message msg) {
@@ -62,8 +64,14 @@ OpenIMClient.getInstance().messageManager.setAdvancedMsgListener(new OnAdvanceMs
     public void onRecvMessageRevoked(String msgId) {
         // 消息成功撤回，从界面移除消息
     }
+    
+    @Override
+    public void onRecvGroupMessageReadReceipt(List<ReadReceiptInfo> list) {
+				// 消息被阅读回执，将消息标记为已读
+    }
 });
 
+// 好关系发生变化监听
 OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFriendshipListener() {
     @Override
     public void onBlacklistAdded(BlacklistInfo u) {
@@ -111,6 +119,7 @@ OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFrien
     }
 });
 
+// 会话新增或改变监听
 OpenIMClient.getInstance().conversationManager.setOnConversationListener(new OnConversationListener() {
     @Override
     public void onConversationChanged(List<ConversationInfo> list) {
@@ -143,6 +152,7 @@ OpenIMClient.getInstance().conversationManager.setOnConversationListener(new OnC
     }
 });
 
+// 群组关系发生改变监听
 OpenIMClient.getInstance().groupManager.setOnGroupListener(new OnGroupListener() {
     @Override
     public void onGroupApplicationAccepted(GroupApplicationInfo info) {
@@ -234,6 +244,8 @@ OpenIMClient.getInstance().logout(new OnBase<String>() {
 });
 ```
 
+
+
 - ##### getUsersInfo（根据用户ID批量获取用户信息）
 
 ```
@@ -251,6 +263,8 @@ OpenIMClient.getInstance().userInfoManager.getUsersInfo(new OnBase<List<UserInfo
 }, uidList);
 ```
 
+
+
 - ##### getSelfUserInfo（获取当前登录用户的资料）
 
 ```
@@ -266,6 +280,8 @@ OpenIMClient.getInstance().userInfoManager.getSelfUserInfo(new OnBase<UserInfo>(
     }
 });
 ```
+
+
 
 - ##### setSelfInfo（修改当前用登录户资料）
 
@@ -293,6 +309,8 @@ OpenIMClient.getInstance().userInfoManager.setSelfInfo(new OnBase<String>() {
 }, nickname, faceURL, gender, appMangerLevel, phoneNumber, birth, email, ex);
 ```
 
+
+
 - ##### getAllConversationList（获取所有会话）
 
 ```
@@ -308,6 +326,8 @@ OpenIMClient.getInstance().conversationManager.getAllConversationList(new OnBase
     }
 });
 ```
+
+
 
 - ##### getConversationListSplit（分页获取会话）
 
@@ -345,6 +365,8 @@ OpenIMClient.getInstance().conversationManager.getOneConversation(new OnBase<Con
 }, sourceID, sessionType);
 ```
 
+
+
 - ##### getMultipleConversation（根据会话id查询会话）
 
 ```
@@ -361,6 +383,8 @@ OpenIMClient.getInstance().conversationManager.getMultipleConversation(new OnBas
     }
 }, conversationIDList);
 ```
+
+
 
 - ##### deleteConversation（根据会话id删除指定会话)
 
@@ -380,6 +404,8 @@ OpenIMClient.getInstance().conversationManager.deleteConversation(new OnBase<Str
     }
 }, conversationID);
 ```
+
+
 
 - ##### setConversationDraft（设置会话草稿）
 
@@ -401,6 +427,8 @@ OpenIMClient.getInstance().conversationManager.setConversationDraft(new OnBase<S
 }, conversationID, draftText);
 ```
 
+
+
 - ##### pinConversation（置顶会话）
 
 会触onConversationChanged回调
@@ -421,6 +449,8 @@ OpenIMClient.getInstance().conversationManager.pinConversation(new OnBase<String
 }, conversationID, isPinned);
 ```
 
+
+
 - ##### markGroupMessageHasRead（标记群会话已读，清除未读数）
 
 会触onConversationChanged、onTotalUnreadMessageCountChanged回调
@@ -440,6 +470,8 @@ OpenIMClient.getInstance().conversationManager.markGroupMessageHasRead(new OnBas
 }, groupID);
 ```
 
+
+
 - ##### getTotalUnreadMsgCount（获取未读消息总数）
 
 ```
@@ -456,6 +488,8 @@ OpenIMClient.getInstance().conversationManager.getTotalUnreadMsgCount(new OnBase
 });
 ```
 
+
+
 - ##### getConversationIDBySessionType（查询会话id）
 
 ```
@@ -463,6 +497,8 @@ String sourceID = ""; // 如果是单聊值传userID，如果是群聊groupID
 int sessionType = 1; // 如果是单聊值传1，如果是群聊值传2
 OpenIMClient.getInstance().conversationManager.getConversationIDBySessionType(sourceID, sessionType);
 ```
+
+
 
 - ##### setConversationRecvMessageOpt（设置免打扰模式）
 
@@ -482,6 +518,8 @@ OpenIMClient.getInstance().conversationManager.setConversationRecvMessageOpt(new
 }, conversationIDs, status);
 ```
 
+
+
 - ##### getConversationRecvMessageOpt（查询免打扰状态）
 
 ```
@@ -499,11 +537,99 @@ OpenIMClient.getInstance().conversationManager.getConversationRecvMessageOpt(new
 }, conversationIDs);
 ```
 
+
+
+- ##### setOneConversationPrivateChat（开启私聊会话）
+
+```
+String conversationID; //会话ID
+boolean isPrivate = true; // 开启
+OpenIMClient.getInstance().conversationManager.setOneConversationPrivateChat(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, conversationID, isPrivate);
+```
+
+
+
+- ##### deleteConversationFromLocalAndSvr（删除本地跟服务端会话记录）
+
+```
+String conversationID; //会话ID
+OpenIMClient.getInstance().conversationManager.deleteConversationFromLocalAndSvr(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, conversationID);
+```
+
+
+
+- ##### deleteAllConversationFromLocal（删除本地所有会话记录）
+
+```
+OpenIMClient.getInstance().conversationManager.deleteAllConversationFromLocal(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+});
+```
+
+
+
+- ##### resetConversationGroupAtType（清除at标识）
+
+```
+String conversationID; //会话ID
+OpenIMClient.getInstance().conversationManager.resetConversationGroupAtType(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, conversationID);
+```
+
+
+
+- ##### getAtAllTag（at所有人标识）
+
+```
+OpenIMClient.getInstance().conversationManager.getAtAllTag();
+```
+
+
+
 - ##### simpleComparator（自定义会话排序规则）
 
 ```
 OpenIMClient.getInstance().conversationManager.simpleComparator();
 ```
+
+
 
 - ##### getFriendsInfo（根据userID查询好友资料）
 
@@ -521,6 +647,8 @@ OpenIMClient.getInstance().friendshipManager.getFriendsInfo(new OnBase<List<User
     }
 }, uidList);
 ```
+
+
 
 - ##### addFriend（发起好友申请）
 
@@ -544,6 +672,8 @@ OpenIMClient.getInstance().friendshipManager.addFriend(new OnBase<String>() {
 }, uid, reqMessage);
 ```
 
+
+
 - ##### checkFriend（检查是否是好友）
 
 ```
@@ -560,6 +690,8 @@ OpenIMClient.getInstance().friendshipManager.checkFriend(new OnBase<List<Friends
     }
 }, uidList);
 ```
+
+
 
 - ##### deleteFriend（删除好友）
 
@@ -579,6 +711,8 @@ OpenIMClient.getInstance().friendshipManager.deleteFriend(new OnBase<String>() {
     }
 }, uid);
 ```
+
+
 
 - ##### setFriendRemark（好友备注设置）
 
@@ -618,6 +752,8 @@ OpenIMClient.getInstance().friendshipManager.getFriendList(new OnBase<List<UserI
 });
 ```
 
+
+
 - ##### getRecvFriendApplicationList（收到的好友申请）
 
 ```
@@ -634,6 +770,8 @@ OpenIMClient.getInstance().friendshipManager.getRecvFriendApplicationList(new 		
 });
 ```
 
+
+
 - ##### getSendFriendApplicationList（发出的好友申请）
 
 ```
@@ -649,6 +787,8 @@ OpenIMClient.getInstance().friendshipManager.getSendFriendApplicationList(new On
     }
 });
 ```
+
+
 
 - ##### addBlacklist（拉黑好友）
 
@@ -669,6 +809,8 @@ OpenIMClient.getInstance().friendshipManager.addBlacklist(new OnBase<String>() {
 }, uid);
 ```
 
+
+
 - ##### getBlacklist（黑名单）
 
 ```
@@ -684,6 +826,8 @@ OpenIMClient.getInstance().friendshipManager.getBlacklist(new OnBase<List<UserIn
     }
 });
 ```
+
+
 
 - ##### removeBlacklist（移除黑名单）
 
@@ -703,6 +847,8 @@ OpenIMClient.getInstance().friendshipManager.removeBlacklist(new OnBase<String>(
     }
 }, uid);
 ```
+
+
 
 - ##### acceptFriendApplication（接受好友申请）
 
@@ -726,6 +872,8 @@ OpenIMClient.getInstance().friendshipManager.acceptFriendApplication(new OnBase<
 }, uid, handleMsg);
 ```
 
+
+
 - ##### refuseFriendApplication（拒绝好友申请）
 
 操作者收到OnFriendApplicationRejected
@@ -747,6 +895,8 @@ OpenIMClient.getInstance().friendshipManager.refuseFriendApplication(new OnBase<
     }
 }, uid, handleMsg);
 ```
+
+
 
 - ##### inviteUserToGroup（邀请进组）
 
@@ -773,6 +923,8 @@ OpenIMClient.getInstance().groupManager.inviteUserToGroup(new OnBase<List<GroupI
 }, groupID, uidList, reason);
 ```
 
+
+
 - ##### kickGroupMember（移除组成员）
 
 被踢者收到OnJoinedGroupDeleted
@@ -796,6 +948,8 @@ OpenIMClient.getInstance().groupManager.kickGroupMember(new OnBase<List<GroupInv
 }, groupID, uidList, reason);
 ```
 
+
+
 - ##### getGroupMembersInfo（查询组成员信息）
 
 ```
@@ -813,6 +967,8 @@ OpenIMClient.getInstance().groupManager.getGroupMembersInfo(new OnBase<List<Grou
     }
 }, groupID, uidList);
 ```
+
+
 
 - ##### getGroupMemberList（组成员列表）
 
@@ -834,6 +990,8 @@ OpenIMClient.getInstance().groupManager.getGroupMemberList(new OnBase<List<Group
 }, groupID, filter, offset, count);
 ```
 
+
+
 - ##### getJoinedGroupList（获取已加入的群组）
 
 ```
@@ -849,6 +1007,8 @@ OpenIMClient.getInstance().groupManager.getJoinedGroupList(new OnBase<List<Group
     }
 });
 ```
+
+
 
 - ##### createGroup（创建组）
 
@@ -875,6 +1035,8 @@ OpenIMClient.getInstance().groupManager.createGroup(new OnBase<GroupInfo>() {
 }, groupName, faceURL, notification, introduction, groupType, ex, list);
 ```
 
+
+
 - ##### setGroupInfo（修改组信息）
 
 群成员收到OnGroupInfoChanged
@@ -899,6 +1061,8 @@ OpenIMClient.getInstance().groupManager.setGroupInfo(new OnBase<String>() {
 }, groupID, groupName, faceURL, notification, introduction, ex);
 ```
 
+
+
 - ##### getGroupsInfo（根据id查询组信息）
 
 ```
@@ -915,6 +1079,8 @@ OpenIMClient.getInstance().groupManager.getGroupsInfo(new OnBase<List<GroupInfo>
     }
 }, gidList);
 ```
+
+
 
 - ##### joinGroup（申请入群组）
 
@@ -940,6 +1106,8 @@ OpenIMClient.getInstance().groupManager.joinGroup(new OnBase<String>() {
 }, groupID, reason);
 ```
 
+
+
 - ##### quitGroup（退出组）
 
 退出者收到OnJoinedGroupDeleted
@@ -961,6 +1129,8 @@ OpenIMClient.getInstance().groupManager.quitGroup(new OnBase<String>() {
 }, groupID);
 ```
 
+
+
 - ##### transferGroupOwner（群转让）
 
 ```
@@ -978,6 +1148,8 @@ OpenIMClient.getInstance().groupManager.transferGroupOwner(new OnBase<String>() 
     }
 }, groupID, newOwnerUserID);
 ```
+
+
 
 - ##### getRecvGroupApplicationList（收到的入群申请）
 
@@ -997,6 +1169,8 @@ OpenIMClient.getInstance().groupManager.getRecvGroupApplicationList(new OnBase<G
 });
 ```
 
+
+
 - ##### getSendGroupApplicationList（发出的入群申请）
 
 ```
@@ -1012,6 +1186,8 @@ OpenIMClient.getInstance().groupManager.getSendGroupApplicationList(new OnBase<G
     }
 });
 ```
+
+
 
 - ##### acceptGroupApplication（接受入群申请）
 
@@ -1038,6 +1214,8 @@ OpenIMClient.getInstance().groupManager.acceptGroupApplication(new OnBase<String
 }, groupID, uid, handleMsg);
 ```
 
+
+
 - ##### refuseGroupApplication（拒绝入群申请）
 
 申请者收到OnGroupApplicationRejected
@@ -1060,6 +1238,110 @@ OpenIMClient.getInstance().groupManager.refuseGroupApplication(new OnBase<String
     }
 }, groupID, uid, handleMsg);
 ```
+
+
+
+- ##### dismissGroup（解散群）
+
+```
+String groupID = ""; // 组ID
+OpenIMClient.getInstance().groupManager.dismissGroup(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, groupID);
+```
+
+
+
+- ##### changeGroupMute（开启群禁言）
+
+```
+String groupID = ""; // 组ID
+boolean mute = true; // 开启禁言
+OpenIMClient.getInstance().groupManager.changeGroupMute(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, groupID, mute);
+```
+
+
+
+- ##### changeGroupMemberMute（禁言群成员)
+
+```
+String groupID = ""; // 组ID
+String userID = ""; // 群成员ID
+long seconds = 0; // 禁言时长s
+OpenIMClient.getInstance().groupManager.changeGroupMemberMute(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, groupID, userID, mute);
+```
+
+
+
+- ##### setGroupMemberNickname（修改群成员昵称）
+
+```
+String groupID = ""; // 组ID
+String userID = ""; // 群成员ID
+String groupNickname = ""; // 群成员昵称
+OpenIMClient.getInstance().groupManager.setGroupMemberNickname(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, groupID, userID, groupNickname);
+```
+
+
+
+- ##### searchGroups（全局搜索群）
+
+```
+List<String> keywordList; // 关键词
+boolean isSearchGroupID; // 以群id为主
+boolean isSearchGroupName ; // 以群名为主
+OpenIMClient.getInstance().groupManager.setGroupMemberNickname(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, keywordList, isSearchGroupID, isSearchGroupName);
+```
+
+
 
 - ##### sendMessage（发送消息）
 
@@ -1086,6 +1368,8 @@ OpenIMClient.getInstance().messageManager.sendMessage(new OnMsgSendCallback() {
 }, message, userID, groupID, offlinePushInfo);
 ```
 
+
+
 - ##### getHistoryMessageList（获取聊天记录）
 
 ```
@@ -1110,6 +1394,8 @@ OpenIMClient.getInstance().messageManager.getHistoryMessageList(new OnBase<List<
 
 下次就是index == 0，以此类推。
 
+
+
 - ##### revokeMessage（撤回消息）
 
 撤回成功需要当前用户从列表里移除Message然后更新ui，而另外一方通过撤回监听（onRecvMessageRevoked）移除。
@@ -1129,6 +1415,8 @@ OpenIMClient.getInstance().messageManager.revokeMessage(new OnBase<String>() {
 }, message);
 ```
 
+
+
 - ##### deleteMessageFromLocalStorage（删除单条消息）
 
 ```
@@ -1145,6 +1433,8 @@ OpenIMClient.getInstance().messageManager.deleteMessageFromLocalStorage(new OnBa
     }
 }, message);
 ```
+
+
 
 - ##### insertSingleMessageToLocalStorage（向本地插入一条消息）
 
@@ -1164,6 +1454,8 @@ OpenIMClient.getInstance().messageManager.insertSingleMessageToLocalStorage(new 
     }
 }, message, receiverID, senderID);
 ```
+
+
 
 - ##### markC2CMessageAsRead（标记c2c消息已读）
 
@@ -1185,6 +1477,28 @@ OpenIMClient.getInstance().messageManager.markC2CMessageAsRead(new OnBase<String
 }, userID, messageIDList);
 ```
 
+
+
+- ##### markGroupMessageAsRead（标记组消息已读）
+
+```
+String groupID = ""; // 组id
+List<String> messageIDList = new ArrayList<>(); // 已读的消息id列表
+OpenIMClient.getInstance().messageManager.markGroupMessageAsRead(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, groupID, messageIDList);
+```
+
+
+
 - ##### typingStatusUpdate（正在输入提示）
 
 会通过onRecvNewMessage回调
@@ -1205,6 +1519,8 @@ OpenIMClient.getInstance().messageManager.typingStatusUpdate(new OnBase<String>(
 }, userID, msgTip);
 ```
 
+
+
 - ##### clearC2CHistoryMessage（清空c2c聊天记录）
 
 ```
@@ -1221,6 +1537,8 @@ OpenIMClient.getInstance().messageManager.clearC2CHistoryMessage(new OnBase<Stri
     }
 }, userID);
 ```
+
+
 
 - ##### clearGroupHistoryMessage（清空群聊天记录）
 
@@ -1239,6 +1557,8 @@ OpenIMClient.getInstance().messageManager.clearGroupHistoryMessage(new OnBase<St
 }, groupID);
 ```
 
+
+
 - ##### createTextMessage（文本消息）
 
 ```
@@ -1246,13 +1566,19 @@ String text = ""; // 发送的内容
 Message message = OpenIMClient.getInstance().messageManager.createTextMessage(text);
 ```
 
+
+
 - ##### createTextAtMessage（@消息）
 
 ```
 String text = ""; // 发送的内容
-List<String> atUidList = new ArrayList<>(); // 被@的用户id列表
-Message message = OpenIMClient.getInstance().messageManager.createTextAtMessage(text, atUidList);
+List<String> atUserIDList = new ArrayList<>(); // 被@的用户id列表
+List<AtUserInfo> atUserInfoList; // id跟昵称映射关系
+Message quoteMessage; // 引用消息
+Message message = OpenIMClient.getInstance().messageManager.createTextAtMessage(text, atUserIDList, atUserInfoList, quoteMessage);
 ```
+
+
 
 - ##### createImageMessage（图片消息，相对路径）
 
@@ -1263,12 +1589,16 @@ Message message = OpenIMClient.getInstance().messageManager.createImageMessage(i
 
 注：initSDK时传入了数据缓存（dataDir）路径，如路径：A，这时需要你将图片复制到A路径下后，如 A/pic/a.png路径，imagePath的值：“/pic/a.png”。同以下其他消息的相对路径。
 
+
+
 - ##### createImageMessageFromFullPath（图片消息全路径）
 
 ```
 String imagePath = ""; // 图片路径
 Message message = OpenIMClient.getInstance().messageManager.createImageMessageFromFullPath(imagePath);
 ```
+
+
 
 - ##### createSoundMessage（语音消息，相对路径）
 
@@ -1278,6 +1608,8 @@ long duration = 0; // 时长s
 Message message = OpenIMClient.getInstance().messageManager.createSoundMessage(soundPath, duration);
 ```
 
+
+
 - ##### createSoundMessageFromFullPath（语音消息全路径）
 
 ```
@@ -1285,6 +1617,8 @@ String soundPath = ""; // 路径
 long duration = 0; // 时长s
 Message message = OpenIMClient.getInstance().messageManager.createSoundMessage(soundPath, duration);
 ```
+
+
 
 - ##### createVideoMessage（视频消息，相对路径）
 
@@ -1296,6 +1630,8 @@ long duration = 0; // 时长s
 Message message = OpenIMClient.getInstance().messageManager.createVideoMessage(videoPath, videoType, duration, snapshotPath);
 ```
 
+
+
 - ##### createVideoMessageFromFullPath（视频消息全路径）
 
 ```
@@ -1306,6 +1642,8 @@ long duration = 0; // 时长s
 Message message = OpenIMClient.getInstance().messageManager.createVideoMessage(videoPath, videoType, duration, snapshotPath);
 ```
 
+
+
 - ##### createFileMessage（文件消息，相对路径）
 
 ```
@@ -1313,6 +1651,8 @@ String fileName = ""; // 文件名
 String filePath = ""; // 路径
 Message message = OpenIMClient.getInstance().messageManager.createFileMessage(filePath, fileName);
 ```
+
+
 
 - ##### createFileMessageFromFullPath（文件消息全路径）
 
@@ -1322,12 +1662,16 @@ String filePath = ""; // 路径
 Message message = OpenIMClient.getInstance().messageManager.createFileMessageFromFullPath(filePath, fileName);
 ```
 
+
+
 - ##### createForwardMessage（转发消息）
 
 ```
 Message message = null; // 消息体，不为null，取界面上显示的消息体对象
 Message message1 = OpenIMClient.getInstance().messageManager.createForwardMessage(message);
 ```
+
+
 
 - ##### createMergerMessage（合并消息）
 
@@ -1338,6 +1682,8 @@ List<String> summaryList = new ArrayList<>(); // 每条消息的摘要
 Message message = OpenIMClient.getInstance().messageManager.createMergerMessage(messageList, title, summaryList);
 ```
 
+
+
 - ##### createLocationMessage（位置消息）
 
 ```
@@ -1346,6 +1692,8 @@ long longitude = 0; // 经度
 String description = ""; // 位置描述信息
 Message message = OpenIMClient.getInstance().messageManager.createLocationMessage(latitude, longitude, description);
 ```
+
+
 
 - ##### createCustomMessage（自定义消息）
 
@@ -1356,6 +1704,8 @@ String description = "";// 描述消息
 Message message = OpenIMClient.getInstance().messageManager.createCustomMessage(data, extension, description);
 ```
 
+
+
 - ##### createQuoteMessage（引用消息/消息回复）
 
 ```
@@ -1364,9 +1714,184 @@ Message quoteMsg = null;// 不为null；被回复的消息体
 Message message = OpenIMClient.getInstance().messageManager.createQuoteMessage(text,quoteMsg);
 ```
 
+
+
 - ##### createCardMessage（名片消息）
 
 ```
 String content = ""; // 自定义内容
 Message message = OpenIMClient.getInstance().messageManager.createCardMessage(content);
 ```
+
+
+
+- ##### createFaceMessage（自定义表情）
+
+```
+long index; // 自定义下标图片
+String data; // 自定义内容图片
+Message message = OpenIMClient.getInstance().messageManager.createFaceMessage(index, data);
+```
+
+
+
+- ##### searchLocalMessages（全局搜索聊天记录）
+
+```
+String conversationID;      //根据会话查询，如果是全局搜索传null
+List<String> keywordList;   //搜索关键词列表，目前仅支持一个关键词搜索
+int keywordListMatchType; // 关键词匹配模式，1代表与，2代表或，暂时未用
+List<String> senderUserIDList;    // 指定消息发送的uid列表 暂时未用
+List<Integer> messageTypeList;    //  消息类型列表
+int searchTimePosition;  // 搜索的起始时间点。默认为0即代表从现在开始搜索。UTC 时间戳，单位：秒
+int searchTimePeriod ;   // 从起始时间点开始的过去时间范围，单位秒。默认为0即代表不限制时间范围，传24x60x60代表过去一天
+int pageIndex ;         //  当前页数
+int count ;             //  每页数量ll
+OpenIMClient.getInstance().messageManager.searchLocalMessages(new OnBase<SearchResult>() {
+            @Override
+            public void onError(int code, String error) {
+                
+            }
+
+            @Override
+            public void onSuccess(SearchResult data) {
+
+            }
+        }, conversationID, keywordList, keywordListMatchType, senderUserIDList, messageTypeList, searchTimePosition, searchTimePeriod, pageIndex, count);
+```
+
+
+
+- ##### deleteMessageFromLocalAndSvr（删除本地跟服务器消息记录）
+
+```
+Message message; // 被删除的消息
+OpenIMClient.getInstance().messageManager.deleteMessageFromLocalAndSvr(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, message);
+```
+
+
+
+- ##### deleteAllMsgFromLocal（删除本地所有聊天记录）
+
+```
+OpenIMClient.getInstance().messageManager.deleteAllMsgFromLocal(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+});
+```
+
+
+
+- ##### deleteAllMsgFromLocalAndSvr（删除本地跟服务器所有聊天记录）
+
+```
+OpenIMClient.getInstance().messageManager.deleteAllMsgFromLocalAndSvr(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+});
+```
+
+
+
+- ##### markMessageAsReadByConID（通过会话id标记消息已读）
+
+```
+String conversationID; // 会话ID
+List<String> messageIDList; // 消息ID列表
+OpenIMClient.getInstance().messageManager.markMessageAsReadByConID(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, conversationID, messageIDList);
+```
+
+
+
+- ##### clearC2CHistoryMessageFromLocalAndSvr（清除本地跟服务端c2c聊天记录）
+
+```
+String userID; // 单聊对象userID
+OpenIMClient.getInstance().messageManager.clearC2CHistoryMessageFromLocalAndSvr(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, userID);
+```
+
+
+
+- ##### clearGroupHistoryMessageFromLocalAndSvr（清除本地跟服务端群聊消息记录）
+
+```
+String groupID; // 群ID
+OpenIMClient.getInstance().messageManager.clearGroupHistoryMessageFromLocalAndSvr(new OnBase<String>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String data) {
+
+    }
+}, groupID);
+```
+
+
+
+- ##### getHistoryMessageListReverse（获最新的聊天记录，用在搜索消息时查找比这条消息新的记录）
+
+```
+Message startMsg = null; // 消息体，取界面上显示的消息体对象
+String userID = ""; // 接受消息的userID
+String groupID = ""; // 接受消息的群ID
+int count = 20; //  // 每次拉取的数量
+OpenIMClient.getInstance().messageManager.getHistoryMessageListReverse(new OnBase<List<Message>>() {
+    @Override
+    public void onError(int code, String error) {
+
+    }
+
+    @Override
+    public void onSuccess(List<Message> data) {
+
+    }
+}, userID, groupID, startMsg, count);
+```
+
