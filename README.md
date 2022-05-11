@@ -17,7 +17,7 @@ maven {
 
 ```
     implementation 'io.openim:android-sdk:2.0.8.+@aar'
-    implementation 'io.openim:core-sdk:2.0.8+@aar'
+    implementation 'io.openim:core-sdk:2.0.8.+@aar'
 ```
 
 #### Proguard rules（混淆规则）
