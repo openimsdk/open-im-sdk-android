@@ -9,15 +9,15 @@
 ```
 maven {
     allowInsecureProtocol = true
-    url 'http://121.37.25.71:8081/repository/maven-releases/'
+    url 'http://121.37.25.71:8081/repository/maven2/' // 新地址
 }
 ```
 
 ##### 2，Add dependencies（添加依赖）
 
 ```
-    implementation 'io.openim:android-sdk:2.0.11@aar'
-    implementation 'io.openim:client-sdk:2.0.48@aar'
+    implementation 'io.openim:android-sdk:2.0.8.+@aar'
+    implementation 'io.openim:core-sdk:2.0.8+@aar'
 ```
 
 #### Proguard rules（混淆规则）

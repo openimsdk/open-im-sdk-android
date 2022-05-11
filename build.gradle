@@ -7,7 +7,8 @@ buildscript {
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
         maven {
             allowInsecureProtocol = true
-            url 'http://121.37.25.71:8081/repository/maven-releases/'
+//            url 'http://121.37.25.71:8081/repository/maven-releases/'
+            url 'http://121.37.25.71:8081/repository/maven2/'
         }
         google()
         mavenCentral()
@@ -28,7 +29,8 @@ allprojects {
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
         maven {
             allowInsecureProtocol = true
-            url 'http://121.37.25.71:8081/repository/maven-releases/'
+//            url 'http://121.37.25.71:8081/repository/maven-releases/'
+            url 'http://121.37.25.71:8081/repository/maven2/'
         }
         google()
         mavenCentral()
