@@ -8,11 +8,14 @@ import io.openim.android.sdk.internal.log.LogcatHelper;
 import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnConnListener;
+import io.openim.android.sdk.listener.OnFileUploadProgressListener;
 import io.openim.android.sdk.listener._ConnListener;
+import io.openim.android.sdk.listener._FileUploadProgressListener;
 import io.openim.android.sdk.manager.ConversationManager;
 import io.openim.android.sdk.manager.FriendshipManager;
 import io.openim.android.sdk.manager.GroupManager;
 import io.openim.android.sdk.manager.MessageManager;
+import io.openim.android.sdk.manager.OrganizationManager;
 import io.openim.android.sdk.manager.SignalingManager;
 import io.openim.android.sdk.manager.UserInfoManager;
 import io.openim.android.sdk.manager.WorkMomentsManager;
@@ -29,6 +32,7 @@ public class OpenIMClient {
     public UserInfoManager userInfoManager;
     public SignalingManager signalingManager;
     public WorkMomentsManager workMomentsManager;
+    public OrganizationManager organizationManager;
 
     private OpenIMClient() {
 //        imManager = new ImManager();
@@ -39,6 +43,7 @@ public class OpenIMClient {
         userInfoManager = new UserInfoManager();
         signalingManager = new SignalingManager();
         workMomentsManager = new WorkMomentsManager();
+        organizationManager = new OrganizationManager();
     }
 
     private static class Singleton {
@@ -113,6 +118,16 @@ public class OpenIMClient {
 
     public void wakeUp(OnBase<String> base) {
         Open_im_sdk.wakeUp(BaseImpl.stringBase(base), ParamsUtil.buildOperationID());
+    }
+
+
+    /**
+     * 上传文件到服务器
+     *
+     * @param path 路径
+     */
+    public void uploadFile(OnFileUploadProgressListener listener, String path) {
+        Open_im_sdk.uploadFile(new _FileUploadProgressListener(listener), ParamsUtil.buildOperationID(), path);
     }
 }
 
