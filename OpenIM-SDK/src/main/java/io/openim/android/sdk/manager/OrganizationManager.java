@@ -57,13 +57,9 @@ public class OrganizationManager {
     /**
      * 获取部门子部门跟成员
      *
-     * @param departmentID     部门id
-     * @param departmentOffset 开始下标
-     * @param departmentCount  总数
-     * @param memberOffset     开始下标
-     * @param memberCount      总数
+     * @param departmentID 部门id
      */
-    public void getDepartmentMemberAndSubDepartment(OnBase<List<DeptMemberAndSubDept>> base, String departmentID, long departmentOffset, long departmentCount, long memberOffset, long memberCount) {
-        Open_im_sdk.getDepartmentMemberAndSubDepartment(BaseImpl.arrayBase(base, DeptMemberAndSubDept.class), ParamsUtil.buildOperationID(), departmentID, departmentOffset, departmentCount, memberOffset, memberCount);
+    public void getDepartmentMemberAndSubDepartment(OnBase<List<DeptMemberAndSubDept>> base, String departmentID) {
+        Open_im_sdk.getDepartmentMemberAndSubDepartment(BaseImpl.arrayBase(base, DeptMemberAndSubDept.class), ParamsUtil.buildOperationID(), departmentID);
     }
 }
