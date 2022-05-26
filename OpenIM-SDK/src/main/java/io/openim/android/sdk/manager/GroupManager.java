@@ -179,8 +179,8 @@ public class GroupManager {
      *
      * @param base callback {@link GroupApplicationInfo}
      */
-    public void getRecvGroupApplicationList(OnBase<GroupApplicationInfo> base) {
-        Open_im_sdk.getRecvGroupApplicationList(BaseImpl.objectBase(base, GroupApplicationInfo.class), ParamsUtil.buildOperationID());
+    public void getRecvGroupApplicationList(OnBase<List<GroupApplicationInfo>> base) {
+        Open_im_sdk.getRecvGroupApplicationList(BaseImpl.arrayBase(base, GroupApplicationInfo.class), ParamsUtil.buildOperationID());
     }
 
     /**
@@ -188,8 +188,8 @@ public class GroupManager {
      *
      * @param base callback {@link GroupApplicationInfo}
      */
-    public void getSendGroupApplicationList(OnBase<GroupApplicationInfo> base) {
-        Open_im_sdk.getSendGroupApplicationList(BaseImpl.objectBase(base, GroupApplicationInfo.class), ParamsUtil.buildOperationID());
+    public void getSendGroupApplicationList(OnBase<List<GroupApplicationInfo>> base) {
+        Open_im_sdk.getSendGroupApplicationList(BaseImpl.arrayBase(base, GroupApplicationInfo.class), ParamsUtil.buildOperationID());
     }
 
     /**
