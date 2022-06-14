@@ -262,7 +262,6 @@ public class GroupManager {
 
     /**
      * 根据关键词搜索群组
-     * 群ID跟群名二者互斥
      *
      * @param keywordList       关键词
      * @param isSearchGroupID   是通过群组id进行查询
@@ -274,5 +273,16 @@ public class GroupManager {
         map.put("isSearchGroupID", isSearchGroupID);
         map.put("isSearchGroupName", isSearchGroupName);
         Open_im_sdk.searchGroups(BaseImpl.arrayBase(base, GroupInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+    }
+
+    /**
+     * 设置群管理员
+     *
+     * @param groupID   组ID号
+     * @param userID    用户ID号
+     * @param roleLevel 角色 {@link io.openim.android.sdk.enums.GroupRole}
+     */
+    public void setGroupMemberRoleLevel(OnBase<String> base, String groupID, String userID, long roleLevel) {
+        Open_im_sdk.setGroupMemberRoleLevel(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, userID, roleLevel);
     }
 }

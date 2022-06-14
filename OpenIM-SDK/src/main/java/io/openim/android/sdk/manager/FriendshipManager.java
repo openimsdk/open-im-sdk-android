@@ -11,6 +11,7 @@ import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnFriendshipListener;
 import io.openim.android.sdk.listener._FriendshipListener;
 import io.openim.android.sdk.models.FriendApplicationInfo;
+import io.openim.android.sdk.models.FriendInfo;
 import io.openim.android.sdk.models.FriendshipInfo;
 import io.openim.android.sdk.models.UserInfo;
 import io.openim.android.sdk.utils.JsonUtil;
@@ -171,5 +172,22 @@ public class FriendshipManager {
         params.put("toUserID", uid);
         params.put("handleMsg", handleMsg);
         Open_im_sdk.acceptFriendApplication(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(params));
+    }
+
+    /**
+     * 搜索好友
+     *
+     * @param keywordList      搜索关键词，目前仅支持一个关键词搜索，不能为空
+     * @param isSearchUserID   是否以关键词搜索好友ID(注：不可以同时为false)，为空默认false
+     * @param isSearchNickname 是否以关键词搜索昵称，为空默认false
+     * @param isSearchRemark   是否以关键词搜索备注名，为空默认false
+     */
+    public void searchFriends(OnBase<List<FriendInfo>> base, List<String> keywordList, boolean isSearchUserID, boolean isSearchNickname, boolean isSearchRemark) {
+        Map<String, Object> params = new ArrayMap<>();
+        params.put("keywordList", keywordList);
+        params.put("isSearchUserID", isSearchUserID);
+        params.put("isSearchNickname", isSearchNickname);
+        params.put("isSearchRemark", isSearchRemark);
+        Open_im_sdk.searchFriends(BaseImpl.arrayBase(base, FriendInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(params));
     }
 }
