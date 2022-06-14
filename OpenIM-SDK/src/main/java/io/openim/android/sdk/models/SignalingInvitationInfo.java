@@ -8,6 +8,7 @@ public class SignalingInvitationInfo {
     private String groupID; //如果是单聊，为""
     private String roomID; //房间ID，必须唯一，可以不设置。
     private long timeout; //邀请超时时间（秒）
+    private long initiateTime; //邀请超时时间（秒）
     private String mediaType; //video 或者audio
     private int sessionType; //1为单聊，2为群聊
     private int platformID; //和之前定义一致
@@ -50,6 +51,14 @@ public class SignalingInvitationInfo {
 
     public void setTimeout(long timeout) {
         this.timeout = timeout;
+    }
+
+    public long getInitiateTime() {
+        return initiateTime;
+    }
+
+    public void setInitiateTime(long initiateTime) {
+        this.initiateTime = initiateTime;
     }
 
     public String getMediaType() {
