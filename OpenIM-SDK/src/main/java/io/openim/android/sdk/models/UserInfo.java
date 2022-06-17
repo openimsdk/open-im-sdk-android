@@ -50,6 +50,11 @@ public class UserInfo {
      */
     private BlacklistInfo blackInfo;
 
+    /**
+     * 全局免打扰
+     */
+    private int globalRecvMsgOpt;
+
     public String getUserID() {
         if (null == userID) {
             if ((isFriendship())) {
@@ -219,4 +224,11 @@ public class UserInfo {
         return null != friendInfo;
     }
 
+    public int getGlobalRecvMsgOpt() {
+        return globalRecvMsgOpt;
+    }
+
+    public void setGlobalRecvMsgOpt(int globalRecvMsgOpt) {
+        this.globalRecvMsgOpt = globalRecvMsgOpt;
+    }
 }

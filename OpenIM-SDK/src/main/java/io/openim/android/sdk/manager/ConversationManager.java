@@ -204,6 +204,15 @@ public class ConversationManager {
     }
 
     /**
+     * 全局免打扰
+     *
+     * @param status 状态 1:屏蔽消息; 2:接收消息但不提示; 0:正常
+     */
+    public void resetConversationGroupAtType(OnBase<String> base, long status) {
+        Open_im_sdk.setGlobalRecvMessageOpt(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), status);
+    }
+
+    /**
      * 会话排序比较器
      */
     public Comparator<ConversationInfo> simpleComparator() {
