@@ -34,12 +34,25 @@ public class GroupInfo {
      */
     private int memberCount;
     /**
-     * ok = 0 blocked = 1 Dismissed = 2 Muted  = 3
+     * 群状态： ok = 0 blocked = 1 Dismissed = 2 Muted  = 3
      */
     private int status;
+    /**
+     * 创建者id
+     */
     private String creatorUserID;
+    /**
+     * 群类型
+     */
     private int groupType;
+    /**
+     * 扩展字段
+     */
     private String ex;
+    /**
+     * 进群验证方式 {@link io.openim.android.sdk.enums.GroupVerification}
+     */
+    private int needVerification;
 
     public String getGroupID() {
         return groupID;
@@ -135,5 +148,13 @@ public class GroupInfo {
 
     public void setEx(String ex) {
         this.ex = ex;
+    }
+
+    public int getNeedVerification() {
+        return needVerification;
+    }
+
+    public void setNeedVerification(int needVerification) {
+        this.needVerification = needVerification;
     }
 }

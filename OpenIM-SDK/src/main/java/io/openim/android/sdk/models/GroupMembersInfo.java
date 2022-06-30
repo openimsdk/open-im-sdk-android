@@ -25,10 +25,18 @@ public class GroupMembersInfo {
      * 入群时间
      */
     private long joinTime;
-
+    /**
+     * 加入方式
+     */
     private int joinSource;
+    /**
+     * 操作者id
+     */
     private String operatorUserID;
-    private String ext;
+    /**
+     * 扩展字段
+     */
+    private String ex;
     /**
      * 禁言结束时间
      */
@@ -90,12 +98,12 @@ public class GroupMembersInfo {
         this.operatorUserID = operatorUserID;
     }
 
-    public String getExt() {
-        return ext;
+    public String getEx() {
+        return ex;
     }
 
-    public void setExt(String ext) {
-        this.ext = ext;
+    public void setEx(String ex) {
+        this.ex = ex;
     }
 
     public String getNickname() {

@@ -285,4 +285,28 @@ public class GroupManager {
     public void setGroupMemberRoleLevel(OnBase<String> base, String groupID, String userID, long roleLevel) {
         Open_im_sdk.setGroupMemberRoleLevel(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, userID, roleLevel);
     }
+
+    /**
+     * 根据加入时间分页获取组成员列表
+     *
+     * @param groupID           组ID号
+     * @param offset            开始下标
+     * @param count             每页大小
+     * @param joinTimeBegin     加入开始时间
+     * @param joinTimeEnd       加入结束时间
+     * @param excludeUserIDList 排除的用户
+     */
+    public void getGroupMemberListByJoinTime(OnBase<List<GroupMembersInfo>> base, String groupID, int offset, int count, long joinTimeBegin, long joinTimeEnd, List<String> excludeUserIDList) {
+        Open_im_sdk.getGroupMemberListByJoinTimeFilter(BaseImpl.arrayBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupID, offset, count, joinTimeBegin, joinTimeEnd, JsonUtil.toString(excludeUserIDList));
+    }
+
+    /**
+     * 设置进群验证
+     *
+     * @param groupID          组ID号
+     * @param needVerification {@link io.openim.android.sdk.enums.GroupVerification}
+     */
+    public void setGroupVerification(OnBase<String> base, String groupID, int needVerification) {
+        Open_im_sdk.setGroupVerification(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, needVerification);
+    }
 }

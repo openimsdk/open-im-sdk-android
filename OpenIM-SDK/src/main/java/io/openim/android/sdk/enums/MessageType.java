@@ -69,20 +69,20 @@ public class MessageType {
     public static final int NOTIFICATION_BEGIN = 1000;
 
     public static final int FRIEND_NOTIFICATION_BEGIN = 1200;
-    public static final int FRIEND_APPLICATION_APPROVED_NOTIFICATION = 1201; //add_friend_response
-    public static final int FRIEND_APPLICATION_REJECTED_NOTIFICATION = 1202; //add_friend_response
-    public static final int FRIEND_APPLICATION_NOTIFICATION = 1203; //add_friend
+    public static final int FRIEND_APPLICATION_APPROVED_NOTIFICATION = 1201;
+    public static final int FRIEND_APPLICATION_REJECTED_NOTIFICATION = 1202;
+    public static final int FRIEND_APPLICATION_NOTIFICATION = 1203;
     public static final int FRIEND_ADDED_NOTIFICATION = 1204;
-    public static final int FRIEND_DELETED_NOTIFICATION = 1205; //delete_friend
-    public static final int FRIEND_REMARK_SET_NOTIFICATION = 1206; //set_friend_remark
-    public static final int BLACK_ADDED_NOTIFICATION = 1207; //add_black
-    public static final int BLACK_DELETED_NOTIFICATION = 1208; //remove_black
+    public static final int FRIEND_DELETED_NOTIFICATION = 1205;
+    public static final int FRIEND_REMARK_SET_NOTIFICATION = 1206;
+    public static final int BLACK_ADDED_NOTIFICATION = 1207;
+    public static final int BLACK_DELETED_NOTIFICATION = 1208;
     public static final int FRIEND_NOTIFICATION_END = 1299;
 
     public static final int CONVERSATION_CHANGE_NOTIFICATION = 1300;
 
     public static final int USER_NOTIFICATION_BEGIN = 1301;
-    public static final int USERINFO_UPDATED_NOTIFICATION = 1303; //SetSelfInfoTip
+    public static final int USERINFO_UPDATED_NOTIFICATION = 1303;
     public static final int USER_NOTIFICATION_END = 1399;
 
     public static final int OA_NOTIFICATION = 1400;

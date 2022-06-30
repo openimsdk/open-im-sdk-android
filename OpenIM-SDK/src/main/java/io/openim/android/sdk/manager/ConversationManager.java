@@ -105,16 +105,6 @@ public class ConversationManager {
     }
 
     /**
-     * 标记单聊会话为已读
-     *
-     * @param userID 单聊对象ID
-     * @param base   callback String
-     */
-    /*public void markSingleMessageHasRead(OnBase<String> base, String userID) {
-        Open_im_sdk.markSingleMessageHasRead(BaseImpl.stringBase(base), userID);
-    }*/
-
-    /**
      * 标记群组会话已读
      *
      * @param groupID 群组ID
@@ -208,9 +198,10 @@ public class ConversationManager {
      *
      * @param status 状态 1:屏蔽消息; 2:接收消息但不提示; 0:正常
      */
-    public void resetConversationGroupAtType(OnBase<String> base, long status) {
+    public void setGlobalRecvMessageOpt(OnBase<String> base, long status) {
         Open_im_sdk.setGlobalRecvMessageOpt(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), status);
     }
+
 
     /**
      * 会话排序比较器

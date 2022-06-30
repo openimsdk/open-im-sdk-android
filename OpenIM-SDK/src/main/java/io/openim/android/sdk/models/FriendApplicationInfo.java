@@ -1,20 +1,65 @@
 package io.openim.android.sdk.models;
 
 public class FriendApplicationInfo {
+    /**
+     * 请求用户id
+     */
     private String fromUserID;
+    /**
+     * 请求用户昵称
+     */
     private String fromNickname;
+    /**
+     * 请求用户头像
+     */
     private String fromFaceURL;
+    /**
+     * 请求用户性别
+     */
     private int fromGender;
+    /**
+     * 接受用户id
+     */
     private String toUserID;
+    /**
+     * 接受用户昵称
+     */
     private String toNickname;
+    /**
+     * 接受用户头像
+     */
     private String toFaceURL;
+    /**
+     * 接受用户性别
+     */
     private int toGender;
+    /**
+     * 处理结果 0 等待处理，1 已同意， 2 已拒绝
+     */
     private int handleResult;
+    /**
+     * 请求备注
+     */
     private String reqMsg;
+    /**
+     * 创建时间
+     */
     private long createTime;
+    /**
+     * 处理者id
+     */
     private String handlerUserID;
+    /**
+     * 处理备注
+     */
     private String handleMsg;
+    /**
+     * 处理时间
+     */
     private long handleTime;
+    /**
+     * 扩展字段
+     */
     private String ex;
 
     public String getFromUserID() {

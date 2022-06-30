@@ -27,7 +27,7 @@ public class ConversationInfo {
     private String faceURL;
     /**
      * 接收消息选项：<br/>
-     * 0:在线正常接收消息，离线时进行推送<br/>
+     * 0:在线正常接收消息，离线时进行推送 <br/>
      * 1:不会接收到消息<br/>
      * 2:在线正常接收消息，离线不会有推送
      */
@@ -37,7 +37,7 @@ public class ConversationInfo {
      */
     private int unreadCount;
     /**
-     *
+     * 强提示 如at消息，公告 {@link io.openim.android.sdk.enums.GroupAtType}
      */
     private int groupAtType;
     /**
@@ -45,7 +45,7 @@ public class ConversationInfo {
      */
     private String latestMsg;
     /**
-     * 最后一条消息发送时间(ns)
+     * 最后一条消息发送时间(ms)
      */
     private long latestMsgSendTime;
     /**
@@ -69,6 +69,9 @@ public class ConversationInfo {
      */
     private String ext;
 
+    /**
+     * 是否还在群里
+     * */
     private boolean isNotInGroup;
 
 

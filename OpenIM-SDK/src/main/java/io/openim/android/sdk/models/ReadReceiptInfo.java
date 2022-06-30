@@ -24,6 +24,7 @@ public class ReadReceiptInfo {
      */
     private int msgFrom;
     /**
+     * {@link io.openim.android.sdk.enums.MessageType}
      * 消息类型：
      * 101:文本消息
      * 102:图片消息
@@ -41,6 +42,7 @@ public class ReadReceiptInfo {
      */
     private int contentType;
     /**
+     * {@link io.openim.android.sdk.enums.ConversationType}
      * 会话类型 1:单聊 2:群聊
      */
     private int sessionType;

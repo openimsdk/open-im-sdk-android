@@ -1,18 +1,57 @@
 package io.openim.android.sdk.models;
 
+/**
+ * 好友信息
+ */
 public class FriendInfo {
-    String userID;
-    String nickname;
-    String faceURL;
-    int gender;
-    String phoneNumber;
-    long birth;
-    String email;
-    String remark;
-    String ex;
-    long createTime;
-    int addSource;
-    String operatorUserID;
+    /**
+     * 好友id
+     */
+    private String userID;
+    /**
+     * 好友昵称
+     */
+    private String nickname;
+    /**
+     * 好友头像
+     */
+    private String faceURL;
+    /**
+     * 性别
+     */
+    private int gender;
+    /**
+     * 手机号
+     */
+    private String phoneNumber;
+    /**
+     * 出生日期
+     */
+    private long birth;
+    /**
+     * 邮箱
+     */
+    private String email;
+    /**
+     * 好友备注名
+     */
+    private String remark;
+    /**
+     * 扩展字段
+     */
+    private String ex;
+    /**
+     * 创建时间
+     */
+    private long createTime;
+    /**
+     * 添加方式
+     */
+    private int addSource;
+    /**
+     * 操作者id
+     */
+    private String operatorUserID;
 
     public String getUserID() {
         return userID;

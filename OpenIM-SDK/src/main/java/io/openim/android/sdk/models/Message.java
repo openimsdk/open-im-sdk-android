@@ -14,11 +14,11 @@ public class Message {
      */
     private long createTime;
     /**
-     * 消息发送时间，单位纳秒
+     * 消息发送时间，单位ms
      */
     private long sendTime;
     /**
-     * 会话类型 1:单聊 2:群聊
+     * 会话类型 1:单聊 2:群聊 {@link io.openim.android.sdk.enums.ConversationType}
      */
     private int sessionType;
     /**
@@ -34,6 +34,7 @@ public class Message {
      */
     private int msgFrom;
     /**
+     * {@link io.openim.android.sdk.enums.MessageType}
      * 消息类型：<br/>
      * 101:文本消息<br/>
      * 102:图片消息<br/>
@@ -51,6 +52,7 @@ public class Message {
      */
     private int contentType;
     /**
+     * {@link io.openim.android.sdk.enums.Platform}
      * 平台类型 1:ios 2:android 3:windows 4:osx 5:web 6:mini 7:linux
      */
     private int platformID;
@@ -79,6 +81,7 @@ public class Message {
      */
     private boolean isRead;
     /**
+     * {@link io.openim.android.sdk.enums.MessageStatus}
      * 消息状态 1:发送中 2:发送成功 3:发送失败 4:已删除 5:已撤回
      */
     private int status;
@@ -94,6 +97,9 @@ public class Message {
      *
      */
     private Object ext;
+    /**
+     * 附加字段
+     */
     private Object ex;
     /**
      * 图片信息

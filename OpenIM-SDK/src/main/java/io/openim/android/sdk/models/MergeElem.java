@@ -3,8 +3,17 @@ package io.openim.android.sdk.models;
 import java.util.List;
 
 public class MergeElem {
+    /**
+     * 标题
+     */
     private String title;
+    /**
+     * 摘要
+     */
     private List<String> abstractList;
+    /**
+     * 具体选择合并的消息列表
+     */
     private List<Message> multiMessage;
 
     public String getTitle() {

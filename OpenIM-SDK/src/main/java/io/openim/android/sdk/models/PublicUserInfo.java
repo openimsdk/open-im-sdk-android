@@ -1,11 +1,29 @@
 package io.openim.android.sdk.models;
 
 public class PublicUserInfo {
+    /**
+     * 用户id
+     */
     private String userID;
+    /**
+     * 昵称
+     */
     private String nickname;
+    /**
+     * 头像
+     */
     private String faceURL;
+    /**
+     * 性别
+     */
     private int gender;
+    /**
+     *
+     */
     private int appMangerLevel;
+    /**
+     * 扩展字段
+     */
     private String ex;
 
     public String getUserID() {

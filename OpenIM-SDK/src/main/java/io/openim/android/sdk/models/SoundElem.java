@@ -18,7 +18,7 @@ public class SoundElem {
      */
     private long dataSize;
     /**
-     * 音频时长
+     * 音频时长 s
      */
     private long duration;
 

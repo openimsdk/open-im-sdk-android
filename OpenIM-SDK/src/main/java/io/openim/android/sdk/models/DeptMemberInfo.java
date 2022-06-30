@@ -1,22 +1,76 @@
 package io.openim.android.sdk.models;
 
+/**
+ * 部门成员
+ */
 public class DeptMemberInfo {
+    /**
+     * 成员id
+     */
     private String userID;
+    /**
+     * 昵称
+     */
     private String nickname;
+    /**
+     * 英文名
+     */
     private String englishName;
+    /**
+     * 头像
+     */
     private String faceURL;
+    /**
+     * 性别
+     */
     private int gender;
+    /**
+     * 移动电话
+     */
     private String mobile;
+    /**
+     * 座机
+     */
     private String telephone;
+    /**
+     * 出生日期
+     */
     private long birth;
+    /**
+     * 邮箱
+     */
     private String email;
+    /**
+     * 部门id
+     */
     private String departmentID;
+    /**
+     * 排序
+     */
     private int order;
+    /**
+     * 职位
+     */
     private String position;
+    /**
+     * 领导
+     */
     private int leader;
+    /**
+     * 状态
+     */
     private int status;
+    /**
+     * 创建时间
+     */
     private long createTime;
+    /**
+     * 附加字段
+     */
     private String ex;
+    /**
+     * 附加信息
+     */
     private String attachedInfo;
 
     public String getUserID() {

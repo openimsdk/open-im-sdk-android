@@ -10,6 +10,9 @@ import io.openim.android.sdk.models.WorkMomentsInfo;
 import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
 
+/**
+ * 工作圈/朋友圈
+ */
 public class WorkMomentsManager {
 
     public void setWorkMomentsListener(OnWorkMomentsListener listener) {

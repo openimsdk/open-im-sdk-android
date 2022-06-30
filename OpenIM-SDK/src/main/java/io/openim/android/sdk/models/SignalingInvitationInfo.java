@@ -3,15 +3,42 @@ package io.openim.android.sdk.models;
 import java.util.List;
 
 public class SignalingInvitationInfo {
-    private String inviterUserID; //邀请者UserID
-    private List<String> inviteeUserIDList; //被邀请者UserID列表，如果是单聊只有一个元素
-    private String groupID; //如果是单聊，为""
-    private String roomID; //房间ID，必须唯一，可以不设置。
-    private long timeout; //邀请超时时间（秒）
-    private long initiateTime; //邀请超时时间（秒）
-    private String mediaType; //video 或者audio
-    private int sessionType; //1为单聊，2为群聊
-    private int platformID; //和之前定义一致
+    /**
+     * 邀请者UserID
+     */
+    private String inviterUserID;
+    /**
+     * 被邀请者UserID列表，如果是单聊只有一个元素
+     */
+    private List<String> inviteeUserIDList;
+    /**
+     * 如果是单聊，为""
+     */
+    private String groupID;
+    /**
+     * 房间ID，必须唯一，可以不设置。
+     */
+    private String roomID;
+    /**
+     * 邀请超时时间（秒）
+     */
+    private long timeout;
+    /**
+     * 发起时间（秒）
+     */
+    private long initiateTime;
+    /**
+     * video 或者audio
+     */
+    private String mediaType;
+    /**
+     * 1为单聊，2为群聊
+     */
+    private int sessionType;
+    /**
+     * 和之前定义一致
+     */
+    private int platformID;
 
     public String getInviterUserID() {
         return inviterUserID;

@@ -1,8 +1,17 @@
 package io.openim.android.sdk.models;
 
 public class LocationElem {
+    /**
+     * 位置描述
+     */
     private String description;
+    /**
+     * 经度
+     */
     private double longitude;
+    /**
+     * 纬度
+     */
     private double latitude;
 
     public String getDescription() {
