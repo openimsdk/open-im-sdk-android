@@ -65,11 +65,11 @@ public class GroupInfo {
     /**
      * 通知更新时间
      */
-    private int notificationUpdateTime;
+    private long notificationUpdateTime;
     /**
      * 通知更新人
      */
-    private int notificationUserID;
+    private String notificationUserID;
 
     public String getGroupID() {
         return groupID;
@@ -191,19 +191,19 @@ public class GroupInfo {
         this.applyMemberFriend = applyMemberFriend;
     }
 
-    public int getNotificationUpdateTime() {
+    public long getNotificationUpdateTime() {
         return notificationUpdateTime;
     }
 
-    public void setNotificationUpdateTime(int notificationUpdateTime) {
+    public void setNotificationUpdateTime(long notificationUpdateTime) {
         this.notificationUpdateTime = notificationUpdateTime;
     }
 
-    public int getNotificationUserID() {
+    public String getNotificationUserID() {
         return notificationUserID;
     }
 
-    public void setNotificationUserID(int notificationUserID) {
+    public void setNotificationUserID(String notificationUserID) {
         this.notificationUserID = notificationUserID;
     }
 }
