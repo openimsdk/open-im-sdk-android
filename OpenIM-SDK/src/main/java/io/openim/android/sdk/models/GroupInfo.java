@@ -54,6 +54,23 @@ public class GroupInfo {
      */
     private int needVerification;
 
+    /**
+     * 不允许通过群获取成员资料 0：关闭，1：打开
+     */
+    private int lookMemberInfo;
+    /**
+     * 不允许通过群添加好友 0：关闭，1：打开
+     */
+    private int applyMemberFriend;
+    /**
+     * 通知更新时间
+     */
+    private int notificationUpdateTime;
+    /**
+     * 通知更新人
+     */
+    private int notificationUserID;
+
     public String getGroupID() {
         return groupID;
     }
@@ -156,5 +173,37 @@ public class GroupInfo {
 
     public void setNeedVerification(int needVerification) {
         this.needVerification = needVerification;
+    }
+
+    public int getLookMemberInfo() {
+        return lookMemberInfo;
+    }
+
+    public void setLookMemberInfo(int lookMemberInfo) {
+        this.lookMemberInfo = lookMemberInfo;
+    }
+
+    public int getApplyMemberFriend() {
+        return applyMemberFriend;
+    }
+
+    public void setApplyMemberFriend(int applyMemberFriend) {
+        this.applyMemberFriend = applyMemberFriend;
+    }
+
+    public int getNotificationUpdateTime() {
+        return notificationUpdateTime;
+    }
+
+    public void setNotificationUpdateTime(int notificationUpdateTime) {
+        this.notificationUpdateTime = notificationUpdateTime;
+    }
+
+    public int getNotificationUserID() {
+        return notificationUserID;
+    }
+
+    public void setNotificationUserID(int notificationUserID) {
+        this.notificationUserID = notificationUserID;
     }
 }

@@ -24,6 +24,7 @@ import io.openim.android.sdk.models.GroupInfo;
 import io.openim.android.sdk.models.GroupMembersInfo;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.ReadReceiptInfo;
+import io.openim.android.sdk.models.RevokedInfo;
 import io.openim.android.sdk.models.UserInfo;
 import io.openim.android.sdk.utils.JsonUtil;
 
@@ -98,6 +99,11 @@ public class MainActivity extends AppCompatActivity implements OnConnListener, O
     @Override
     public void onRecvMessageRevoked(String msgId) {
         System.out.println("=======onRecvMessageRevoked=================");
+    }
+
+    @Override
+    public void onRecvMessageRevokedV2(RevokedInfo info) {
+
     }
 
     @Override

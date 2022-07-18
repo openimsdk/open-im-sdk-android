@@ -65,6 +65,10 @@ public class MessageType {
      */
     public static final int CUSTOM_FACE = 115;
 
+    /**
+     * 2.3.0版本的消息撤回类型，兼容单人撤回，群撤回，新增群主管理员撤回成员信息
+     */
+    public static final int ADVANCED_REVOKE = 118;
 
     public static final int NOTIFICATION_BEGIN = 1000;
 

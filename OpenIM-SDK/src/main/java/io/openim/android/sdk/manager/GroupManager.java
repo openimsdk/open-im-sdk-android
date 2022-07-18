@@ -145,12 +145,13 @@ public class GroupManager {
     /**
      * 申请加入群组
      *
-     * @param gid    群组ID
-     * @param reason 请求原因
-     * @param base   callback String
+     * @param gid        群组ID
+     * @param reason     请求原因
+     * @param joinSource 2：通过邀请  3：通过搜索  4：通过二维码
+     * @param base       callback String
      */
-    public void joinGroup(OnBase<String> base, String gid, String reason) {
-        Open_im_sdk.joinGroup(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, reason);
+    public void joinGroup(OnBase<String> base, String gid, String reason, int joinSource) {
+        Open_im_sdk.joinGroup(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, reason, joinSource);
     }
 
     /**
@@ -308,5 +309,34 @@ public class GroupManager {
      */
     public void setGroupVerification(OnBase<String> base, String groupID, int needVerification) {
         Open_im_sdk.setGroupVerification(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, needVerification);
+    }
+
+    /**
+     * 不允许通过群获取成员资料
+     *
+     * @param groupID 组ID号
+     * @param status  0：关闭，1：打开
+     */
+    public void setGroupLookMemberInfo(OnBase<String> base, String groupID, int status) {
+        Open_im_sdk.setGroupLookMemberInfo(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, status);
+    }
+
+    /**
+     * 不允许通过群添加好友
+     *
+     * @param groupID 组ID号
+     * @param status  0：关闭，1：打开
+     */
+    public void setGroupApplyMemberFriend(OnBase<String> base, String groupID, int status) {
+        Open_im_sdk.setGroupApplyMemberFriend(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, status);
+    }
+
+    /**
+     * 获取群拥有者，管理员
+     *
+     * @param groupID 组ID号
+     */
+    public void getGroupMemberOwnerAndAdmin(OnBase<List<GroupMembersInfo>> base, String groupID) {
+        Open_im_sdk.getGroupMemberOwnerAndAdmin(BaseImpl.arrayBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupID);
     }
 }

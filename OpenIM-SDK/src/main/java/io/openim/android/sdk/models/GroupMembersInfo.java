@@ -26,7 +26,7 @@ public class GroupMembersInfo {
      */
     private long joinTime;
     /**
-     * 加入方式
+     * 加入方式 2：邀请加入 3：搜索加入 4：通过二维码加入
      */
     private int joinSource;
     /**
@@ -41,6 +41,11 @@ public class GroupMembersInfo {
      * 禁言结束时间
      */
     private long muteEndTime;
+
+    /**
+     * 邀请人id
+     */
+    private String inviterUserID;
 
     public String getGroupID() {
         return groupID;
@@ -120,5 +125,13 @@ public class GroupMembersInfo {
 
     public void setMuteEndTime(long muteEndTime) {
         this.muteEndTime = muteEndTime;
+    }
+
+    public String getInviterUserID() {
+        return inviterUserID;
+    }
+
+    public void setInviterUserID(String inviterUserID) {
+        this.inviterUserID = inviterUserID;
     }
 }

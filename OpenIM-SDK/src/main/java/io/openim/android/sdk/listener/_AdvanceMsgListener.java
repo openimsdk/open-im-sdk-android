@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.ReadReceiptInfo;
+import io.openim.android.sdk.models.RevokedInfo;
 import io.openim.android.sdk.utils.JsonUtil;
 
 
@@ -12,6 +13,14 @@ final public class _AdvanceMsgListener implements open_im_sdk_callback.OnAdvance
 
     public _AdvanceMsgListener(OnAdvanceMsgListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void onNewRecvMessageRevoked(String s) {
+        if (listener != null) {
+            RevokedInfo info = JsonUtil.toObj(s, RevokedInfo.class);
+            listener.onRecvMessageRevokedV2(info);
+        }
     }
 
     @Override

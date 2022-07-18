@@ -73,11 +73,13 @@ public class MessageManager {
 
     /**
      * 撤回消息
+     * 调用此方法会触发：onRecvMessageRevoked和onRecvNewMessage回调
      *
      * @param message {@link Message}
      * @param base    callback String
      *                撤回成功需要将已显示到界面的消息类型替换为revoke类型并刷新界面
      */
+    @Deprecated
     public void revokeMessage(OnBase<String> base, Message message) {
         Open_im_sdk.revokeMessage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
     }
@@ -477,6 +479,18 @@ public class MessageManager {
         }
         map.put("count", count);
         Open_im_sdk.getHistoryMessageListReverse(BaseImpl.arrayBase(base, Message.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+    }
+
+    /**
+     * 撤回消息（新版本）
+     * 调用此方法会触发：onRecvMessageRevokedV2回调
+     *
+     * @param message {@link Message}
+     * @param base    callback String
+     */
+    @Deprecated
+    public void revokeMessageV2(OnBase<String> base, Message message) {
+        Open_im_sdk.newRevokeMessage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
     }
 
     static Message parse(String msg) {
