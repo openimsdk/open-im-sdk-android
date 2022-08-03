@@ -91,6 +91,17 @@ public class GroupApplicationInfo {
      */
     private String ex;
 
+    /**
+     * 2：通过邀请  3：通过搜索  4：通过二维码
+     */
+    private int joinSource;
+
+    /**
+     * 邀请进群用户ID
+     */
+    private String inviterUserID;
+
+
     public String getGroupID() {
         return groupID;
     }
@@ -265,5 +276,21 @@ public class GroupApplicationInfo {
 
     public void setEx(String ex) {
         this.ex = ex;
+    }
+
+    public int getJoinSource() {
+        return joinSource;
+    }
+
+    public void setJoinSource(int joinSource) {
+        this.joinSource = joinSource;
+    }
+
+    public String getInviterUserID() {
+        return inviterUserID;
+    }
+
+    public void setInviterUserID(String inviterUserID) {
+        this.inviterUserID = inviterUserID;
     }
 }

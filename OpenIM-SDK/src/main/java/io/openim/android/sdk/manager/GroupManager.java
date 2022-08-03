@@ -339,4 +339,25 @@ public class GroupManager {
     public void getGroupMemberOwnerAndAdmin(OnBase<List<GroupMembersInfo>> base, String groupID) {
         Open_im_sdk.getGroupMemberOwnerAndAdmin(BaseImpl.arrayBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupID);
     }
+
+    /**
+     * 根据关键词搜索群组
+     *
+     * @param groupID                群id
+     * @param keywordList            关键词
+     * @param isSearchUserID         是否以关键词搜成员id
+     * @param isSearchMemberNickname 是否以关键词搜索成员昵称
+     * @param offset                 开始index
+     * @param count                  每次获取的总数
+     */
+    public void searchGroupMembers(OnBase<List<GroupInfo>> base, String groupID, List<String> keywordList, boolean isSearchUserID, boolean isSearchMemberNickname, int offset, int count) {
+        Map<String, Object> map = new ArrayMap<>();
+        map.put("groupID", groupID);
+        map.put("keywordList", keywordList);
+        map.put("isSearchUserID", isSearchUserID);
+        map.put("isSearchMemberNickname", isSearchMemberNickname);
+        map.put("offset", offset);
+        map.put("count", count);
+        Open_im_sdk.searchGroupMembers(BaseImpl.arrayBase(base, GroupInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+    }
 }

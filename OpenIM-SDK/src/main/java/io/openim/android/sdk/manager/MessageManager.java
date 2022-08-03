@@ -52,18 +52,20 @@ public class MessageManager {
     /**
      * 获取历史消息
      *
-     * @param userID   用户id
-     * @param groupID  组ID
-     * @param startMsg 从startMsg {@link Message}开始拉取消息
-     *                 startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到 list；
-     *                 下一次拉取消息记录参数：startMsg=list.get(0) && count =20；以此内推，startMsg始终为list的第一条。
-     * @param count    一次拉取count条
-     * @param base     callback List<{@link Message}>
+     * @param userID         用户id
+     * @param groupID        组ID
+     * @param conversationID 会话id，如果不传userID跟groupID，则按会话id查询历史记录
+     * @param startMsg       从startMsg {@link Message}开始拉取消息
+     *                       startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到 list；
+     *                       下一次拉取消息记录参数：startMsg=list.get(0) && count =20；以此内推，startMsg始终为list的第一条。
+     * @param count          一次拉取count条
+     * @param base           callback List<{@link Message}>
      */
-    public void getHistoryMessageList(OnBase<List<Message>> base, String userID, String groupID, Message startMsg, int count) {
+    public void getHistoryMessageList(OnBase<List<Message>> base, String userID, String groupID, String conversationID, Message startMsg, int count) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("userID", userID);
         map.put("groupID", groupID);
+        map.put("conversationID", conversationID);
         if (null != startMsg) {
             map.put("startClientMsgID", startMsg.getClientMsgID());
         }
@@ -462,18 +464,20 @@ public class MessageManager {
      * 在搜索消息时定位到消息位置，获取新消息列表
      * getHistoryMessageList是获取该条消息之前的记录（旧消息），getHistoryMessageListReverse是获取该条消息之后的记录（新消息）
      *
-     * @param userID   用户id
-     * @param groupID  组ID
-     * @param startMsg 从startMsg {@link Message}开始拉取消息
-     *                 startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到 list；
-     *                 下一次拉取消息记录参数：startMsg=list.last && count =20；以此内推，startMsg始终为list的最后一条。
-     * @param count    一次拉取count条
-     * @param base     callback List<{@link Message}>
+     * @param userID         用户id
+     * @param groupID        组ID
+     * @param conversationID 会话id，如果不传userID跟groupID，则按会话id查询历史记录
+     * @param startMsg       从startMsg {@link Message}开始拉取消息
+     *                       startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到 list；
+     *                       下一次拉取消息记录参数：startMsg=list.last && count =20；以此内推，startMsg始终为list的最后一条。
+     * @param count          一次拉取count条
+     * @param base           callback List<{@link Message}>
      */
-    public void getHistoryMessageListReverse(OnBase<List<Message>> base, String userID, String groupID, Message startMsg, int count) {
+    public void getHistoryMessageListReverse(OnBase<List<Message>> base, String userID, String groupID, String conversationID, Message startMsg, int count) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("userID", userID);
         map.put("groupID", groupID);
+        map.put("conversationID", conversationID);
         if (null != startMsg) {
             map.put("startClientMsgID", startMsg.getClientMsgID());
         }
@@ -488,9 +492,34 @@ public class MessageManager {
      * @param message {@link Message}
      * @param base    callback String
      */
-    @Deprecated
     public void revokeMessageV2(OnBase<String> base, Message message) {
         Open_im_sdk.newRevokeMessage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
+    }
+
+    /**
+     * 获取历史消息（超级群使用）
+     * 在搜索消息时定位到消息位置，获取新消息列表
+     * getHistoryMessageList是获取该条消息之前的记录（旧消息），getHistoryMessageListReverse是获取该条消息之后的记录（新消息）
+     *
+     * @param userID         用户id
+     * @param groupID        组ID
+     * @param conversationID 会话id，如果不传userID跟groupID，则按会话id查询历史记录
+     * @param startMsg       从startMsg {@link Message}开始拉取消息
+     *                       startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到 list；
+     *                       下一次拉取消息记录参数：startMsg=list.last && count =20；以此内推，startMsg始终为list的最后一条。
+     * @param count          一次拉取count条
+     * @param base           callback List<{@link Message}>
+     */
+    public void getAdvancedHistoryMessageList(OnBase<List<Message>> base, String userID, String groupID, String conversationID, Message startMsg, int count) {
+        Map<String, Object> map = new ArrayMap<>();
+        map.put("userID", userID);
+        map.put("groupID", groupID);
+        map.put("conversationID", conversationID);
+        if (null != startMsg) {
+            map.put("startClientMsgID", startMsg.getClientMsgID());
+        }
+        map.put("count", count);
+        Open_im_sdk.getAdvancedHistoryMessageList(BaseImpl.arrayBase(base, Message.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
     static Message parse(String msg) {
