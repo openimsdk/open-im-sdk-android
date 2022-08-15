@@ -70,6 +70,10 @@ public class MessageType {
      */
     public static final int ADVANCED_REVOKE = 118;
 
+    public static final int CUSTOM_MSG_NOT_TRIGGER_CONVERSATION = 119;
+
+    public static final int CUSTOM_MSG_ONLINE_ONLY = 120;
+
     public static final int NOTIFICATION_BEGIN = 1000;
 
     public static final int FRIEND_NOTIFICATION_BEGIN = 1200;

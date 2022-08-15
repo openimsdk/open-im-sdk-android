@@ -522,6 +522,19 @@ public class MessageManager {
         Open_im_sdk.getAdvancedHistoryMessageList(BaseImpl.arrayBase(base, Message.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
+    /**
+     * 查询消息
+     *
+     * @param conversationID  会话id
+     * @param clientMsgIDList 被查询的消息id列表
+     */
+    public void findMessageList(OnBase<SearchResult> base, String conversationID, List<String> clientMsgIDList) {
+        Map<String, Object> map = new ArrayMap<>();
+        map.put("conversationID", conversationID);
+        map.put("clientMsgIDList", clientMsgIDList);
+        Open_im_sdk.findMessageList(BaseImpl.objectBase(base, SearchResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+    }
+
     static Message parse(String msg) {
         return JsonUtil.toObj(msg, Message.class);
     }

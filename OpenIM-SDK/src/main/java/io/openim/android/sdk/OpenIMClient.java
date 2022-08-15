@@ -111,7 +111,7 @@ public class OpenIMClient {
     /**
      * 查询登录状态
      */
-    public long getLoginStatus() {
+    public int getLoginStatus() {
         return Open_im_sdk.getLoginStatus();
     }
 
@@ -128,6 +128,15 @@ public class OpenIMClient {
      */
     public void uploadFile(OnFileUploadProgressListener listener, String path) {
         Open_im_sdk.uploadFile(new _FileUploadProgressListener(listener), ParamsUtil.buildOperationID(), path);
+    }
+
+    /**
+     * 更新firebase token
+     *
+     * @param fcmToken token
+     */
+    public void updateFcmToken(OnBase<String> base, String fcmToken) {
+        Open_im_sdk.updateFcmToken(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), fcmToken);
     }
 }
 
