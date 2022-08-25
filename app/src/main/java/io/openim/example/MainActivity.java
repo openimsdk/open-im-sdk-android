@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements OnConnListener, O
         setContentView(R.layout.activity_main);
         String path = getExternalCacheDir().getAbsolutePath();
         OpenIMClient client = OpenIMClient.getInstance();
-        client.initSDK(2, IP_API, IP_WS, path, 6, "cos", this);
+        client.initSDK(2, IP_API, IP_WS, path, 6, "cos", null, this);
         client.userInfoManager.setOnUserListener(this);
         client.messageManager.setAdvancedMsgListener(this);
         client.groupManager.setOnGroupListener(this);
