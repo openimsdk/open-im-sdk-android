@@ -61,6 +61,7 @@ public class OpenIMClient {
      * 需要将文件自行拷贝到dbPath目录下，如果此时文件路径为 apath+"/sound/a.mp3"，则参数path的值为：/sound/a.mp3。
      * 如果选择的全路径方法，路径为你文件的实际路径不需要再拷贝。
      *
+     * @param platform      平台{@link io.openim.android.sdk.enums.Platform}
      * @param apiUrl        SDK的API接口地址。如：http:xxx:10000
      * @param wsUrl         SDK的web socket地址。如： ws:xxx:17778
      * @param storageDir    数据存储目录路径
@@ -69,9 +70,9 @@ public class OpenIMClient {
      * @param listener      SDK初始化监听
      * @return boolean   true成功; false失败
      */
-    public boolean initSDK(String apiUrl, String wsUrl, String storageDir, int logLevel, String objectStorage, OnConnListener listener) {
+    public boolean initSDK(int platform, String apiUrl, String wsUrl, String storageDir, int logLevel, String objectStorage, OnConnListener listener) {
         Map<String, Object> map = new ArrayMap<>();
-        map.put("platform", 2);
+        map.put("platform", platform);
         map.put("api_addr", apiUrl);
         map.put("ws_addr", wsUrl);
         map.put("data_dir", storageDir);
