@@ -15,6 +15,7 @@ import io.openim.android.sdk.listener._MsgSendProgressListener;
 import io.openim.android.sdk.models.AtUserInfo;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.OfflinePushInfo;
+import io.openim.android.sdk.models.RichMessage;
 import io.openim.android.sdk.models.SearchResult;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
@@ -533,6 +534,27 @@ public class MessageManager {
         map.put("conversationID", conversationID);
         map.put("clientMsgIDList", clientMsgIDList);
         Open_im_sdk.findMessageList(BaseImpl.objectBase(base, SearchResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+    }
+
+    /**
+     * 创建富文本消息
+     *
+     * @param text     消息内容
+     * @param richList 富文本详细
+     */
+    public Message createAdvancedTextMessage(String text, List<RichMessage> richList) {
+        return parse(Open_im_sdk.createAdvancedTextMessage(ParamsUtil.buildOperationID(), text, JsonUtil.toString(richList)));
+    }
+
+    /**
+     * 创建富文本消息
+     *
+     * @param text     内容
+     * @param message  被引用的消息体
+     * @param richList 富文本详细
+     */
+    public Message createAdvancedQuoteMessage(String text, Message message, List<RichMessage> richList) {
+        return parse(Open_im_sdk.createAdvancedQuoteMessage(ParamsUtil.buildOperationID(), text, JsonUtil.toString(message), JsonUtil.toString(richList)));
     }
 
     static Message parse(String msg) {

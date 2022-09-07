@@ -64,6 +64,14 @@ public class MessageType {
      * 自定义表情包
      */
     public static final int CUSTOM_FACE = 115;
+    /**
+     * 群消息已读回执
+     */
+    public static final int GROUP_HAS_READ_RECEIPT = 116;
+    /**
+     * 富文本消息
+     */
+    public static final int ADVANCED_TEXT = 117;
 
     /**
      * 2.3.0版本的消息撤回类型，兼容单人撤回，群撤回，新增群主管理员撤回成员信息
