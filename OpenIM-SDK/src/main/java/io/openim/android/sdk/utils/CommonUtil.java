@@ -2,6 +2,7 @@ package io.openim.android.sdk.utils;
 
 import android.os.Handler;
 import android.os.Looper;
+import java.lang.Throwable;
 
 import java.util.List;
 
@@ -28,13 +29,23 @@ public class CommonUtil {
 
     public static <T> void returnObject(OnBase<T> onBase, Class<T> clazz, String s) {
         if (onBase != null) {
-            CommonUtil.runMainThread(() -> onBase.onSuccess(JsonUtil.toObj(s, clazz)));
+            try {
+                T obj = JsonUtil.toObj(s, clazz);
+                CommonUtil.runMainThread(() -> onBase.onSuccess(obj));
+            } catch (Throwable t) {
+                CommonUtil.runMainThread(() -> onBase.onError(-1000, t.toString())); // TODO define some more specific code to replace -1000.
+            }
         }
     }
 
     public static <T> void returnList(OnBase<List<T>> onBase, Class<T> clazz, String s) {
         if (onBase != null) {
-            CommonUtil.runMainThread(() -> onBase.onSuccess(JsonUtil.toArray(s, clazz)));
+            try {
+                List<T> objs = JsonUtil.toArray(s, clazz);
+                CommonUtil.runMainThread(() -> onBase.onSuccess(objs));
+            } catch (Throwable t) {
+                CommonUtil.runMainThread(() -> onBase.onError(-2000, t.toString())); // TODO define some more specific code to replace -2000.
+            }
         }
     }
 }
