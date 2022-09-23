@@ -1,5 +1,7 @@
 package io.openim.android.sdk.models;
 
+import java.util.Objects;
+
 public class Message {
     /**
      * 消息唯一ID
@@ -414,6 +416,19 @@ public class Message {
 
     public void setAttachedInfoElem(AttachedInfoElem attachedInfoElem) {
         this.attachedInfoElem = attachedInfoElem;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Message)) return false;
+        Message message = (Message) o;
+        return Objects.equals(clientMsgID, message.clientMsgID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(clientMsgID);
     }
 }
 

@@ -1,5 +1,7 @@
 package io.openim.android.sdk.models;
 
+import java.util.Objects;
+
 public class ConversationInfo {
     /**
      * 会话id
@@ -209,5 +211,18 @@ public class ConversationInfo {
 
     public void setNotInGroup(boolean notInGroup) {
         isNotInGroup = notInGroup;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ConversationInfo)) return false;
+        ConversationInfo that = (ConversationInfo) o;
+        return Objects.equals(conversationID, that.conversationID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(conversationID);
     }
 }

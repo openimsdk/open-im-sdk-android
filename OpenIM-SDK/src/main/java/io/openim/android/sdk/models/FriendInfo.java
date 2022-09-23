@@ -1,5 +1,7 @@
 package io.openim.android.sdk.models;
 
+import java.util.Objects;
+
 /**
  * 好友信息
  */
@@ -147,5 +149,18 @@ public class FriendInfo {
 
     public void setOperatorUserID(String operatorUserID) {
         this.operatorUserID = operatorUserID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FriendInfo)) return false;
+        FriendInfo that = (FriendInfo) o;
+        return Objects.equals(userID, that.userID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userID);
     }
 }

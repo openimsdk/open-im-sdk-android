@@ -1,5 +1,7 @@
 package io.openim.android.sdk.models;
 
+import java.util.Objects;
+
 public class UserInfo {
     /**
      * 用户id
@@ -230,5 +232,18 @@ public class UserInfo {
 
     public void setGlobalRecvMsgOpt(int globalRecvMsgOpt) {
         this.globalRecvMsgOpt = globalRecvMsgOpt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserInfo)) return false;
+        UserInfo userInfo = (UserInfo) o;
+        return Objects.equals(userID, userInfo.userID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userID);
     }
 }

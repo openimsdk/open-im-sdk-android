@@ -1,5 +1,7 @@
 package io.openim.android.sdk.models;
 
+import java.util.Objects;
+
 public class GroupInfo {
     /**
      * 组ID
@@ -205,5 +207,18 @@ public class GroupInfo {
 
     public void setNotificationUserID(String notificationUserID) {
         this.notificationUserID = notificationUserID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GroupInfo)) return false;
+        GroupInfo groupInfo = (GroupInfo) o;
+        return Objects.equals(groupID, groupInfo.groupID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(groupID);
     }
 }

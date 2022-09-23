@@ -12,6 +12,7 @@ import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnMsgSendCallback;
 import io.openim.android.sdk.listener._AdvanceMsgListener;
 import io.openim.android.sdk.listener._MsgSendProgressListener;
+import io.openim.android.sdk.models.AdvancedMessage;
 import io.openim.android.sdk.models.AtUserInfo;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.OfflinePushInfo;
@@ -505,22 +506,24 @@ public class MessageManager {
      * @param userID         用户id
      * @param groupID        组ID
      * @param conversationID 会话id，如果不传userID跟groupID，则按会话id查询历史记录
+     * @param lastMinSeq     第一页消息不用传，获取第二页开始必传 跟[startMsg]一样
      * @param startMsg       从startMsg {@link Message}开始拉取消息
      *                       startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到 list；
      *                       下一次拉取消息记录参数：startMsg=list.last && count =20；以此内推，startMsg始终为list的最后一条。
      * @param count          一次拉取count条
-     * @param base           callback List<{@link Message}>
+     * @param base           callback <{@link AdvancedMessage}>
      */
-    public void getAdvancedHistoryMessageList(OnBase<List<Message>> base, String userID, String groupID, String conversationID, Message startMsg, int count) {
+    public void getAdvancedHistoryMessageList(OnBase<AdvancedMessage> base, String userID, String groupID, String conversationID, int lastMinSeq, Message startMsg, int count) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("userID", userID);
         map.put("groupID", groupID);
         map.put("conversationID", conversationID);
+        map.put("lastMinSeq", lastMinSeq);
         if (null != startMsg) {
             map.put("startClientMsgID", startMsg.getClientMsgID());
         }
         map.put("count", count);
-        Open_im_sdk.getAdvancedHistoryMessageList(BaseImpl.arrayBase(base, Message.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+        Open_im_sdk.getAdvancedHistoryMessageList(BaseImpl.objectBase(base, AdvancedMessage.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
     /**
