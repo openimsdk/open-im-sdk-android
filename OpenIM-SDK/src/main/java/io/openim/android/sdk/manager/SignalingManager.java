@@ -4,6 +4,7 @@ import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnSignalingListener;
 import io.openim.android.sdk.listener._SignalingListener;
+import io.openim.android.sdk.models.RoomCallingInfo;
 import io.openim.android.sdk.models.SignalingCertificate;
 import io.openim.android.sdk.models.SignalingInfo;
 import io.openim.android.sdk.utils.JsonUtil;
@@ -59,5 +60,13 @@ public class SignalingManager {
      */
     public void signalingHungUp(OnBase<SignalingCertificate> base, SignalingInfo info) {
         Open_im_sdk.signalingHungUp(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
+    }
+
+
+    /**
+     * 获取房间通话信息
+     */
+    public void signalingGetRoomByGroupID(OnBase<RoomCallingInfo> base, String groupID) {
+        Open_im_sdk.signalingGetRoomByGroupID(BaseImpl.objectBase(base, RoomCallingInfo.class), ParamsUtil.buildOperationID(), groupID);
     }
 }

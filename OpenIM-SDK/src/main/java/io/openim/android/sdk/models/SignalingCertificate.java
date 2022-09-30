@@ -1,9 +1,12 @@
 package io.openim.android.sdk.models;
 
+import java.util.List;
+
 public class SignalingCertificate {
     private String token;
     private String roomID;
     private String liveURL;
+    private List<String> busyLineUserIDList;
 
     public String getToken() {
         return token;
@@ -27,5 +30,13 @@ public class SignalingCertificate {
 
     public void setLiveURL(String liveURL) {
         this.liveURL = liveURL;
+    }
+
+    public List<String> getBusyLineUserIDList() {
+        return busyLineUserIDList;
+    }
+
+    public void setBusyLineUserIDList(List<String> busyLineUserIDList) {
+        this.busyLineUserIDList = busyLineUserIDList;
     }
 }

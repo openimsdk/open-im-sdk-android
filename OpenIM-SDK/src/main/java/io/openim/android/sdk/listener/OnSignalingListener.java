@@ -1,5 +1,6 @@
 package io.openim.android.sdk.listener;
 
+import io.openim.android.sdk.models.RoomCallingInfo;
 import io.openim.android.sdk.models.SignalingInfo;
 
 public interface OnSignalingListener {
@@ -19,4 +20,8 @@ public interface OnSignalingListener {
     void onReceiveNewInvitation(SignalingInfo s);
 
     void onHangup(SignalingInfo s);
+
+    void onRoomParticipantConnected(RoomCallingInfo s);
+
+    void onRoomParticipantDisconnected(RoomCallingInfo s);
 }

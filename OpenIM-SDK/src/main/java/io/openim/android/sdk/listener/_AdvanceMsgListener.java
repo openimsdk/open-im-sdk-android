@@ -5,6 +5,7 @@ import java.util.List;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.ReadReceiptInfo;
 import io.openim.android.sdk.models.RevokedInfo;
+import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
 
 
@@ -19,7 +20,7 @@ final public class _AdvanceMsgListener implements open_im_sdk_callback.OnAdvance
     public void onNewRecvMessageRevoked(String s) {
         if (listener != null) {
             RevokedInfo info = JsonUtil.toObj(s, RevokedInfo.class);
-            listener.onRecvMessageRevokedV2(info);
+            CommonUtil.runMainThread(() -> listener.onRecvMessageRevokedV2(info));
         }
     }
 
@@ -27,7 +28,7 @@ final public class _AdvanceMsgListener implements open_im_sdk_callback.OnAdvance
     public void onRecvC2CReadReceipt(String s) {
         if (listener != null) {
             List<ReadReceiptInfo> list = JsonUtil.toArray(s, ReadReceiptInfo.class);
-            listener.onRecvC2CReadReceipt(list);
+            CommonUtil.runMainThread(() -> listener.onRecvC2CReadReceipt(list));
         }
     }
 
@@ -35,20 +36,20 @@ final public class _AdvanceMsgListener implements open_im_sdk_callback.OnAdvance
     public void onRecvGroupReadReceipt(String s) {
         if (listener != null) {
             List<ReadReceiptInfo> list = JsonUtil.toArray(s, ReadReceiptInfo.class);
-            listener.onRecvGroupMessageReadReceipt(list);
+            CommonUtil.runMainThread(() -> listener.onRecvGroupMessageReadReceipt(list));
         }
     }
 
     @Override
     public void onRecvMessageRevoked(String s) {
         if (listener != null) {
-            listener.onRecvMessageRevoked(s);
+            CommonUtil.runMainThread(() -> listener.onRecvMessageRevoked(s));
         }
     }
 
     @Override
     public void onRecvNewMessage(String s) {
         Message msg = JsonUtil.toObj(s, Message.class);
-        listener.onRecvNewMessage(msg);
+        CommonUtil.runMainThread(() -> listener.onRecvNewMessage(msg));
     }
 }
