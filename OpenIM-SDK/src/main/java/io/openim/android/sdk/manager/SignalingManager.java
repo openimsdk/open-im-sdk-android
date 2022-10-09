@@ -69,4 +69,11 @@ public class SignalingManager {
     public void signalingGetRoomByGroupID(OnBase<RoomCallingInfo> base, String groupID) {
         Open_im_sdk.signalingGetRoomByGroupID(BaseImpl.objectBase(base, RoomCallingInfo.class), ParamsUtil.buildOperationID(), groupID);
     }
+
+    /**
+     * 获取进入房间需要的token，url等数据
+     */
+    public void signalingGetTokenByRoomID(OnBase<SignalingCertificate> base, String roomID) {
+        Open_im_sdk.signalingGetTokenByRoomID(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), roomID);
+    }
 }
