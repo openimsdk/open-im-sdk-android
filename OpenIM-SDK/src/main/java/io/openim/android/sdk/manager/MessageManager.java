@@ -17,6 +17,7 @@ import io.openim.android.sdk.models.AtUserInfo;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.OfflinePushInfo;
 import io.openim.android.sdk.models.RichMessage;
+import io.openim.android.sdk.models.SearchParams;
 import io.openim.android.sdk.models.SearchResult;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
@@ -529,14 +530,13 @@ public class MessageManager {
     /**
      * 查询消息
      *
-     * @param conversationID  会话id
-     * @param clientMsgIDList 被查询的消息id列表
+     * @param searchParams 参数
      */
-    public void findMessageList(OnBase<SearchResult> base, String conversationID, List<String> clientMsgIDList) {
-        Map<String, Object> map = new ArrayMap<>();
-        map.put("conversationID", conversationID);
-        map.put("clientMsgIDList", clientMsgIDList);
-        Open_im_sdk.findMessageList(BaseImpl.objectBase(base, SearchResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+    public void findMessageList(OnBase<SearchResult> base, List<SearchParams> searchParams) {
+//        Map<String, Object> map = new ArrayMap<>();
+//        map.put("conversationID", conversationID);
+//        map.put("clientMsgIDList", clientMsgIDList);
+        Open_im_sdk.findMessageList(BaseImpl.objectBase(base, SearchResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(searchParams));
     }
 
     /**
