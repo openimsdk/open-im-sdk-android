@@ -15,6 +15,17 @@ public class SearchResultItem {
     private int messageCount;
 
     /**
+     * 显示名
+     */
+    public String showName;
+
+    /**
+     * 头像
+     */
+    public String faceURL;
+
+
+    /**
      * Message的列表
      */
     private List<Message> messageList;
@@ -41,5 +52,22 @@ public class SearchResultItem {
 
     public void setMessageList(List<Message> messageList) {
         this.messageList = messageList;
+    }
+
+
+    public String getShowName() {
+        return showName;
+    }
+
+    public void setShowName(String showName) {
+        this.showName = showName;
+    }
+
+    public String getFaceURL() {
+        return faceURL;
+    }
+
+    public void setFaceURL(String faceURL) {
+        this.faceURL = faceURL;
     }
 }
