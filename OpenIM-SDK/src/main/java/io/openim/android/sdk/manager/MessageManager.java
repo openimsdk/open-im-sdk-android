@@ -14,11 +14,15 @@ import io.openim.android.sdk.listener._AdvanceMsgListener;
 import io.openim.android.sdk.listener._MsgSendProgressListener;
 import io.openim.android.sdk.models.AdvancedMessage;
 import io.openim.android.sdk.models.AtUserInfo;
+import io.openim.android.sdk.models.FileElem;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.OfflinePushInfo;
+import io.openim.android.sdk.models.PictureInfo;
 import io.openim.android.sdk.models.RichMessage;
 import io.openim.android.sdk.models.SearchParams;
 import io.openim.android.sdk.models.SearchResult;
+import io.openim.android.sdk.models.SoundElem;
+import io.openim.android.sdk.models.VideoElem;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
@@ -558,6 +562,57 @@ public class MessageManager {
      */
     public Message createAdvancedQuoteMessage(String text, Message message, List<RichMessage> richList) {
         return parse(Open_im_sdk.createAdvancedQuoteMessage(ParamsUtil.buildOperationID(), text, JsonUtil.toString(message), JsonUtil.toString(richList)));
+    }
+
+    /**
+     * 发送消息
+     *
+     * @param message         消息体{@link Message}
+     * @param recvUid         接受者用户id
+     * @param recvGid         群id
+     * @param offlinePushInfo 离线推送内容
+     * @param base            callback
+     *                        onProgress:消息发送进度，如图片，文件，视频等消息
+     */
+    public void sendMessageNotOss(OnMsgSendCallback base, Message message, String recvUid, String recvGid, OfflinePushInfo offlinePushInfo) {
+        Open_im_sdk.sendMessageNotOss(new _MsgSendProgressListener(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message), recvUid, recvGid, JsonUtil.toString(offlinePushInfo));
+    }
+
+
+    /**
+     * 创建图片消息
+     *
+     * @return {@link Message}
+     */
+    public Message createImageMessageByURL(PictureInfo sourcePicture, PictureInfo bigPicture, PictureInfo snapshotPicture) {
+        return parse(Open_im_sdk.createImageMessageByURL(ParamsUtil.buildOperationID(), JsonUtil.toString(sourcePicture), JsonUtil.toString(bigPicture), JsonUtil.toString(snapshotPicture)));
+    }
+
+    /**
+     * 创建声音消息
+     *
+     * @return {@link Message}
+     */
+    public Message createSoundMessageByURL(SoundElem soundElem) {
+        return parse(Open_im_sdk.createSoundMessageByURL(ParamsUtil.buildOperationID(), JsonUtil.toString(soundElem)));
+    }
+
+    /**
+     * 创建声音消息
+     *
+     * @return {@link Message}
+     */
+    public Message createVideoMessageByURL(VideoElem videoElem) {
+        return parse(Open_im_sdk.createVideoMessageByURL(ParamsUtil.buildOperationID(), JsonUtil.toString(videoElem)));
+    }
+
+    /**
+     * 创建声音消息
+     *
+     * @return {@link Message}
+     */
+    public Message createFileMessageByURL(FileElem fileElem) {
+        return parse(Open_im_sdk.createFileMessageByURL(ParamsUtil.buildOperationID(), JsonUtil.toString(fileElem)));
     }
 
     static Message parse(String msg) {

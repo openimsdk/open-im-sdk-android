@@ -1,6 +1,7 @@
 package io.openim.android.sdk.listener;
 
 
+import io.openim.android.sdk.models.MeetingStreamEvent;
 import io.openim.android.sdk.models.RoomCallingInfo;
 import io.openim.android.sdk.models.SignalingInfo;
 import io.openim.android.sdk.utils.CommonUtil;
@@ -90,6 +91,14 @@ final public class _SignalingListener implements open_im_sdk_callback.OnSignalin
         if (listener != null) {
             RoomCallingInfo info = JsonUtil.toObj(s, RoomCallingInfo.class);
             CommonUtil.runMainThread(() -> listener.onRoomParticipantDisconnected(info));
+        }
+    }
+
+    @Override
+    public void onStreamChange(String s) {
+        if (listener != null) {
+            MeetingStreamEvent info = JsonUtil.toObj(s, MeetingStreamEvent.class);
+            CommonUtil.runMainThread(() -> listener.onMeetingStreamChanged(info));
         }
     }
 }
