@@ -8,6 +8,7 @@ public class SearchResult {
      **/
     private int totalCount;
     private List<SearchResultItem> searchResultItems;
+    private List<SearchResultItem> findResultItems;
 
     public int getTotalCount() {
         return totalCount;
@@ -23,5 +24,13 @@ public class SearchResult {
 
     public void setSearchResultItems(List<SearchResultItem> searchResultItems) {
         this.searchResultItems = searchResultItems;
+    }
+
+    public List<SearchResultItem> getFindResultItems() {
+        return findResultItems;
+    }
+
+    public void setFindResultItems(List<SearchResultItem> findResultItems) {
+        this.findResultItems = findResultItems;
     }
 }
