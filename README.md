@@ -16,7 +16,7 @@ maven {
 ##### 2，Add dependencies（添加依赖）
 
 ```
-    implementation 'io.openim:android-sdk:2.3.4.4@aar'
+    implementation 'io.openim:android-sdk:2.3.4.5@aar'
     implementation 'io.openim:core-sdk:2.3.4-rc0@aar'
     implementation 'com.google.code.gson:gson:2.9.0'
 ```
