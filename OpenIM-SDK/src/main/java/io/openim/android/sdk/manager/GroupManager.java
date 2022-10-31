@@ -350,7 +350,7 @@ public class GroupManager {
      * @param offset                 开始index
      * @param count                  每次获取的总数
      */
-    public void searchGroupMembers(OnBase<List<GroupInfo>> base, String groupID, List<String> keywordList, boolean isSearchUserID, boolean isSearchMemberNickname, int offset, int count) {
+    public void searchGroupMembers(OnBase<List<GroupMembersInfo>> base, String groupID, List<String> keywordList, boolean isSearchUserID, boolean isSearchMemberNickname, int offset, int count) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("groupID", groupID);
         map.put("keywordList", keywordList);
@@ -358,6 +358,6 @@ public class GroupManager {
         map.put("isSearchMemberNickname", isSearchMemberNickname);
         map.put("offset", offset);
         map.put("count", count);
-        Open_im_sdk.searchGroupMembers(BaseImpl.arrayBase(base, GroupInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+        Open_im_sdk.searchGroupMembers(BaseImpl.arrayBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 }
