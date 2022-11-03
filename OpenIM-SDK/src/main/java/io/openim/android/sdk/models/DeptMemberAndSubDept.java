@@ -3,8 +3,9 @@ package io.openim.android.sdk.models;
 import java.util.List;
 
 public class DeptMemberAndSubDept {
-    List<DeptInfo> departmentList;
-    List<DeptMemberInfo> departmentMemberList;
+    private List<DeptInfo> departmentList;
+    private List<DeptMemberInfo> departmentMemberList;
+    private List<DeptInfo> parentDepartmentList;
 
     public List<DeptInfo> getDepartmentList() {
         return departmentList;
@@ -20,5 +21,13 @@ public class DeptMemberAndSubDept {
 
     public void setDepartmentMemberList(List<DeptMemberInfo> departmentMemberList) {
         this.departmentMemberList = departmentMemberList;
+    }
+
+    public List<DeptInfo> getParentDepartmentList() {
+        return parentDepartmentList;
+    }
+
+    public void setParentDepartmentList(List<DeptInfo> parentDepartmentList) {
+        this.parentDepartmentList = parentDepartmentList;
     }
 }
