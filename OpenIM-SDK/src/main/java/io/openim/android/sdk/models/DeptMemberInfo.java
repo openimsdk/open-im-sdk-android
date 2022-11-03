@@ -65,6 +65,14 @@ public class DeptMemberInfo {
      */
     private long createTime;
     /**
+     * 入职时间
+     */
+    private long entryTime;
+    /**
+     * 离职时间
+     */
+    private long terminationTime;
+    /**
      * 附加字段
      */
     private String ex;
@@ -72,6 +80,11 @@ public class DeptMemberInfo {
      * 附加信息
      */
     private String attachedInfo;
+
+    /**
+     * 部门信息
+     */
+    private DeptMemberInfo department;
 
     public String getUserID() {
         return userID;
@@ -207,5 +220,29 @@ public class DeptMemberInfo {
 
     public void setAttachedInfo(String attachedInfo) {
         this.attachedInfo = attachedInfo;
+    }
+
+    public long getEntryTime() {
+        return entryTime;
+    }
+
+    public void setEntryTime(long entryTime) {
+        this.entryTime = entryTime;
+    }
+
+    public long getTerminationTime() {
+        return terminationTime;
+    }
+
+    public void setTerminationTime(long terminationTime) {
+        this.terminationTime = terminationTime;
+    }
+
+    public DeptMemberInfo getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(DeptMemberInfo department) {
+        this.department = department;
     }
 }

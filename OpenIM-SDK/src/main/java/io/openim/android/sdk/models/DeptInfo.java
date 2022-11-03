@@ -49,6 +49,8 @@ public class DeptInfo {
      */
     private String attachedInfo;
 
+    private String relatedGroupID;
+
     public String getDepartmentID() {
         return departmentID;
     }
@@ -135,5 +137,13 @@ public class DeptInfo {
 
     public void setAttachedInfo(String attachedInfo) {
         this.attachedInfo = attachedInfo;
+    }
+
+    public String getRelatedGroupID() {
+        return relatedGroupID;
+    }
+
+    public void setRelatedGroupID(String relatedGroupID) {
+        this.relatedGroupID = relatedGroupID;
     }
 }

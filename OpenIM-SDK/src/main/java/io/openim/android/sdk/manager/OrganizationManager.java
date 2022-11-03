@@ -64,8 +64,8 @@ public class OrganizationManager {
      *
      * @param departmentID 部门id
      */
-    public void getDepartmentMemberAndSubDepartment(OnBase<List<DeptMemberAndSubDept>> base, String departmentID) {
-        Open_im_sdk.getDepartmentMemberAndSubDepartment(BaseImpl.arrayBase(base, DeptMemberAndSubDept.class), ParamsUtil.buildOperationID(), departmentID);
+    public void getDepartmentMemberAndSubDepartment(OnBase<DeptMemberAndSubDept> base, String departmentID) {
+        Open_im_sdk.getDepartmentMemberAndSubDepartment(BaseImpl.objectBase(base, DeptMemberAndSubDept.class), ParamsUtil.buildOperationID(), departmentID);
     }
 
     /**
