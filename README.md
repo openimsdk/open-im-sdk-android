@@ -7,16 +7,13 @@
 ##### 1，Add repositories（添加仓库地址）
 
 ```
-maven {
-    allowInsecureProtocol = true
-    url 'http://121.37.25.71:8081/repository/maven2/' // 新地址
-}
+    maven { url 'https://open-im-online.rentsoft.cn:51000/repository/maven2/' }
 ```
 
 ##### 2，Add dependencies（添加依赖）
 
 ```
-    implementation 'io.openim:android-sdk:2.3.4.6@aar'
+    implementation 'io.openim:android-sdk:2.3.4.7@aar'
     implementation 'io.openim:core-sdk:2.3.4-rc4@aar'
     implementation 'com.google.code.gson:gson:2.9.0'
 ```
