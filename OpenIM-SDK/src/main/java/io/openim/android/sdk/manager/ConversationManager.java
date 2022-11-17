@@ -202,6 +202,14 @@ public class ConversationManager {
         Open_im_sdk.setGlobalRecvMessageOpt(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), status);
     }
 
+    /**
+     * 全局免打扰
+     *
+     * @param burnDuration 阅读时长s
+     */
+    public void setOneConversationBurnDuration(OnBase<String> base, String conversationID, int burnDuration) {
+        Open_im_sdk.setOneConversationBurnDuration(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, burnDuration);
+    }
 
     /**
      * 会话排序比较器

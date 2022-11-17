@@ -73,8 +73,13 @@ public class ConversationInfo {
 
     /**
      * 是否还在群里
-     * */
+     */
     private boolean isNotInGroup;
+
+    /**
+     * 阅读时长 s，即超过了burnDuration秒触发销毁
+     */
+    private int burnDuration;
 
 
     public String getConversationID() {
@@ -211,6 +216,14 @@ public class ConversationInfo {
 
     public void setNotInGroup(boolean notInGroup) {
         isNotInGroup = notInGroup;
+    }
+
+    public int getBurnDuration() {
+        return burnDuration;
+    }
+
+    public void setBurnDuration(int burnDuration) {
+        this.burnDuration = burnDuration;
     }
 
     @Override

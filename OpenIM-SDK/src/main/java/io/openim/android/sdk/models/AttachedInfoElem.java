@@ -13,6 +13,11 @@ public class AttachedInfoElem {
      * 消息已读时间
      */
     private long hasReadTime;
+    /**
+     * 阅读时长 s
+     * 即从hasReadTime时间算起，超过了burnDuration秒触发销毁
+     */
+    private int burnDuration;
 
     public GroupHasReadInfo getGroupHasReadInfo() {
         return groupHasReadInfo;
@@ -36,5 +41,13 @@ public class AttachedInfoElem {
 
     public void setHasReadTime(long hasReadTime) {
         this.hasReadTime = hasReadTime;
+    }
+
+    public int getBurnDuration() {
+        return burnDuration;
+    }
+
+    public void setBurnDuration(int burnDuration) {
+        this.burnDuration = burnDuration;
     }
 }
