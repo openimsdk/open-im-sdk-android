@@ -109,7 +109,7 @@ public class MessageManager {
 //    }
 
     /**
-     * 插入单挑消息到本地
+     * 插入单聊消息到本地
      *
      * @param message  {@link Message}
      * @param receiver 接收者
@@ -119,6 +119,19 @@ public class MessageManager {
     public void insertSingleMessageToLocalStorage(OnBase<String> base, Message message, String receiver, String sender) {
         Open_im_sdk.insertSingleMessageToLocalStorage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message), receiver, sender);
     }
+
+    /**
+     * 插入群聊消息到本地
+     *
+     * @param message  {@link Message}
+     * @param groupID  群id
+     * @param senderID 发送者id
+     * @param base     callback String
+     */
+    public void insertGroupMessageToLocalStorage(OnBase<String> base, Message message, String groupID, String senderID) {
+        Open_im_sdk.insertGroupMessageToLocalStorage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message), groupID, senderID);
+    }
+
 
     /**
      * 根据消息id批量查询消息记录

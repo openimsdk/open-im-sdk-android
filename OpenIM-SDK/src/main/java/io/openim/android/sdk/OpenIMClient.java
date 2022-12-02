@@ -141,5 +141,13 @@ public class OpenIMClient {
     public void updateFcmToken(OnBase<String> base, String fcmToken) {
         Open_im_sdk.updateFcmToken(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), fcmToken);
     }
+
+    /**
+     * 标记app处于后台
+     * 可以用于后台不接收ws消息，走离线推送
+     */
+    public void setAppBackgroundStatus(OnBase<String> base, boolean isBackground) {
+        Open_im_sdk.setAppBackgroundStatus(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), isBackground);
+    }
 }
 
