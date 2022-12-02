@@ -1,5 +1,6 @@
 package io.openim.android.sdk.listener;
 
+import io.openim.android.sdk.models.CustomSignalingInfo;
 import io.openim.android.sdk.models.MeetingStreamEvent;
 import io.openim.android.sdk.models.RoomCallingInfo;
 import io.openim.android.sdk.models.SignalingInfo;
@@ -27,4 +28,6 @@ public interface OnSignalingListener {
     void onRoomParticipantDisconnected(RoomCallingInfo s);
 
     void onMeetingStreamChanged(MeetingStreamEvent e);
+
+    void onReceiveCustomSignal(CustomSignalingInfo s);
 }

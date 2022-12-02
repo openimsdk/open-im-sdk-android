@@ -1,6 +1,7 @@
 package io.openim.android.sdk.listener;
 
 
+import io.openim.android.sdk.models.CustomSignalingInfo;
 import io.openim.android.sdk.models.MeetingStreamEvent;
 import io.openim.android.sdk.models.RoomCallingInfo;
 import io.openim.android.sdk.models.SignalingInfo;
@@ -67,6 +68,14 @@ final public class _SignalingListener implements open_im_sdk_callback.OnSignalin
         if (listener != null) {
             SignalingInfo info = JsonUtil.toObj(s, SignalingInfo.class);
             CommonUtil.runMainThread(() -> listener.onInviteeRejectedByOtherDevice(info));
+        }
+    }
+
+    @Override
+    public void onReceiveCustomSignal(String s) {
+        if (listener != null) {
+            CustomSignalingInfo info = JsonUtil.toObj(s, CustomSignalingInfo.class);
+            CommonUtil.runMainThread(() -> listener.onReceiveCustomSignal(info));
         }
     }
 
