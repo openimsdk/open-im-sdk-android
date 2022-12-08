@@ -69,9 +69,11 @@ public class OpenIMClient {
      * @param objectStorage 图片上传配置 如：cos
      * @param encryptionKey 加密key
      * @param listener      SDK初始化监听
+     * @param enabledCompression 启用压缩
+     * @param enabledEncryption 启用加密
      * @return boolean   true成功; false失败
      */
-    public boolean initSDK(int platform, String apiUrl, String wsUrl, String storageDir, int logLevel, String objectStorage, String encryptionKey, OnConnListener listener) {
+    public boolean initSDK(int platform, String apiUrl, String wsUrl, String storageDir, int logLevel, String objectStorage, String encryptionKey, boolean enabledEncryption, boolean enabledCompression, OnConnListener listener) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("platform", platform);
         map.put("api_addr", apiUrl);
@@ -80,6 +82,8 @@ public class OpenIMClient {
         map.put("log_level", logLevel);
         map.put("object_storage", objectStorage);
         map.put("encryption_key", encryptionKey);
+        map.put("is_need_encryption", enabledEncryption);
+        map.put("is_compression", enabledCompression);
         boolean initialized = Open_im_sdk.initSDK(new _ConnListener(listener), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
         LogcatHelper.logDInDebug(String.format("Initialization successful: %s", initialized));
         return initialized;

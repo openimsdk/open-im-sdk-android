@@ -9,8 +9,10 @@ import java.util.Map;
 import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnAdvanceMsgListener;
 import io.openim.android.sdk.listener.OnBase;
+import io.openim.android.sdk.listener.OnCustomBusinessListener;
 import io.openim.android.sdk.listener.OnMsgSendCallback;
 import io.openim.android.sdk.listener._AdvanceMsgListener;
+import io.openim.android.sdk.listener._CustomBusinessListener;
 import io.openim.android.sdk.listener._MsgSendProgressListener;
 import io.openim.android.sdk.models.AdvancedMessage;
 import io.openim.android.sdk.models.AtUserInfo;
@@ -627,6 +629,14 @@ public class MessageManager {
     public Message createFileMessageByURL(FileElem fileElem) {
         return parse(Open_im_sdk.createFileMessageByURL(ParamsUtil.buildOperationID(), JsonUtil.toString(fileElem)));
     }
+
+    /**
+     * 自定义业务消息监听
+     */
+    public void setCustomBusinessListener(OnCustomBusinessListener listener) {
+        Open_im_sdk.setCustomBusinessListener(new _CustomBusinessListener(listener));
+    }
+
 
     static Message parse(String msg) {
         return JsonUtil.toObj(msg, Message.class);
