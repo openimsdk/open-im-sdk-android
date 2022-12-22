@@ -40,6 +40,8 @@ public class SignalingInvitationInfo {
      */
     private int platformID;
 
+    private String customData;
+
     public String getInviterUserID() {
         return inviterUserID;
     }
