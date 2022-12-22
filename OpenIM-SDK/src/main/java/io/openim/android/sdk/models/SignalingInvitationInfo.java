@@ -42,6 +42,14 @@ public class SignalingInvitationInfo {
 
     private String customData;
 
+    public String getCustomData() {
+        return customData;
+    }
+
+    public void setCustomData(String customData) {
+        this.customData = customData;
+    }
+
     public String getInviterUserID() {
         return inviterUserID;
     }
