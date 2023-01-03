@@ -2,6 +2,7 @@ package io.openim.android.sdk.listener;
 
 import java.util.List;
 
+import io.openim.android.sdk.models.KeyValue;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.ReadReceiptInfo;
 import io.openim.android.sdk.models.RevokedInfo;
@@ -37,6 +38,22 @@ final public class _AdvanceMsgListener implements open_im_sdk_callback.OnAdvance
         if (listener != null) {
             List<ReadReceiptInfo> list = JsonUtil.toArray(s, ReadReceiptInfo.class);
             CommonUtil.runMainThread(() -> listener.onRecvGroupMessageReadReceipt(list));
+        }
+    }
+
+    @Override
+    public void onRecvMessageExtensionsChanged(String s, String s1) {
+        if (listener != null) {
+            List<KeyValue> list = JsonUtil.toArray(s, KeyValue.class);
+            CommonUtil.runMainThread(() -> listener.onRecvMessageExtensionsChanged(s, list));
+        }
+    }
+
+    @Override
+    public void onRecvMessageExtensionsDeleted(String s, String s1) {
+        if (listener != null) {
+            List<String> list = JsonUtil.toArray(s, String.class);
+            CommonUtil.runMainThread(() -> listener.onRecvMessageExtensionsDeleted(s, list));
         }
     }
 

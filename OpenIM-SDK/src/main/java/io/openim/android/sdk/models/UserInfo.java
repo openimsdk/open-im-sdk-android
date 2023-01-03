@@ -27,6 +27,7 @@ public class UserInfo {
      * 生日
      */
     private long birth;
+    private String birthTime;
     /**
      * 邮箱
      */
@@ -232,6 +233,14 @@ public class UserInfo {
 
     public void setGlobalRecvMsgOpt(int globalRecvMsgOpt) {
         this.globalRecvMsgOpt = globalRecvMsgOpt;
+    }
+
+    public String getBirthTime() {
+        return birthTime;
+    }
+
+    public void setBirthTime(String birthTime) {
+        this.birthTime = birthTime;
     }
 
     @Override

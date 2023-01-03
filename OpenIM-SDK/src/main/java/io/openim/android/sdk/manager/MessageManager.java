@@ -10,20 +10,25 @@ import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnAdvanceMsgListener;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnCustomBusinessListener;
+import io.openim.android.sdk.listener.OnMessageKvInfoListener;
 import io.openim.android.sdk.listener.OnMsgSendCallback;
 import io.openim.android.sdk.listener._AdvanceMsgListener;
 import io.openim.android.sdk.listener._CustomBusinessListener;
+import io.openim.android.sdk.listener._MessageKvInfoListener;
 import io.openim.android.sdk.listener._MsgSendProgressListener;
 import io.openim.android.sdk.models.AdvancedMessage;
 import io.openim.android.sdk.models.AtUserInfo;
 import io.openim.android.sdk.models.FileElem;
+import io.openim.android.sdk.models.KeyValue;
 import io.openim.android.sdk.models.Message;
+import io.openim.android.sdk.models.MessageTypeKeyMapping;
 import io.openim.android.sdk.models.OfflinePushInfo;
 import io.openim.android.sdk.models.PictureInfo;
 import io.openim.android.sdk.models.RichMessage;
 import io.openim.android.sdk.models.SearchParams;
 import io.openim.android.sdk.models.SearchResult;
 import io.openim.android.sdk.models.SoundElem;
+import io.openim.android.sdk.models.TypeKeySetResult;
 import io.openim.android.sdk.models.VideoElem;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
@@ -637,6 +642,21 @@ public class MessageManager {
         Open_im_sdk.setCustomBusinessListener(new _CustomBusinessListener(listener));
     }
 
+    public void setMessageKvInfoListener(OnMessageKvInfoListener listener) {
+        Open_im_sdk.setMessageKvInfoListener(new _MessageKvInfoListener(listener));
+    }
+
+    public void setMessageReactionExtensions(OnBase<List<TypeKeySetResult>> base, Message message, List<KeyValue> list) {
+        Open_im_sdk.setMessageReactionExtensions(BaseImpl.arrayBase(base, TypeKeySetResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(message), JsonUtil.toString(list));
+    }
+
+    public void deleteMessageReactionExtensions(OnBase<List<TypeKeySetResult>> base, Message message, List<String> list) {
+        Open_im_sdk.deleteMessageReactionExtensions(BaseImpl.arrayBase(base, TypeKeySetResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(message), JsonUtil.toString(list));
+    }
+
+    public void getMessageListReactionExtensions(OnBase<List<MessageTypeKeyMapping>> base, List<Message> messageList) {
+        Open_im_sdk.getMessageListReactionExtensions(BaseImpl.arrayBase(base, MessageTypeKeyMapping.class), ParamsUtil.buildOperationID(), JsonUtil.toString(messageList));
+    }
 
     static Message parse(String msg) {
         return JsonUtil.toObj(msg, Message.class);

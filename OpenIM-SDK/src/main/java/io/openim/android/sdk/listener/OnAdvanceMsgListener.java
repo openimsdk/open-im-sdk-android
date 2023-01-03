@@ -2,6 +2,7 @@ package io.openim.android.sdk.listener;
 
 import java.util.List;
 
+import io.openim.android.sdk.models.KeyValue;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.ReadReceiptInfo;
 import io.openim.android.sdk.models.RevokedInfo;
@@ -41,4 +42,8 @@ public interface OnAdvanceMsgListener {
      * 新版本只会通过此回调回传被撤回的详细信息，不会触发onRecvNewMessage回调
      */
     void onRecvMessageRevokedV2(RevokedInfo info);
+
+    void onRecvMessageExtensionsChanged(String msgID, List<KeyValue> list);
+
+    void onRecvMessageExtensionsDeleted(String msgID, List<String> list);
 }
