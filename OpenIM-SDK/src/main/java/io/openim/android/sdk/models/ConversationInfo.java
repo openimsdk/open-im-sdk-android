@@ -70,7 +70,10 @@ public class ConversationInfo {
      * 扩展预留字段
      */
     private String ext;
-
+    /**
+     * 扩展预留字段
+     */
+    private String ex;
     /**
      * 是否还在群里
      */
@@ -224,6 +227,14 @@ public class ConversationInfo {
 
     public void setBurnDuration(int burnDuration) {
         this.burnDuration = burnDuration;
+    }
+
+    public String getEx() {
+        return ex;
+    }
+
+    public void setEx(String ex) {
+        this.ex = ex;
     }
 
     @Override
