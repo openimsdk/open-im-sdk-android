@@ -42,6 +42,14 @@ final public class _AdvanceMsgListener implements open_im_sdk_callback.OnAdvance
     }
 
     @Override
+    public void onRecvMessageExtensionsAdded(String s, String s1) {
+        if (listener != null) {
+            List<KeyValue> list = JsonUtil.toArray(s, KeyValue.class);
+            CommonUtil.runMainThread(() -> listener.onRecvMessageExtensionsAdded(s, list));
+        }
+    }
+
+    @Override
     public void onRecvMessageExtensionsChanged(String s, String s1) {
         if (listener != null) {
             List<KeyValue> list = JsonUtil.toArray(s, KeyValue.class);

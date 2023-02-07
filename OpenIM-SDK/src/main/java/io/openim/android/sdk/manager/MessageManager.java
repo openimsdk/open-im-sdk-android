@@ -658,6 +658,14 @@ public class MessageManager {
         Open_im_sdk.getMessageListReactionExtensions(BaseImpl.arrayBase(base, MessageTypeKeyMapping.class), ParamsUtil.buildOperationID(), JsonUtil.toString(messageList));
     }
 
+    public void addMessageReactionExtensions(OnBase<List<TypeKeySetResult>> base, Message message, List<KeyValue> list) {
+        Open_im_sdk.addMessageReactionExtensions(BaseImpl.arrayBase(base, TypeKeySetResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(message), JsonUtil.toString(list));
+    }
+
+    public void getMessageListSomeReactionExtensions(OnBase<List<MessageTypeKeyMapping>> base, List<Message> messageList, List<KeyValue> kvList) {
+        Open_im_sdk.getMessageListSomeReactionExtensions(BaseImpl.arrayBase(base, MessageTypeKeyMapping.class), ParamsUtil.buildOperationID(), JsonUtil.toString(messageList), JsonUtil.toString(kvList));
+    }
+
     static Message parse(String msg) {
         return JsonUtil.toObj(msg, Message.class);
     }

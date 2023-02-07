@@ -46,4 +46,6 @@ public interface OnAdvanceMsgListener {
     void onRecvMessageExtensionsChanged(String msgID, List<KeyValue> list);
 
     void onRecvMessageExtensionsDeleted(String msgID, List<String> list);
+
+    void onRecvMessageExtensionsAdded(String msgID, List<KeyValue> list);
 }
