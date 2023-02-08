@@ -44,7 +44,7 @@ final public class _AdvanceMsgListener implements open_im_sdk_callback.OnAdvance
     @Override
     public void onRecvMessageExtensionsAdded(String s, String s1) {
         if (listener != null) {
-            List<KeyValue> list = JsonUtil.toArray(s, KeyValue.class);
+            List<KeyValue> list = JsonUtil.toArray(s1, KeyValue.class);
             CommonUtil.runMainThread(() -> listener.onRecvMessageExtensionsAdded(s, list));
         }
     }
@@ -52,7 +52,7 @@ final public class _AdvanceMsgListener implements open_im_sdk_callback.OnAdvance
     @Override
     public void onRecvMessageExtensionsChanged(String s, String s1) {
         if (listener != null) {
-            List<KeyValue> list = JsonUtil.toArray(s, KeyValue.class);
+            List<KeyValue> list = JsonUtil.toArray(s1, KeyValue.class);
             CommonUtil.runMainThread(() -> listener.onRecvMessageExtensionsChanged(s, list));
         }
     }
@@ -60,7 +60,7 @@ final public class _AdvanceMsgListener implements open_im_sdk_callback.OnAdvance
     @Override
     public void onRecvMessageExtensionsDeleted(String s, String s1) {
         if (listener != null) {
-            List<String> list = JsonUtil.toArray(s, String.class);
+            List<String> list = JsonUtil.toArray(s1, String.class);
             CommonUtil.runMainThread(() -> listener.onRecvMessageExtensionsDeleted(s, list));
         }
     }

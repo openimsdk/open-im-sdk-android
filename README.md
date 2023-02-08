@@ -14,7 +14,7 @@
 ##### 2，Add dependencies（添加依赖）
 
 ```
-    implementation 'io.openim:android-sdk:2.3.5.4@aar'
+    implementation 'io.openim:android-sdk:2.3.5.5@aar'
     implementation 'io.openim:core-sdk:2.3.5-t11@aar'
     implementation 'com.google.code.gson:gson:2.9.0'
 ```
