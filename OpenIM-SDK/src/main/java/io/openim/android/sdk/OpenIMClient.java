@@ -71,9 +71,10 @@ public class OpenIMClient {
      * @param listener      SDK初始化监听
      * @param enabledCompression 启用压缩
      * @param enabledEncryption 启用加密
+     * @param isExternalExtensions 消息扩展
      * @return boolean   true成功; false失败
      */
-    public boolean initSDK(int platform, String apiUrl, String wsUrl, String storageDir, int logLevel, String objectStorage, String encryptionKey, boolean enabledEncryption, boolean enabledCompression, OnConnListener listener) {
+    public boolean initSDK(int platform, String apiUrl, String wsUrl, String storageDir, int logLevel, String objectStorage, String encryptionKey, boolean enabledEncryption, boolean enabledCompression, boolean isExternalExtensions, OnConnListener listener) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("platform", platform);
         map.put("api_addr", apiUrl);
@@ -84,6 +85,7 @@ public class OpenIMClient {
         map.put("encryption_key", encryptionKey);
         map.put("is_need_encryption", enabledEncryption);
         map.put("is_compression", enabledCompression);
+        map.put("is_external_extensions", isExternalExtensions);
         boolean initialized = Open_im_sdk.initSDK(new _ConnListener(listener), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
         LogcatHelper.logDInDebug(String.format("Initialization successful: %s", initialized));
         return initialized;
