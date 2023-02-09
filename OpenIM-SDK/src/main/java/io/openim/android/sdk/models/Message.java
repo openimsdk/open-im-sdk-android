@@ -154,6 +154,10 @@ public class Message {
      */
     private AttachedInfoElem attachedInfoElem;
 
+    private boolean isReact;
+
+    private boolean isExternal;
+
     public String getClientMsgID() {
         return clientMsgID;
     }
@@ -416,6 +420,22 @@ public class Message {
 
     public void setAttachedInfoElem(AttachedInfoElem attachedInfoElem) {
         this.attachedInfoElem = attachedInfoElem;
+    }
+
+    public boolean isReact() {
+        return isReact;
+    }
+
+    public void setReact(boolean react) {
+        isReact = react;
+    }
+
+    public boolean isExternal() {
+        return isExternal;
+    }
+
+    public void setExternal(boolean external) {
+        isExternal = external;
     }
 
     @Override
