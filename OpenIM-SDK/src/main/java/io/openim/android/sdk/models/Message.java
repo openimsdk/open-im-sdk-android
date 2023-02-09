@@ -156,7 +156,7 @@ public class Message {
 
     private boolean isReact;
 
-    private boolean isExternal;
+    private boolean isExternalExtensions;
 
     public String getClientMsgID() {
         return clientMsgID;
@@ -430,12 +430,12 @@ public class Message {
         isReact = react;
     }
 
-    public boolean isExternal() {
-        return isExternal;
+    public boolean isExternalExtensions() {
+        return isExternalExtensions;
     }
 
-    public void setExternal(boolean external) {
-        isExternal = external;
+    public void setExternalExtensions(boolean externalExtensions) {
+        isExternalExtensions = externalExtensions;
     }
 
     @Override
