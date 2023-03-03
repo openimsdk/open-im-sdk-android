@@ -9,8 +9,10 @@ import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnConnListener;
 import io.openim.android.sdk.listener.OnFileUploadProgressListener;
+import io.openim.android.sdk.listener.OnListenerForService;
 import io.openim.android.sdk.listener._ConnListener;
 import io.openim.android.sdk.listener._FileUploadProgressListener;
+import io.openim.android.sdk.listener._ListenerForService;
 import io.openim.android.sdk.manager.ConversationManager;
 import io.openim.android.sdk.manager.FriendshipManager;
 import io.openim.android.sdk.manager.GroupManager;
@@ -154,6 +156,14 @@ public class OpenIMClient {
      */
     public void setAppBackgroundStatus(OnBase<String> base, boolean isBackground) {
         Open_im_sdk.setAppBackgroundStatus(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), isBackground);
+    }
+
+    public void setOnListenerForService(OnListenerForService listener) {
+        Open_im_sdk.setListenerForService(new _ListenerForService(listener));
+    }
+
+    public void networkChanged(OnBase<String> base) {
+        Open_im_sdk.networkChanged(BaseImpl.stringBase(base), ParamsUtil.buildOperationID());
     }
 }
 
