@@ -129,7 +129,7 @@ public class SignalingManager {
         map.put("meetingName", meetingName);
         map.put("meetingHostUserID", meetingHostUserID);
         map.put("startTime", startTime);
-        map.put("duration", duration);
+        map.put("meetingDuration", duration);
         map.put("inviteeUserIDList", inviteeUserIDList);
         map.put("ex", ex);
         Open_im_sdk.signalingCreateMeeting(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
