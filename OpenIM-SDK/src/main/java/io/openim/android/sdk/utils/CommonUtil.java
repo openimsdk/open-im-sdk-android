@@ -8,10 +8,10 @@ import java.util.List;
 import io.openim.android.sdk.listener.OnBase;
 
 public class CommonUtil {
-    private final static Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
+    private final static Handler UIHandler = new Handler(Looper.getMainLooper());
 
     public static void runMainThread(Runnable runnable) {
-        MAIN_HANDLER.post(runnable);
+        UIHandler.post(runnable);
     }
 
     public static <T> void returnError(OnBase<T> onBase, int code, String error) {

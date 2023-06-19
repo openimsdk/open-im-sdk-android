@@ -1,0 +1,96 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'com.example.pkglib'
+    compileSdkVersion 33
+
+    defaultConfig {
+        minSdkVersion 24
+        targetSdkVersion 33
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation project(':OpenIM-SDK')
+}
+
+def path=project.rootDir.getAbsolutePath()+"/OpenIM-SDK/libs"
+
+
+//把所有依赖的 jar 包拷贝至 build/outputs/aar/libs
+task syncAllJars() {
+    // 使用了绝对路径，需要根据实际情况调整
+    // 将指定路径下的所有 jar 包，打包至被打包的路径下
+    def dir = new File(path)
+    files(dir.listFiles()).each { file ->
+        if (file.name.endsWith('.jar')) {
+            copy {
+                into buildDir.getPath() + "/outputs/aar/libs"
+                from file.absolutePath
+            }
+        }
+    }
+}
+task syncAllAars(dependsOn: ':OpenIM-SDK:assemble') {
+    def jarName
+    def aarPath
+    def destDir = buildDir.getPath() + "/outputs/aar"
+    // 使用了绝对路径，需要根据实际情况调整
+    def dir = new File(path)
+    files(dir.listFiles()).each { file ->
+        aarPath = file.absolutePath
+
+        if (file.name.endsWith('.aar')) {
+            jarName = "libs/" + file.name.replace(".aar", ".jar")
+            copy {
+                from zipTree(aarPath)
+                into destDir
+                include "**/*"
+                rename 'classes.jar', jarName
+            }
+        }
+    }
+}
+
+task makeJar(type: Jar) {
+    archiveName = 'classes.jar'
+    def dir = new File(buildDir.getPath() + "/outputs/aar/libs")
+    files(dir.listFiles()).each { file ->
+
+        if (file.name.endsWith('.jar')) {
+            from(project.zipTree(file.absolutePath))
+        }
+    }
+    destinationDirectory = file(buildDir.getPath() + "/outputs/aar")
+}
+
+task fataar(dependsOn: [syncAllAars, syncAllJars, makeJar]) {
+}
+
+//生成最终 aar 包，libs 目录需要被排除
+task genAar(dependsOn: [fataar], type: Zip) {
+    def destDir = buildDir.getPath() + "/outputs/aar"
+    baseName "open_im_android-sdk"
+    extension "aar"
+    version '1.1'
+    destinationDirectory = file('libs/')
+    from destDir
+    exclude "libs"
+}
+

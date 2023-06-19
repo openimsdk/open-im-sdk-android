@@ -48,4 +48,10 @@ public interface OnAdvanceMsgListener {
     void onRecvMessageExtensionsDeleted(String msgID, List<String> list);
 
     void onRecvMessageExtensionsAdded(String msgID, List<KeyValue> list);
+
+    /**
+     *  消息被删除
+     * @param s
+     */
+    void onMsgDeleted(String s);
 }

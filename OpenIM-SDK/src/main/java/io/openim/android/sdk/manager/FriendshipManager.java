@@ -1,7 +1,8 @@
 package io.openim.android.sdk.manager;
 
 
-import androidx.collection.ArrayMap;
+import android.util.ArrayMap;
+
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class FriendshipManager {
      * @param base    callback List<{@link UserInfo}>
      */
     public void getFriendsInfo(OnBase<List<UserInfo>> base, List<String> uidList) {
-        Open_im_sdk.getDesignatedFriendsInfo(BaseImpl.arrayBase(base, UserInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(uidList));
+        Open_im_sdk.getSpecifiedFriendsInfo(BaseImpl.arrayBase(base, UserInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(uidList));
     }
 
     /**
@@ -59,7 +60,7 @@ public class FriendshipManager {
      * @param base callback List<{@link UserInfo}>
      */
     public void getRecvFriendApplicationList(OnBase<List<FriendApplicationInfo>> base) {
-        Open_im_sdk.getRecvFriendApplicationList(BaseImpl.arrayBase(base, FriendApplicationInfo.class), ParamsUtil.buildOperationID());
+        Open_im_sdk.getFriendApplicationListAsRecipient(BaseImpl.arrayBase(base, FriendApplicationInfo.class), ParamsUtil.buildOperationID());
     }
 
     /**
@@ -68,7 +69,7 @@ public class FriendshipManager {
      * @param base callback List<{@link UserInfo}>
      */
     public void getSendFriendApplicationList(OnBase<List<FriendApplicationInfo>> base) {
-        Open_im_sdk.getSendFriendApplicationList(BaseImpl.arrayBase(base, FriendApplicationInfo.class), ParamsUtil.buildOperationID());
+        Open_im_sdk.getFriendApplicationListAsApplicant(BaseImpl.arrayBase(base, FriendApplicationInfo.class), ParamsUtil.buildOperationID());
     }
 
     /**

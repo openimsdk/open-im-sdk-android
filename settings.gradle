@@ -1,3 +1,4 @@
 rootProject.name = "OpenIM-Android"
 include ':app'
 include ':OpenIM-SDK'
+include ':pkglib'

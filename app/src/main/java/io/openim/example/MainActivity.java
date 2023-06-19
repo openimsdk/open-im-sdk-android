@@ -5,6 +5,12 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.List;
+
+import io.openim.android.sdk.OpenIMClient;
+import io.openim.android.sdk.listener.OnConnListener;
+
+
 /**
  * 此项目是纯纯的sdk
  * demo 是另一个地址
@@ -13,16 +19,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!this.isTaskRoot()) {
-            Intent intent = getIntent();
-            if (intent != null) {
-                String action = intent.getAction();
-                if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) &&
-                    Intent.ACTION_MAIN.equals(action)) {
-                    finish();
-                    return;
+        OpenIMClient.getInstance().initSDK(getApplication(),1, "", "", "", 1, true,
+            "", false, new OnConnListener() {
+                @Override
+                public void onConnectFailed(long code, String error) {
+
                 }
-            }
-        }
+
+                @Override
+                public void onConnectSuccess() {
+
+                }
+
+                @Override
+                public void onConnecting() {
+
+                }
+
+                @Override
+                public void onKickedOffline() {
+
+                }
+
+                @Override
+                public void onUserTokenExpired() {
+
+                }
+            });
     }
 }

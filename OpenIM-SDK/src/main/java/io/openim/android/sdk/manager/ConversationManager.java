@@ -57,7 +57,7 @@ public class ConversationManager {
      * @param sessionType: 单聊：1；群聊：2
      * @param base         callback {@link ConversationInfo}
      */
-    public void getOneConversation(OnBase<ConversationInfo> base, String sourceId, long sessionType) {
+    public void getOneConversation(OnBase<ConversationInfo> base, String sourceId, int sessionType) {
         Open_im_sdk.getOneConversation(BaseImpl.objectBase(base, ConversationInfo.class), ParamsUtil.buildOperationID(), sessionType, sourceId);
     }
 
@@ -71,16 +71,7 @@ public class ConversationManager {
         Open_im_sdk.getMultipleConversation(BaseImpl.arrayBase(base, ConversationInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(conversationIDs));
     }
 
-    /**
-     * 删除草稿
-     *
-     * @param conversationID 会话ID
-     * @param base           callback String
-     */
 
-    public void deleteConversation(OnBase<String> base, String conversationID) {
-        Open_im_sdk.deleteConversation(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID);
-    }
 
     /**
      * 设置草稿
@@ -111,7 +102,7 @@ public class ConversationManager {
      * @param base    callback String
      */
     public void markGroupMessageHasRead(OnBase<String> base, String groupID) {
-        Open_im_sdk.markGroupMessageHasRead(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID);
+        Open_im_sdk.markConversationMessageAsRead(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID);
     }
 
     /**
@@ -131,8 +122,8 @@ public class ConversationManager {
      * @param sourceId:    聊值：UserId；聊值：GroupId
      * @param sessionType: 单聊：1；群聊：2
      */
-    public String getConversationIDBySessionType(String sourceId, long sessionType) {
-        return Open_im_sdk.getConversationIDBySessionType(sourceId, sessionType);
+    public String getConversationIDBySessionType(String sourceId, int sessionType) {
+        return Open_im_sdk.getConversationIDBySessionType(ParamsUtil.buildOperationID(),sourceId, sessionType);
     }
 
     /**
@@ -159,7 +150,7 @@ public class ConversationManager {
      * @param isPrivate true开启
      * */
     public void setOneConversationPrivateChat(OnBase<String> base, String conversionID, boolean isPrivate) {
-        Open_im_sdk.setOneConversationPrivateChat(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversionID, isPrivate);
+        Open_im_sdk.setConversationPrivateChat(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversionID, isPrivate);
     }
 
     /***
@@ -167,7 +158,7 @@ public class ConversationManager {
      * @param conversionID 会话ID
      * */
     public void deleteConversationFromLocalAndSvr(OnBase<String> base, String conversionID) {
-        Open_im_sdk.deleteConversationFromLocalAndSvr(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversionID);
+        Open_im_sdk.deleteConversationAndDeleteAllMsg(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversionID);
     }
 
     /***
@@ -190,7 +181,7 @@ public class ConversationManager {
      * 查询at所有人标识
      */
     public String getAtAllTag() {
-        return Open_im_sdk.getAtAllTag();
+        return Open_im_sdk.getAtAllTag(ParamsUtil.buildOperationID());
     }
 
     /**
@@ -203,12 +194,13 @@ public class ConversationManager {
     }
 
     /**
-     * 全局免打扰
+     * 阅后即焚
      *
      * @param burnDuration 阅读时长s
      */
-    public void setOneConversationBurnDuration(OnBase<String> base, String conversationID, int burnDuration) {
-        Open_im_sdk.setOneConversationBurnDuration(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, burnDuration);
+    public void setConversationBurnDuration(OnBase<String> base, String conversationID, int burnDuration) {
+        Open_im_sdk.setConversationBurnDuration(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID,
+            burnDuration);
     }
 
     /**

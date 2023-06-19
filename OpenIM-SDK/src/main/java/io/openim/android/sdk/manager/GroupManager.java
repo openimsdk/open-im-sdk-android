@@ -1,7 +1,7 @@
 package io.openim.android.sdk.manager;
 
 
-import androidx.collection.ArrayMap;
+import android.util.ArrayMap;
 
 import java.util.List;
 import java.util.Map;
@@ -39,7 +39,8 @@ public class GroupManager {
      * @param base    callback List<{@link GroupInviteResult}>>
      */
     public void inviteUserToGroup(OnBase<List<GroupInviteResult>> base, String groupId, List<String> uidList, String reason) {
-        Open_im_sdk.inviteUserToGroup(BaseImpl.arrayBase(base, GroupInviteResult.class), ParamsUtil.buildOperationID(), groupId, reason, JsonUtil.toString(uidList));
+        Open_im_sdk.inviteUserToGroup(BaseImpl.arrayBase(base, GroupInviteResult.class), ParamsUtil.buildOperationID(), groupId, reason,
+            JsonUtil.toString(uidList));
     }
 
     /**
@@ -51,7 +52,8 @@ public class GroupManager {
      * @param base    callback List<{@link GroupInviteResult}>>
      */
     public void kickGroupMember(OnBase<List<GroupInviteResult>> base, String groupId, List<String> uidList, String reason) {
-        Open_im_sdk.kickGroupMember(BaseImpl.arrayBase(base, GroupInviteResult.class), ParamsUtil.buildOperationID(), groupId, reason, JsonUtil.toString(uidList));
+        Open_im_sdk.kickGroupMember(BaseImpl.arrayBase(base, GroupInviteResult.class), ParamsUtil.buildOperationID(), groupId, reason,
+            JsonUtil.toString(uidList));
     }
 
 
@@ -63,7 +65,8 @@ public class GroupManager {
      * @param base    callback List<{@link GroupMembersInfo}>
      **/
     public void getGroupMembersInfo(OnBase<List<GroupMembersInfo>> base, String groupId, List<String> uidList) {
-        Open_im_sdk.getGroupMembersInfo(BaseImpl.arrayBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupId, JsonUtil.toString(uidList));
+        Open_im_sdk.getSpecifiedGroupMembersInfo(BaseImpl.arrayBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupId,
+            JsonUtil.toString(uidList));
     }
 
     /**
@@ -91,44 +94,30 @@ public class GroupManager {
     /**
      * 创建群
      *
-     * @param groupName    群名称
-     * @param faceURL      群icon
-     * @param notification 群公告
-     * @param introduction 群简介
-     * @param groupType
-     * @param ex           其他信息
-     * @param list         List<{@link GroupMemberRole}> 创建群是选择的成员. setRole：0:普通成员 2:管理员；1：群主
+     * @param memberUserIDs 初始化群成员ID列表
+     * @param adminUserIDs  管理用户用户ID列表
+     * @param groupInfo     List<{@link GroupInfo}>
+     * @param ownerUserID   群主ID
      */
-    public void createGroup(OnBase<GroupInfo> base, String groupName, String faceURL, String notification, String introduction, int groupType, String ex, List<GroupMemberRole> list) {
+    public void createGroup(List<String> memberUserIDs, List<String> adminUserIDs,
+                            GroupInfo groupInfo, String ownerUserID, OnBase<GroupInfo> callBack) {
         Map<String, Object> map = new ArrayMap<>();
-        map.put("groupName", groupName);
-        map.put("notification", notification);
-        map.put("introduction", introduction);
-        map.put("faceURL", faceURL);
-        map.put("groupType", groupType);
-        map.put("ex", ex);
-        Open_im_sdk.createGroup(BaseImpl.objectBase(base, GroupInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map), JsonUtil.toString(list));
+        map.put("memberUserIDs", memberUserIDs);
+        map.put("groupInfo", groupInfo);
+        map.put("adminUserIDs", adminUserIDs);
+        map.put("ownerUserID", ownerUserID);
+
+        Open_im_sdk.createGroup(BaseImpl.objectBase(callBack, GroupInfo.class), ParamsUtil.buildOperationID(),
+            JsonUtil.toString(map));
     }
 
     /**
      * 设置或更新群资料
      *
-     * @param groupID      群ID
-     * @param groupName    群名称
-     * @param faceURL      群icon
-     * @param notification 群公告
-     * @param introduction 群简介
-     * @param ex           其他信息
-     * @param base         callback String
+     * @param groupInfo List<{@link GroupInfo}>
      */
-    public void setGroupInfo(OnBase<String> base, String groupID, String groupName, String faceURL, String notification, String introduction, String ex) {
-        Map<String, Object> map = new ArrayMap<>();
-        map.put("groupName", groupName);
-        map.put("notification", notification);
-        map.put("introduction", introduction);
-        map.put("faceURL", faceURL);
-        map.put("ex", ex);
-        Open_im_sdk.setGroupInfo(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, JsonUtil.toString(map));
+    public void setGroupInfo(GroupInfo groupInfo, OnBase<String> callBack) {
+        Open_im_sdk.setGroupInfo(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), JsonUtil.toString(groupInfo));
     }
 
 
@@ -139,7 +128,8 @@ public class GroupManager {
      * @param base    callback List<{@link GroupInfo}>
      */
     public void getGroupsInfo(OnBase<List<GroupInfo>> base, List<String> gidList) {
-        Open_im_sdk.getGroupsInfo(BaseImpl.arrayBase(base, GroupInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(gidList));
+        Open_im_sdk.getSpecifiedGroupsInfo(BaseImpl.arrayBase(base, GroupInfo.class),
+            ParamsUtil.buildOperationID(), JsonUtil.toString(gidList));
     }
 
     /**
@@ -181,7 +171,7 @@ public class GroupManager {
      * @param base callback {@link GroupApplicationInfo}
      */
     public void getRecvGroupApplicationList(OnBase<List<GroupApplicationInfo>> base) {
-        Open_im_sdk.getRecvGroupApplicationList(BaseImpl.arrayBase(base, GroupApplicationInfo.class), ParamsUtil.buildOperationID());
+        Open_im_sdk.getGroupApplicationListAsRecipient(BaseImpl.arrayBase(base, GroupApplicationInfo.class),ParamsUtil.buildOperationID());
     }
 
     /**
@@ -190,7 +180,8 @@ public class GroupManager {
      * @param base callback {@link GroupApplicationInfo}
      */
     public void getSendGroupApplicationList(OnBase<List<GroupApplicationInfo>> base) {
-        Open_im_sdk.getSendGroupApplicationList(BaseImpl.arrayBase(base, GroupApplicationInfo.class), ParamsUtil.buildOperationID());
+        Open_im_sdk.getGroupApplicationListAsApplicant(BaseImpl.arrayBase(base, GroupApplicationInfo.class)
+            ,ParamsUtil.buildOperationID());
     }
 
     /**
@@ -297,8 +288,10 @@ public class GroupManager {
      * @param joinTimeEnd       加入结束时间
      * @param excludeUserIDList 排除的用户
      */
-    public void getGroupMemberListByJoinTime(OnBase<List<GroupMembersInfo>> base, String groupID, int offset, int count, long joinTimeBegin, long joinTimeEnd, List<String> excludeUserIDList) {
-        Open_im_sdk.getGroupMemberListByJoinTimeFilter(BaseImpl.arrayBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupID, offset, count, joinTimeBegin, joinTimeEnd, JsonUtil.toString(excludeUserIDList));
+    public void getGroupMemberListByJoinTime(OnBase<List<GroupMembersInfo>> base, String groupID, int offset, int count, long joinTimeBegin, long joinTimeEnd
+        , List<String> excludeUserIDList) {
+        Open_im_sdk.getGroupMemberListByJoinTimeFilter(BaseImpl.arrayBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupID, offset,
+            count, joinTimeBegin, joinTimeEnd, JsonUtil.toString(excludeUserIDList));
     }
 
     /**
@@ -350,7 +343,8 @@ public class GroupManager {
      * @param offset                 开始index
      * @param count                  每次获取的总数
      */
-    public void searchGroupMembers(OnBase<List<GroupMembersInfo>> base, String groupID, List<String> keywordList, boolean isSearchUserID, boolean isSearchMemberNickname, int offset, int count) {
+    public void searchGroupMembers(OnBase<List<GroupMembersInfo>> base, String groupID, List<String> keywordList, boolean isSearchUserID,
+                                   boolean isSearchMemberNickname, int offset, int count) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("groupID", groupID);
         map.put("keywordList", keywordList);

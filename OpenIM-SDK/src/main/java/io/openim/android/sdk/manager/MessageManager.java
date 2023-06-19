@@ -1,7 +1,7 @@
 package io.openim.android.sdk.manager;
 
 
-import androidx.collection.ArrayMap;
+import android.util.ArrayMap;
 
 import java.util.List;
 import java.util.Map;
@@ -60,7 +60,8 @@ public class MessageManager {
      *                        onProgress:消息发送进度，如图片，文件，视频等消息
      */
     public void sendMessage(OnMsgSendCallback base, Message message, String recvUid, String recvGid, OfflinePushInfo offlinePushInfo) {
-        Open_im_sdk.sendMessage(new _MsgSendProgressListener(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message), recvUid, recvGid, JsonUtil.toString(offlinePushInfo));
+        Open_im_sdk.sendMessage(new _MsgSendProgressListener(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message), recvUid, recvGid,
+            JsonUtil.toString(offlinePushInfo));
     }
 
     /**
@@ -84,7 +85,8 @@ public class MessageManager {
             map.put("startClientMsgID", startMsg.getClientMsgID());
         }
         map.put("count", count);
-        Open_im_sdk.getHistoryMessageList(BaseImpl.arrayBase(base, Message.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+
+        Open_im_sdk.getAdvancedHistoryMessageList(BaseImpl.arrayBase(base, Message.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
     /**
@@ -101,14 +103,15 @@ public class MessageManager {
     }
 
     /**
-     * 删除消息
+     * 删除消息（从本地）
      *
-     * @param message {@link Message}
-     * @param base    callback String
-     *                删除成功需要将已显示到界面的消息移除
+     * @param conversationID 会话id
+     * @param clientMsgIDs   客户端消息ids
+     * @param callBack
      */
-    public void deleteMessageFromLocalStorage(OnBase<String> base, Message message) {
-        Open_im_sdk.deleteMessageFromLocalStorage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
+    public void deleteMessageFromLocalStorage(String conversationID, List<String> clientMsgIDs, OnBase<String> callBack) {
+        Open_im_sdk.deleteMessageFromLocalStorage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(),
+            conversationID, JsonUtil.toString(clientMsgIDs));
     }
 
 //    public void deleteMessages(OnBase<String> base, List<Message> message) {
@@ -140,38 +143,35 @@ public class MessageManager {
     }
 
 
-    /**
-     * 根据消息id批量查询消息记录
-     *
-     * @param messageIDList 消息id(clientMsgID)集合
-     * @param base          callback List<{@link Message}>
-     */
+//    /**
+//     * 根据消息id批量查询消息记录
+//     *
+//     * @param messageIDList 消息id(clientMsgID)集合
+//     * @param base          callback List<{@link Message}>
+//     */
 //    public void findMessages(OnBase<List<Message>> base, List<String> messageIDList) {
 //        Open_im_sdk.findMessages(BaseImpl.arrayBase(base, Message.class), JsonUtil.toString(messageIDList));
 //    }
 
     /**
      * 标记消息已读
-     * 会触发userid的onRecvC2CReadReceipt方法
      *
-     * @param userID        聊天对象id
-     * @param messageIDList 消息clientMsgID列表
-     * @param base          callback String
+     * @param conversationID 会话id
+     * @param clientMsgIDs   消息ids
+     * @param callBack
      */
-    public void markC2CMessageAsRead(OnBase<String> base, String userID, List<String> messageIDList) {
-        Open_im_sdk.markC2CMessageAsRead(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), userID, JsonUtil.toString(messageIDList));
+    public void markMessagesAsReadByMsgID(String conversationID, List<String> clientMsgIDs, OnBase<String> callBack) {
+        Open_im_sdk.markMessagesAsReadByMsgID(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID, JsonUtil.toString(clientMsgIDs));
     }
 
     /**
-     * 标记消息已读
-     * 会触发userid的onRecvGroupReadReceipt方法
+     * 标记会话已读
      *
-     * @param groupID       聊天组id
-     * @param messageIDList 消息clientMsgID列表
-     * @param base          callback String
+     * @param conversationID 会话id
+     * @param callback
      */
-    public void markGroupMessageAsRead(OnBase<String> base, String groupID, List<String> messageIDList) {
-        Open_im_sdk.markGroupMessageAsRead(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, JsonUtil.toString(messageIDList));
+    public void markConversationMessageAsRead(String conversationID, OnBase<String> callback) {
+        Open_im_sdk.markConversationMessageAsRead(BaseImpl.stringBase(callback), ParamsUtil.buildOperationID(), conversationID);
     }
 
     /**
@@ -204,7 +204,8 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createTextAtMessage(String text, List<String> atUserIDList, List<AtUserInfo> atUserInfoList, Message quoteMessage) {
-        return parse(Open_im_sdk.createTextAtMessage(ParamsUtil.buildOperationID(), text, JsonUtil.toString(atUserIDList), JsonUtil.toString(atUserInfoList), JsonUtil.toString(quoteMessage)));
+        return parse(Open_im_sdk.createTextAtMessage(ParamsUtil.buildOperationID(), text, JsonUtil.toString(atUserIDList), JsonUtil.toString(atUserInfoList),
+            JsonUtil.toString(quoteMessage)));
     }
 
     /**
@@ -382,20 +383,11 @@ public class MessageManager {
 
     /**
      * 聊天设置里清除聊天记录
+     * @param conversationID 会话id
      *
-     * @param uid 用户id
      */
-    public void clearC2CHistoryMessage(OnBase<String> base, String uid) {
-        Open_im_sdk.clearC2CHistoryMessage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), uid);
-    }
-
-    /**
-     * 聊天设置里清除聊天记录
-     *
-     * @param gid 群id
-     */
-    public void clearGroupHistoryMessage(OnBase<String> base, String gid) {
-        Open_im_sdk.clearGroupHistoryMessage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid);
+    public void clearConversationAndDeleteAllMsg(String conversationID,OnBase<String> callBack) {
+        Open_im_sdk.clearConversationAndDeleteAllMsg(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID);
     }
 
     /**
@@ -437,11 +429,12 @@ public class MessageManager {
 
     /**
      * 删除本地跟服务器消息
-     *
-     * @param message 消息体
+     * @param conversationID 会话id
+     * @param clientMsgID  消息id
+     * @param callBack
      */
-    public void deleteMessageFromLocalAndSvr(OnBase<String> base, Message message) {
-        Open_im_sdk.deleteMessageFromLocalAndSvr(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
+    public void deleteMessageFromLocalAndSvr(String conversationID,String clientMsgID, OnBase<String> callBack) {
+        Open_im_sdk.deleteMessage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID,clientMsgID);
     }
 
     /**
@@ -459,32 +452,22 @@ public class MessageManager {
     }
 
     /**
-     * 标记会话全部已读，用于OA通知类消息
+     * 标记会话全部已读
      *
      * @param conversationID 会话id
-     * @param messageIDList  消息clientID列表
      */
-    public void markMessageAsReadByConID(OnBase<String> base, String conversationID, List<String> messageIDList) {
-        Open_im_sdk.markMessageAsReadByConID(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, JsonUtil.toString(messageIDList));
+    public void markMessageAsReadByConID(OnBase<String> callBack, String conversationID ) {
+        Open_im_sdk.markConversationMessageAsRead(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID);
     }
 
     /**
      * 聊天设置里清除聊天记录
      *
-     * @param uid 用户id
      */
-    public void clearC2CHistoryMessageFromLocalAndSvr(OnBase<String> base, String uid) {
-        Open_im_sdk.clearC2CHistoryMessageFromLocalAndSvr(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), uid);
+    public void clearConversationAndDeleteAllMsg(OnBase<String> callBack, String conversationID ) {
+        Open_im_sdk.clearConversationAndDeleteAllMsg(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID);
     }
 
-    /**
-     * 聊天设置里清除聊天记录
-     *
-     * @param gid 群id
-     */
-    public void clearGroupHistoryMessageFromLocalAndSvr(OnBase<String> base, String gid) {
-        Open_im_sdk.clearGroupHistoryMessageFromLocalAndSvr(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid);
-    }
 
     /**
      * 获取历史消息
@@ -498,18 +481,19 @@ public class MessageManager {
      *                       startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到 list；
      *                       下一次拉取消息记录参数：startMsg=list.last && count =20；以此内推，startMsg始终为list的最后一条。
      * @param count          一次拉取count条
-     * @param base           callback List<{@link Message}>
      */
-    public void getHistoryMessageListReverse(OnBase<List<Message>> base, String userID, String groupID, String conversationID, Message startMsg, int count) {
+    public void getHistoryMessageListReverse(OnBase<List<Message>> callBack, String userID, String groupID, String conversationID, Message startMsg,int lastMinSeq, int count) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("userID", userID);
         map.put("groupID", groupID);
+        map.put("lastMinSeq", lastMinSeq);
         map.put("conversationID", conversationID);
         if (null != startMsg) {
             map.put("startClientMsgID", startMsg.getClientMsgID());
         }
         map.put("count", count);
-        Open_im_sdk.getHistoryMessageListReverse(BaseImpl.arrayBase(base, Message.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+
+        Open_im_sdk.getAdvancedHistoryMessageListReverse(BaseImpl.arrayBase(callBack, Message.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
     /**
@@ -517,10 +501,9 @@ public class MessageManager {
      * 调用此方法会触发：onRecvMessageRevokedV2回调
      *
      * @param message {@link Message}
-     * @param base    callback String
      */
-    public void revokeMessageV2(OnBase<String> base, Message message) {
-        Open_im_sdk.newRevokeMessage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
+    public void revokeMessageV2(OnBase<String> callBack, Message message) {
+        Open_im_sdk.revokeMessage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
     }
 
     /**
@@ -538,7 +521,8 @@ public class MessageManager {
      * @param count          一次拉取count条
      * @param base           callback <{@link AdvancedMessage}>
      */
-    public void getAdvancedHistoryMessageList(OnBase<AdvancedMessage> base, String userID, String groupID, String conversationID, int lastMinSeq, Message startMsg, int count) {
+    public void getAdvancedHistoryMessageList(OnBase<AdvancedMessage> base, String userID, String groupID, String conversationID, int lastMinSeq,
+                                              Message startMsg, int count) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("userID", userID);
         map.put("groupID", groupID);
@@ -560,6 +544,7 @@ public class MessageManager {
 //        Map<String, Object> map = new ArrayMap<>();
 //        map.put("conversationID", conversationID);
 //        map.put("clientMsgIDList", clientMsgIDList);
+
         Open_im_sdk.findMessageList(BaseImpl.objectBase(base, SearchResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(searchParams));
     }
 
@@ -595,7 +580,8 @@ public class MessageManager {
      *                        onProgress:消息发送进度，如图片，文件，视频等消息
      */
     public void sendMessageNotOss(OnMsgSendCallback base, Message message, String recvUid, String recvGid, OfflinePushInfo offlinePushInfo) {
-        Open_im_sdk.sendMessageNotOss(new _MsgSendProgressListener(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message), recvUid, recvGid, JsonUtil.toString(offlinePushInfo));
+        Open_im_sdk.sendMessageNotOss(new _MsgSendProgressListener(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message), recvUid, recvGid,
+            JsonUtil.toString(offlinePushInfo));
     }
 
 
@@ -605,7 +591,8 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createImageMessageByURL(PictureInfo sourcePicture, PictureInfo bigPicture, PictureInfo snapshotPicture) {
-        return parse(Open_im_sdk.createImageMessageByURL(ParamsUtil.buildOperationID(), JsonUtil.toString(sourcePicture), JsonUtil.toString(bigPicture), JsonUtil.toString(snapshotPicture)));
+        return parse(Open_im_sdk.createImageMessageByURL(ParamsUtil.buildOperationID(), JsonUtil.toString(sourcePicture), JsonUtil.toString(bigPicture),
+            JsonUtil.toString(snapshotPicture)));
     }
 
     /**
@@ -646,25 +633,30 @@ public class MessageManager {
         Open_im_sdk.setMessageKvInfoListener(new _MessageKvInfoListener(listener));
     }
 
-    public void setMessageReactionExtensions(OnBase<List<TypeKeySetResult>> base, Message message, List<KeyValue> list) {
-        Open_im_sdk.setMessageReactionExtensions(BaseImpl.arrayBase(base, TypeKeySetResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(message), JsonUtil.toString(list));
-    }
-
-    public void deleteMessageReactionExtensions(OnBase<List<TypeKeySetResult>> base, Message message, List<String> list) {
-        Open_im_sdk.deleteMessageReactionExtensions(BaseImpl.arrayBase(base, TypeKeySetResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(message), JsonUtil.toString(list));
-    }
-
-    public void getMessageListReactionExtensions(OnBase<List<MessageTypeKeyMapping>> base, List<Message> messageList) {
-        Open_im_sdk.getMessageListReactionExtensions(BaseImpl.arrayBase(base, MessageTypeKeyMapping.class), ParamsUtil.buildOperationID(), JsonUtil.toString(messageList));
-    }
-
-    public void addMessageReactionExtensions(OnBase<List<TypeKeySetResult>> base, Message message, List<KeyValue> list) {
-        Open_im_sdk.addMessageReactionExtensions(BaseImpl.arrayBase(base, TypeKeySetResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(message), JsonUtil.toString(list));
-    }
-
-    public void getMessageListSomeReactionExtensions(OnBase<List<MessageTypeKeyMapping>> base, List<Message> messageList, List<KeyValue> kvList) {
-        Open_im_sdk.getMessageListSomeReactionExtensions(BaseImpl.arrayBase(base, MessageTypeKeyMapping.class), ParamsUtil.buildOperationID(), JsonUtil.toString(messageList), JsonUtil.toString(kvList));
-    }
+//    public void setMessageReactionExtensions(OnBase<List<TypeKeySetResult>> base, Message message, List<KeyValue> list) {
+//        Open_im_sdk.setMessageReactionExtensions(BaseImpl.arrayBase(base, TypeKeySetResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(message),
+//            JsonUtil.toString(list));
+//    }
+//
+//    public void deleteMessageReactionExtensions(OnBase<List<TypeKeySetResult>> base, Message message, List<String> list) {
+//        Open_im_sdk.deleteMessageReactionExtensions(BaseImpl.arrayBase(base, TypeKeySetResult.class), ParamsUtil.buildOperationID(),
+//            JsonUtil.toString(message), JsonUtil.toString(list));
+//    }
+//
+//    public void getMessageListReactionExtensions(OnBase<List<MessageTypeKeyMapping>> base, List<Message> messageList) {
+//        Open_im_sdk.getMessageListReactionExtensions(BaseImpl.arrayBase(base, MessageTypeKeyMapping.class), ParamsUtil.buildOperationID(),
+//            JsonUtil.toString(messageList));
+//    }
+//
+//    public void addMessageReactionExtensions(OnBase<List<TypeKeySetResult>> base, Message message, List<KeyValue> list) {
+//        Open_im_sdk.addMessageReactionExtensions(BaseImpl.arrayBase(base, TypeKeySetResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(message),
+//            JsonUtil.toString(list));
+//    }
+//
+//    public void getMessageListSomeReactionExtensions(OnBase<List<MessageTypeKeyMapping>> base, List<Message> messageList, List<KeyValue> kvList) {
+//        Open_im_sdk.getMessageListSomeReactionExtensions(BaseImpl.arrayBase(base, MessageTypeKeyMapping.class), ParamsUtil.buildOperationID(),
+//            JsonUtil.toString(messageList), JsonUtil.toString(kvList));
+//    }
 
     static Message parse(String msg) {
         return JsonUtil.toObj(msg, Message.class);

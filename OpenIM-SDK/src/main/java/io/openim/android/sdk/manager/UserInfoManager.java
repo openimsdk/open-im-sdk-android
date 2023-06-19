@@ -1,6 +1,7 @@
 package io.openim.android.sdk.manager;
 
-import androidx.collection.ArrayMap;
+import android.util.ArrayMap;
+
 
 import java.util.List;
 import java.util.Map;
