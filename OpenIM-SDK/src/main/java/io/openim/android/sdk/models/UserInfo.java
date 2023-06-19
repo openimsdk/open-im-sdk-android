@@ -27,7 +27,6 @@ public class UserInfo {
      * 生日
      */
     private long birth;
-    private String birthTime;
     /**
      * 邮箱
      */
@@ -57,6 +56,18 @@ public class UserInfo {
      * 全局免打扰
      */
     private int globalRecvMsgOpt;
+
+    // 是允许添加为好友  1：允许，2：否
+    private int allowAddFriend;
+
+    // 新消息铃声   1：允许，2：否
+    private int allowBeep;
+
+    // 新消息震动   1：允许，2：否
+    private int allowVibration;
+
+    // 禁止登录
+    private int forbidden;
 
     public String getUserID() {
         if (null == userID) {
@@ -235,12 +246,36 @@ public class UserInfo {
         this.globalRecvMsgOpt = globalRecvMsgOpt;
     }
 
-    public String getBirthTime() {
-        return birthTime;
+    public int getAllowAddFriend() {
+        return allowAddFriend;
     }
 
-    public void setBirthTime(String birthTime) {
-        this.birthTime = birthTime;
+    public void setAllowAddFriend(int allowAddFriend) {
+        this.allowAddFriend = allowAddFriend;
+    }
+
+    public int getAllowBeep() {
+        return allowBeep;
+    }
+
+    public void setAllowBeep(int allowBeep) {
+        this.allowBeep = allowBeep;
+    }
+
+    public int getAllowVibration() {
+        return allowVibration;
+    }
+
+    public void setAllowVibration(int allowVibration) {
+        this.allowVibration = allowVibration;
+    }
+
+    public int getForbidden() {
+        return forbidden;
+    }
+
+    public void setForbidden(int forbidden) {
+        this.forbidden = forbidden;
     }
 
     @Override

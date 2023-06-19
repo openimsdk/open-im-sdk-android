@@ -95,6 +95,12 @@ public class ConversationManager {
         Open_im_sdk.pinConversation(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, isPinned);
     }
 
+
+    public void hideConversation(OnBase<String> base, String conversationID) {
+        Open_im_sdk.hideConversation(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID);
+    }
+
+
     /**
      * 标记群组会话已读
      *
@@ -158,6 +164,10 @@ public class ConversationManager {
      * @param conversionID 会话ID
      * */
     public void deleteConversationFromLocalAndSvr(OnBase<String> base, String conversionID) {
+        Open_im_sdk.clearConversationAndDeleteAllMsg(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversionID);
+    }
+
+    public void deleteConversationAndDeleteAllMsg(OnBase<String> base, String conversionID) {
         Open_im_sdk.deleteConversationAndDeleteAllMsg(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversionID);
     }
 

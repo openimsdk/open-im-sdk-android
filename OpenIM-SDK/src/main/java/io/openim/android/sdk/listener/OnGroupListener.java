@@ -20,6 +20,8 @@ public interface OnGroupListener {
 
     void onGroupApplicationRejected(GroupApplicationInfo info);
 
+    void onGroupDismissed(GroupInfo info);
+
     void onGroupInfoChanged(GroupInfo info);
 
     void onGroupMemberAdded(GroupMembersInfo info);

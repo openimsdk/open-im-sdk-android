@@ -21,6 +21,7 @@ import io.openim.android.sdk.models.AtUserInfo;
 import io.openim.android.sdk.models.FileElem;
 import io.openim.android.sdk.models.KeyValue;
 import io.openim.android.sdk.models.Message;
+import io.openim.android.sdk.models.MessageListSeq;
 import io.openim.android.sdk.models.MessageTypeKeyMapping;
 import io.openim.android.sdk.models.OfflinePushInfo;
 import io.openim.android.sdk.models.PictureInfo;
@@ -30,9 +31,11 @@ import io.openim.android.sdk.models.SearchResult;
 import io.openim.android.sdk.models.SoundElem;
 import io.openim.android.sdk.models.TypeKeySetResult;
 import io.openim.android.sdk.models.VideoElem;
+import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
+import open_im_sdk_callback.Base;
 
 /**
  * 消息管理器
@@ -110,13 +113,10 @@ public class MessageManager {
      * @param callBack
      */
     public void deleteMessageFromLocalStorage(String conversationID, List<String> clientMsgIDs, OnBase<String> callBack) {
-        Open_im_sdk.deleteMessageFromLocalStorage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(),
-            conversationID, JsonUtil.toString(clientMsgIDs));
+        Open_im_sdk.deleteMessageFromLocalStorage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID,
+            JsonUtil.toString(clientMsgIDs));
     }
 
-//    public void deleteMessages(OnBase<String> base, List<Message> message) {
-//        Open_im_sdk.deleteMessages(BaseImpl.stringBase(base), JSON.toJSONString(message));
-//    }
 
     /**
      * 插入单聊消息到本地
@@ -383,10 +383,10 @@ public class MessageManager {
 
     /**
      * 聊天设置里清除聊天记录
-     * @param conversationID 会话id
      *
+     * @param conversationID 会话id
      */
-    public void clearConversationAndDeleteAllMsg(String conversationID,OnBase<String> callBack) {
+    public void clearConversationAndDeleteAllMsg(String conversationID, OnBase<String> callBack) {
         Open_im_sdk.clearConversationAndDeleteAllMsg(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID);
     }
 
@@ -403,16 +403,9 @@ public class MessageManager {
      * @param pageIndex            当前页数
      * @param count                每页数量
      */
-    public void searchLocalMessages(OnBase<SearchResult> base,
-                                    String conversationID,
-                                    List<String> keywordList,
-                                    int keywordListMatchType,
-                                    List<String> senderUserIDList,
-                                    List<Integer> messageTypeList,
-                                    int searchTimePosition,
-                                    int searchTimePeriod,
-                                    int pageIndex,
-                                    int count) {
+    public void searchLocalMessages(OnBase<SearchResult> base, String conversationID, List<String> keywordList, int keywordListMatchType,
+                                    List<String> senderUserIDList, List<Integer> messageTypeList, int searchTimePosition, int searchTimePeriod, int pageIndex
+        , int count) {
 
         Map<String, Object> map = new ArrayMap<>();
         map.put("conversationID", conversationID);
@@ -429,12 +422,13 @@ public class MessageManager {
 
     /**
      * 删除本地跟服务器消息
+     *
      * @param conversationID 会话id
-     * @param clientMsgID  消息id
+     * @param clientMsgID    消息id
      * @param callBack
      */
-    public void deleteMessageFromLocalAndSvr(String conversationID,String clientMsgID, OnBase<String> callBack) {
-        Open_im_sdk.deleteMessage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID,clientMsgID);
+    public void deleteMessageFromLocalAndSvr(String conversationID, String clientMsgID, OnBase<String> callBack) {
+        Open_im_sdk.deleteMessage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID, clientMsgID);
     }
 
     /**
@@ -456,18 +450,19 @@ public class MessageManager {
      *
      * @param conversationID 会话id
      */
-    public void markMessageAsReadByConID(OnBase<String> callBack, String conversationID ) {
+    public void markMessageAsReadByConID(OnBase<String> callBack, String conversationID) {
         Open_im_sdk.markConversationMessageAsRead(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID);
     }
 
     /**
      * 聊天设置里清除聊天记录
-     *
      */
-    public void clearConversationAndDeleteAllMsg(OnBase<String> callBack, String conversationID ) {
+    public void clearConversationAndDeleteAllMsg(OnBase<String> callBack, String conversationID) {
         Open_im_sdk.clearConversationAndDeleteAllMsg(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID);
     }
 
+
+    private String lastMinSeq;
 
     /**
      * 获取历史消息
@@ -482,18 +477,30 @@ public class MessageManager {
      *                       下一次拉取消息记录参数：startMsg=list.last && count =20；以此内推，startMsg始终为list的最后一条。
      * @param count          一次拉取count条
      */
-    public void getHistoryMessageListReverse(OnBase<List<Message>> callBack, String userID, String groupID, String conversationID, Message startMsg,int lastMinSeq, int count) {
+    public void getAdvancedHistoryMessageListReverse(OnBase<List<Message>> callBack, String userID, String groupID, String conversationID, Message startMsg, int count) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("userID", userID);
         map.put("groupID", groupID);
-        map.put("lastMinSeq", lastMinSeq);
+        map.put("lastMinSeq", MessageManager.this.lastMinSeq);
         map.put("conversationID", conversationID);
         if (null != startMsg) {
             map.put("startClientMsgID", startMsg.getClientMsgID());
         }
         map.put("count", count);
 
-        Open_im_sdk.getAdvancedHistoryMessageListReverse(BaseImpl.arrayBase(callBack, Message.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+        Open_im_sdk.getAdvancedHistoryMessageListReverse(new Base() {
+            @Override
+            public void onError(int i, String s) {
+                CommonUtil.returnError(callBack, i, s);
+            }
+
+            @Override
+            public void onSuccess(String s) {
+                MessageListSeq messageListSeq = JsonUtil.toObj(s, MessageListSeq.class);
+                MessageManager.this.lastMinSeq = messageListSeq.lastMinSeq;
+                if (null != callBack) callBack.onSuccess(messageListSeq.messageList);
+            }
+        }, ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
     /**

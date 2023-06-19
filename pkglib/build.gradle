@@ -35,7 +35,6 @@ def path=project.rootDir.getAbsolutePath()+"/OpenIM-SDK/libs"
 
 //把所有依赖的 jar 包拷贝至 build/outputs/aar/libs
 task syncAllJars() {
-    // 使用了绝对路径，需要根据实际情况调整
     // 将指定路径下的所有 jar 包，打包至被打包的路径下
     def dir = new File(path)
     files(dir.listFiles()).each { file ->
@@ -51,7 +50,6 @@ task syncAllAars(dependsOn: ':OpenIM-SDK:assemble') {
     def jarName
     def aarPath
     def destDir = buildDir.getPath() + "/outputs/aar"
-    // 使用了绝对路径，需要根据实际情况调整
     def dir = new File(path)
     files(dir.listFiles()).each { file ->
         aarPath = file.absolutePath
@@ -88,7 +86,7 @@ task genAar(dependsOn: [fataar], type: Zip) {
     def destDir = buildDir.getPath() + "/outputs/aar"
     baseName "open_im_android-sdk"
     extension "aar"
-    version '1.1'
+    version 'v3.0.1'
     destinationDirectory = file('libs/')
     from destDir
     exclude "libs"

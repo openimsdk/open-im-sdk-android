@@ -3,6 +3,8 @@ package io.openim.android.sdk.manager;
 
 import android.util.ArrayMap;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 import java.util.Map;
 
@@ -114,7 +116,12 @@ public class GroupManager {
     /**
      * 设置或更新群资料
      *
-     * @param groupInfo List<{@link GroupInfo}>
+     *     * @param groupID      群ID
+     *      * @param groupName    群名称
+     *      * @param faceURL      群icon
+     *      * @param notification 群公告
+     *      * @param introduction 群简介
+     *      * @param ex           其他信息
      */
     public void setGroupInfo(GroupInfo groupInfo, OnBase<String> callBack) {
         Open_im_sdk.setGroupInfo(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), JsonUtil.toString(groupInfo));

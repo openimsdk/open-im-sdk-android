@@ -76,57 +76,65 @@ public class MessageType {
     /**
      * 2.3.0版本的消息撤回类型，兼容单人撤回，群撤回，新增群主管理员撤回成员信息
      */
-    public static final int ADVANCED_REVOKE = 118;
+//    public static final int ADVANCED_REVOKE = 118;
 
     public static final int CUSTOM_MSG_NOT_TRIGGER_CONVERSATION = 119;
 
     public static final int CUSTOM_MSG_ONLINE_ONLY = 120;
 
-    public static final int NOTIFICATION_BEGIN = 1000;
+    public static final int NTF_BEGIN = 1000;
 
-    public static final int FRIEND_NOTIFICATION_BEGIN = 1200;
-    public static final int FRIEND_APPLICATION_APPROVED_NOTIFICATION = 1201;
-    public static final int FRIEND_APPLICATION_REJECTED_NOTIFICATION = 1202;
-    public static final int FRIEND_APPLICATION_NOTIFICATION = 1203;
-    public static final int FRIEND_ADDED_NOTIFICATION = 1204;
-    public static final int FRIEND_DELETED_NOTIFICATION = 1205;
-    public static final int FRIEND_REMARK_SET_NOTIFICATION = 1206;
-    public static final int BLACK_ADDED_NOTIFICATION = 1207;
-    public static final int BLACK_DELETED_NOTIFICATION = 1208;
-    public static final int FRIEND_NOTIFICATION_END = 1299;
+    public static final int FRIEND_NTF_BEGIN = 1200;
+    public static final int FRIEND_APPLICATION_APPROVED_NTF = 1201;
+    public static final int FRIEND_APPLICATION_REJECTED_NTF = 1202;
+    public static final int FRIEND_APPLICATION_NTF = 1203;
+    public static final int FRIEND_ADDED_NTF = 1204;
+    public static final int FRIEND_DELETED_NTF = 1205;
+    public static final int FRIEND_REMARK_SET_NTF = 1206;
+    public static final int BLACK_ADDED_NTF = 1207;
+    public static final int BLACK_DELETED_NTF = 1208;
+    public static final int FRIEND_NTF_END = 1299;
 
-    public static final int CONVERSATION_CHANGE_NOTIFICATION = 1300;
+    public static final int CONVERSATION_CHANGE_NTF = 1300;
 
-    public static final int USER_NOTIFICATION_BEGIN = 1301;
-    public static final int USERINFO_UPDATED_NOTIFICATION = 1303;
-    public static final int USER_NOTIFICATION_END = 1399;
+    public static final int USER_NTF_BEGIN = 1301;
+    public static final int USERINFO_UPDATED_NTF = 1303;
+    public static final int USER_NTF_END = 1399;
 
-    public static final int OA_NOTIFICATION = 1400;
+    public static final int OA_NTF = 1400;
 
-    public static final int GROUP_NOTIFICATION_BEGIN = 1500;
-    public static final int GROUP_CREATED_NOTIFICATION = 1501;
-    public static final int GROUP_INFO_SET_NOTIFICATION = 1502;
-    public static final int JOIN_GROUP_APPLICATION_NOTIFICATION = 1503;
-    public static final int MEMBER_QUIT_NOTIFICATION = 1504;
-    public static final int GROUP_APPLICATION_ACCEPTED_NOTIFICATION = 1505;
-    public static final int GROUP_APPLICATION_REJECTED_NOTIFICATION = 1506;
-    public static final int GROUP_OWNER_TRANSFERRED_NOTIFICATION = 1507;
-    public static final int MEMBER_KICKED_NOTIFICATION = 1508;
-    public static final int MEMBER_INVITED_NOTIFICATION = 1509;
-    public static final int MEMBER_ENTER_NOTIFICATION = 1510;
-    public static final int GROUP_DISBAND_NOTIFICATION = 1511;
-    public static final int GROUP_NOTIFICATION_END = 1599;
+    public static final int GROUP_NTF_BEGIN = 1500;
+    public static final int GROUP_CREATED_NTF = 1501;
+    public static final int GROUP_INFO_SET_NTF = 1502;
+    public static final int JOIN_GROUP_APPLICATION_NTF = 1503;
+    public static final int MEMBER_QUIT_NTF = 1504;
+    public static final int GROUP_APPLICATION_ACCEPTED_NTF = 1505;
+    public static final int GROUP_APPLICATION_REJECTED_NTF = 1506;
+    public static final int GROUP_OWNER_TRANSFERRED_NTF = 1507;
+    public static final int MEMBER_KICKED_NTF = 1508;
+    public static final int MEMBER_INVITED_NTF = 1509;
+    public static final int MEMBER_ENTER_NTF = 1510;
+    public static final int GROUP_DISBAND_NTF = 1511;
+    public static final int GROUP_NTF_END = 1599;
 
-    public static final int GROUP_MEMBER_MUTED_NOTIFICATION = 1512;
-    public static final int GROUP_MEMBER_CANCEL_MUTED_NOTIFICATION = 1513;
-    public static final int GROUP_MUTED_NOTIFICATION = 1514;
-    public static final int GROUP_CANCEL_MUTED_NOTIFICATION = 1515;
+    public static final int GROUP_MEMBER_MUTED_NTF = 1512;
+    public static final int GROUP_MEMBER_CANCEL_MUTED_NTF = 1513;
+    public static final int GROUP_MUTED_NTF = 1514;
+    public static final int GROUP_CANCEL_MUTED_NTF = 1515;
+    public static final int GROUP_NOTICE_CHANGED_NTF = 1516;
+    public static final int GROUP_MEMBER_INFO_CHANGED_NTF = 1519;
+    public static final int GROUP_NAME_CHANGED_NTF = 1520;
 
-    public static final int SIGNALING_NOTIFICATION_BEGIN = 1600;
-    public static final int SIGNALING_NOTIFICATION = 1601;
-    public static final int SIGNALING_NOTIFICATION_END = 1699;
+    public static final int SIGNALING_NTF_BEGIN = 1600;
+    public static final int SIGNALING_NTF = 1601;
+    public static final int SIGNALING_NTF_END = 1699;
 
-    public static final int BURN_AFTER_READING_NOTIFICATION = 1701;
+    public static final int BURN_AFTER_READING_NTF = 1701;
 
-    public static final int NOTIFICATION_END = 2000;
+    public static final int NTF_END = 2000;
+
+    /**
+     * 3.0版本的消息撤回类型，兼容单人撤回，群撤回，新增群主管理员撤回成员信息
+     */
+    public static final int REVOKE_MESSAGE_NTF = 2101;
 }

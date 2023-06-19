@@ -1,5 +1,6 @@
 package io.openim.android.sdk.models;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class Message {
@@ -73,7 +74,7 @@ public class Message {
     /**
      * 消息内容
      */
-    private String content;
+//    private String content;
     /**
      * 消息唯一序列号
      */
@@ -87,6 +88,11 @@ public class Message {
      * 消息状态 1:发送中 2:发送成功 3:发送失败 4:已删除 5:已撤回
      */
     private int status;
+
+    private boolean isReact;
+
+    private boolean isExternalExtensions;
+
     /**
      * 离线消息推送内容
      */
@@ -96,11 +102,11 @@ public class Message {
      */
     private String attachedInfo;
     /**
-     *
+     * android 附加字段
      */
     private Object ext;
     /**
-     * 附加字段
+     * go 附加字段
      */
     private Object ex;
     /**
@@ -122,7 +128,7 @@ public class Message {
     /**
      * _@信息
      */
-    private AtElem atElem;
+    private AtTextElem atTextElem;
     /**
      * 位置信息
      */
@@ -154,9 +160,16 @@ public class Message {
      */
     private AttachedInfoElem attachedInfoElem;
 
-    private boolean isReact;
+    private TextElem textElem;
 
-    private boolean isExternalExtensions;
+    /// 个人名片
+    private CardElem cardElem;
+
+    ///
+    private AdvancedTextElem advancedTextElem;
+
+    ///
+    private TypingElem typingElem;
 
     public String getClientMsgID() {
         return clientMsgID;
@@ -262,14 +275,6 @@ public class Message {
         this.groupID = groupID;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public int getSeq() {
         return seq;
     }
@@ -294,6 +299,22 @@ public class Message {
         this.status = status;
     }
 
+    public boolean isReact() {
+        return isReact;
+    }
+
+    public void setReact(boolean react) {
+        isReact = react;
+    }
+
+    public boolean isExternalExtensions() {
+        return isExternalExtensions;
+    }
+
+    public void setExternalExtensions(boolean externalExtensions) {
+        isExternalExtensions = externalExtensions;
+    }
+
     public OfflinePushInfo getOfflinePush() {
         return offlinePush;
     }
@@ -314,16 +335,16 @@ public class Message {
         return ext;
     }
 
+    public void setExt(Object ext) {
+        this.ext = ext;
+    }
+
     public Object getEx() {
         return ex;
     }
 
     public void setEx(Object ex) {
         this.ex = ex;
-    }
-
-    public void setExt(Object ext) {
-        this.ext = ext;
     }
 
     public PictureElem getPictureElem() {
@@ -358,12 +379,12 @@ public class Message {
         this.fileElem = fileElem;
     }
 
-    public AtElem getAtElem() {
-        return atElem;
+    public AtTextElem getAtTextElem() {
+        return atTextElem;
     }
 
-    public void setAtElem(AtElem atElem) {
-        this.atElem = atElem;
+    public void setAtTextElem(AtTextElem atTextElem) {
+        this.atTextElem = atTextElem;
     }
 
     public LocationElem getLocationElem() {
@@ -374,20 +395,20 @@ public class Message {
         this.locationElem = locationElem;
     }
 
-    public QuoteElem getQuoteElem() {
-        return quoteElem;
-    }
-
-    public void setQuoteElem(QuoteElem quoteElem) {
-        this.quoteElem = quoteElem;
-    }
-
     public CustomElem getCustomElem() {
         return customElem;
     }
 
     public void setCustomElem(CustomElem customElem) {
         this.customElem = customElem;
+    }
+
+    public QuoteElem getQuoteElem() {
+        return quoteElem;
+    }
+
+    public void setQuoteElem(QuoteElem quoteElem) {
+        this.quoteElem = quoteElem;
     }
 
     public MergeElem getMergeElem() {
@@ -422,20 +443,36 @@ public class Message {
         this.attachedInfoElem = attachedInfoElem;
     }
 
-    public boolean isReact() {
-        return isReact;
+    public TextElem getTextElem() {
+        return textElem;
     }
 
-    public void setReact(boolean react) {
-        isReact = react;
+    public void setTextElem(TextElem textElem) {
+        this.textElem = textElem;
     }
 
-    public boolean isExternalExtensions() {
-        return isExternalExtensions;
+    public CardElem getCardElem() {
+        return cardElem;
     }
 
-    public void setExternalExtensions(boolean externalExtensions) {
-        isExternalExtensions = externalExtensions;
+    public void setCardElem(CardElem cardElem) {
+        this.cardElem = cardElem;
+    }
+
+    public AdvancedTextElem getAdvancedTextElem() {
+        return advancedTextElem;
+    }
+
+    public void setAdvancedTextElem(AdvancedTextElem advancedTextElem) {
+        this.advancedTextElem = advancedTextElem;
+    }
+
+    public TypingElem getTypingElem() {
+        return typingElem;
+    }
+
+    public void setTypingElem(TypingElem typingElem) {
+        this.typingElem = typingElem;
     }
 
     @Override

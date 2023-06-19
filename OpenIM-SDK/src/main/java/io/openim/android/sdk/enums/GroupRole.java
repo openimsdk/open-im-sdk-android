@@ -5,15 +5,15 @@ package io.openim.android.sdk.enums;
  */
 public class GroupRole {
     /**
-     * 群成员
-     */
-    public static final int MEMBER = 1;
-    /**
      * 群主
      */
-    public static final int OWNER = 2;
+    public static final int OWNER = 100;
     /**
      * 群管理员
      */
-    public static final int ADMIN = 3;
+    public static final int ADMIN = 60;
+    /**
+     * 群成员
+     */
+    public static final int MEMBER = 20;
 }

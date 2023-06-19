@@ -40,14 +40,3 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.9.1'
 }
-
-//生成最终 aar 包，libs 目录需要被排除
-task genAar(dependsOn:':OpenIM-SDK:assemble', type: Zip) {
-    def destDir = buildDir.getPath()+"/outputs/aar"
-    baseName "open_im_android-sdk"
-    extension "aar"
-    version '1.1'
-    destinationDirectory = file('libs/')
-    from destDir
-    exclude "libs"
-}

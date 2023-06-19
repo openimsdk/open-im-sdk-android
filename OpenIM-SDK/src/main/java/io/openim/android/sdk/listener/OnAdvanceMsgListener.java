@@ -51,7 +51,8 @@ public interface OnAdvanceMsgListener {
 
     /**
      *  消息被删除
-     * @param s
+     * @param message
      */
-    void onMsgDeleted(String s);
+    void onMsgDeleted(Message message);
+    void onRecvOfflineNewMessages(List<Message> list);
 }

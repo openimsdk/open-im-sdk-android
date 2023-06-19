@@ -2,7 +2,7 @@ package io.openim.android.sdk.models;
 
 import java.util.List;
 
-public class AtElem {
+public class AtTextElem {
     /**
      * at 消息内容
      */
@@ -11,6 +11,10 @@ public class AtElem {
      * 被@的用户id集合
      */
     private List<String> atUserList;
+    /**
+     * 被@的用户信息
+     */
+    public List<AtUserInfo> atUsersInfo;
     /**
      * 自己是否被@了
      */

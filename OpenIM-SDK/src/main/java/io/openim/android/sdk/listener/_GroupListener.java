@@ -41,7 +41,8 @@ final public class _GroupListener implements open_im_sdk_callback.OnGroupListene
 
     @Override
     public void onGroupDismissed(String s) {
-
+        GroupInfo u = JsonUtil.toObj(s, GroupInfo.class);
+        CommonUtil.runMainThread(() -> listener.onGroupDismissed(u));
     }
 
     @Override

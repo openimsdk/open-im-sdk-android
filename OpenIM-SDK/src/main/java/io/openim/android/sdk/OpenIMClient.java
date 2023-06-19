@@ -24,6 +24,7 @@ import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnConnListener;
 import io.openim.android.sdk.listener.OnListenerForService;
+import io.openim.android.sdk.listener.OnPutFileListener;
 import io.openim.android.sdk.listener._ConnListener;
 import io.openim.android.sdk.listener._ListenerForService;
 import io.openim.android.sdk.listener._PutFileCallback;
@@ -158,7 +159,7 @@ public class OpenIMClient {
 
             @Override
             public void onActivityStarted(Activity activity) {
-                if (frontCount++ == 0) {
+                if (frontCount++ > 0) {
                     // 执行切换到前台的逻辑
                     setAppBackgroundStatus(false);
                 }
@@ -176,7 +177,7 @@ public class OpenIMClient {
 
             @Override
             public void onActivityStopped(Activity activity) {
-                if (--frontCount == 0) {
+                if (--frontCount <= 0) {
                     // 执行切换到后台的逻辑
                     setAppBackgroundStatus(true);
                 }
@@ -253,7 +254,7 @@ public class OpenIMClient {
      *
      * @param path 路径
      */
-    public void uploadFile(OnBase<String> base, PutFileCallback listener, String path) {
+    public void uploadFile(OnBase<String> base, OnPutFileListener listener, String path) {
         Open_im_sdk.putFile(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), path, new _PutFileCallback(listener));
     }
 
@@ -265,7 +266,6 @@ public class OpenIMClient {
     public void updateFcmToken(OnBase<String> base, String fcmToken) {
         Open_im_sdk.updateFcmToken(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), fcmToken);
     }
-
 
     public void setOnListenerForService(OnListenerForService listener) {
         Open_im_sdk.setListenerForService(new _ListenerForService(listener));

@@ -21,7 +21,8 @@ final public class _AdvanceMsgListener extends  BaseListener<OnAdvanceMsgListene
 
     @Override
     public void onMsgDeleted(String s) {
-        post(()->listener.onMsgDeleted(s));
+        Message msg = JsonUtil.toObj(s, Message.class);
+        post(()->listener.onMsgDeleted(msg));
     }
 
     @Override
@@ -68,6 +69,7 @@ final public class _AdvanceMsgListener extends  BaseListener<OnAdvanceMsgListene
 
     @Override
     public void onRecvOfflineNewMessages(String s) {
-
+        List<Message> list = JsonUtil.toArray(s, Message.class);
+        CommonUtil.runMainThread(() -> listener.onRecvOfflineNewMessages(list));
     }
 }
