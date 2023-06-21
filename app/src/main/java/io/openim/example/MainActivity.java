@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        OpenIMClient.getInstance().initSDK(getApplication(),1, "", "", "", 1, true,
+        OpenIMClient.getInstance().initSDK(getApplication(),1, "w323", "321323", null, 1, true,
             "", false, new OnConnListener() {
                 @Override
                 public void onConnectFailed(long code, String error) {

@@ -1,5 +1,6 @@
 package io.openim.android.sdk;
 
+import android.accessibilityservice.AccessibilityService;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -11,9 +12,13 @@ import android.net.NetworkRequest;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.ArrayMap;
+import android.util.Log;
 
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,7 +57,6 @@ public class OpenIMClient {
     public WorkMomentsManager workMomentsManager;
 
     //前台Activity数量
-    private int frontCount = 0;
     @NotNull("You need to call the 'initSDK' method first")
     private Application app;
 
@@ -92,9 +96,10 @@ public class OpenIMClient {
      * @param isExternalExtensions 消息扩展
      * @return boolean   true成功; false失败
      */
-    public boolean initSDK(Application application, int platform, String apiUrl, String wsUrl, String storageDir, int logLevel, boolean isLogStandardOutput,
+    public boolean initSDK(Application application, int platform, String apiUrl, String wsUrl,
+                           String storageDir, int logLevel, boolean isLogStandardOutput,
                            String logFilePath, boolean isExternalExtensions, @NotNull OnConnListener listener) {
-        this.app = application;
+        this.app=application;
         Map<String, Object> map = new ArrayMap<>();
         map.put("platformID", platform);
         map.put("apiAddr", apiUrl);
@@ -107,8 +112,6 @@ public class OpenIMClient {
 
         boolean initialized = Open_im_sdk.initSDK(new _ConnListener(listener), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
         LogcatHelper.logDInDebug(String.format("Initialization successful: %s", initialized));
-
-        registerActivityLifecycleCallbacks();
         return initialized;
     }
 
@@ -151,46 +154,15 @@ public class OpenIMClient {
 
 
     private void registerActivityLifecycleCallbacks() {
-        app.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(new DefaultLifecycleObserver() {
             @Override
-            public void onActivityCreated(Activity activity, Bundle bundle) {
-
+            public void onResume(@NonNull LifecycleOwner owner) {
+                setAppBackgroundStatus(false);
             }
 
             @Override
-            public void onActivityStarted(Activity activity) {
-                if (frontCount++ > 0) {
-                    // 执行切换到前台的逻辑
-                    setAppBackgroundStatus(false);
-                }
-            }
-
-            @Override
-            public void onActivityResumed(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityPaused(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityStopped(Activity activity) {
-                if (--frontCount <= 0) {
-                    // 执行切换到后台的逻辑
-                    setAppBackgroundStatus(true);
-                }
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
-
-            }
-
-            @Override
-            public void onActivityDestroyed(Activity activity) {
-
+            public void onStop(@NonNull LifecycleOwner owner) {
+                setAppBackgroundStatus(true);
             }
         });
     }
@@ -226,9 +198,11 @@ public class OpenIMClient {
 
             @Override
             public void onSuccess(String s) {
-                registerNetworkCallback();
-
-                CommonUtil.returnSuccess(base, s);
+               CommonUtil.runMainThread(() -> {
+//                   registerActivityLifecycleCallbacks();
+//                   registerNetworkCallback();
+                   base.onSuccess(s);
+               });
             }
         }, ParamsUtil.buildOperationID(), uid, token);
     }

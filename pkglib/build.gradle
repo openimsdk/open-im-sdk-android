@@ -4,11 +4,11 @@ plugins {
 
 android {
     namespace 'com.example.pkglib'
-    compileSdkVersion 33
+    compileSdkVersion 32
 
     defaultConfig {
-        minSdkVersion 24
-        targetSdkVersion 33
+        minSdkVersion 21
+        targetSdkVersion 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

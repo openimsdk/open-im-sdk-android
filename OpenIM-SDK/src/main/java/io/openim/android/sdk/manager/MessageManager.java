@@ -21,8 +21,6 @@ import io.openim.android.sdk.models.AtUserInfo;
 import io.openim.android.sdk.models.FileElem;
 import io.openim.android.sdk.models.KeyValue;
 import io.openim.android.sdk.models.Message;
-import io.openim.android.sdk.models.MessageListSeq;
-import io.openim.android.sdk.models.MessageTypeKeyMapping;
 import io.openim.android.sdk.models.OfflinePushInfo;
 import io.openim.android.sdk.models.PictureInfo;
 import io.openim.android.sdk.models.RichMessage;
@@ -67,30 +65,6 @@ public class MessageManager {
             JsonUtil.toString(offlinePushInfo));
     }
 
-    /**
-     * 获取历史消息
-     *
-     * @param userID         用户id
-     * @param groupID        组ID
-     * @param conversationID 会话id，如果不传userID跟groupID，则按会话id查询历史记录
-     * @param startMsg       从startMsg {@link Message}开始拉取消息
-     *                       startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到 list；
-     *                       下一次拉取消息记录参数：startMsg=list.get(0) && count =20；以此内推，startMsg始终为list的第一条。
-     * @param count          一次拉取count条
-     * @param base           callback List<{@link Message}>
-     */
-    public void getHistoryMessageList(OnBase<List<Message>> base, String userID, String groupID, String conversationID, Message startMsg, int count) {
-        Map<String, Object> map = new ArrayMap<>();
-        map.put("userID", userID);
-        map.put("groupID", groupID);
-        map.put("conversationID", conversationID);
-        if (null != startMsg) {
-            map.put("startClientMsgID", startMsg.getClientMsgID());
-        }
-        map.put("count", count);
-
-        Open_im_sdk.getAdvancedHistoryMessageList(BaseImpl.arrayBase(base, Message.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
-    }
 
     /**
      * 撤回消息
@@ -462,25 +436,71 @@ public class MessageManager {
     }
 
 
-    private String lastMinSeq;
+    private int lastMinSeq;
+
+    /**
+     * 撤回消息（新版本）
+     * 调用此方法会触发：onRecvMessageRevokedV2回调
+     *
+     * @param message {@link Message}
+     */
+    public void revokeMessageV2(OnBase<String> callBack, Message message) {
+        Open_im_sdk.revokeMessage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
+    }
 
     /**
      * 获取历史消息
      * 在搜索消息时定位到消息位置，获取新消息列表
      * getHistoryMessageList是获取该条消息之前的记录（旧消息），getHistoryMessageListReverse是获取该条消息之后的记录（新消息）
      *
-     * @param userID         用户id
-     * @param groupID        组ID
+     * @param conversationID 会话id，如果不传userID跟groupID，则按会话id查询历史记录
+     * @param startMsg       从startMsg {@link Message}开始拉取消息
+     *                       startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到 list；
+     *                       下一次拉取消息记录参数：startMsg=list.last && count =20；以此内推，startMsg始终为list的最后一条。
+     * @param count          一次拉取count条
+     * @param callBack           callback <{@link AdvancedMessage}>
+     */
+    public void getAdvancedHistoryMessageList(OnBase<AdvancedMessage> callBack,  String conversationID,
+                                              Message startMsg, int count) {
+        Map<String, Object> map = new ArrayMap<>();
+        map.put("lastMinSeq", MessageManager.this.lastMinSeq);
+        map.put("conversationID", conversationID);
+        if (null != startMsg) {
+            map.put("startClientMsgID", startMsg.getClientMsgID());
+        }
+        map.put("count", count);
+
+        Open_im_sdk.getAdvancedHistoryMessageList(new Base() {
+            @Override
+            public void onError(int i, String s) {
+                CommonUtil.returnError(callBack, i, s);
+            }
+
+            @Override
+            public void onSuccess(String s) {
+                AdvancedMessage messageListSeq = JsonUtil.toObj(s, AdvancedMessage.class);
+                MessageManager.this.lastMinSeq = messageListSeq.getLastMinSeq();
+                CommonUtil.runMainThread(()->{
+                    if (null != callBack) callBack.onSuccess(messageListSeq);
+                });
+            }
+        }, ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+    }
+
+
+    /**
+     * 获取历史消息 消息倒叙
+     * 在搜索消息时定位到消息位置，获取新消息列表
+     * getHistoryMessageList是获取该条消息之前的记录（旧消息），getHistoryMessageListReverse是获取该条消息之后的记录（新消息）
+     *
      * @param conversationID 会话id，如果不传userID跟groupID，则按会话id查询历史记录
      * @param startMsg       从startMsg {@link Message}开始拉取消息
      *                       startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到 list；
      *                       下一次拉取消息记录参数：startMsg=list.last && count =20；以此内推，startMsg始终为list的最后一条。
      * @param count          一次拉取count条
      */
-    public void getAdvancedHistoryMessageListReverse(OnBase<List<Message>> callBack, String userID, String groupID, String conversationID, Message startMsg, int count) {
+    public void getAdvancedHistoryMessageListReverse(OnBase<AdvancedMessage> callBack, String conversationID, Message startMsg, int count) {
         Map<String, Object> map = new ArrayMap<>();
-        map.put("userID", userID);
-        map.put("groupID", groupID);
         map.put("lastMinSeq", MessageManager.this.lastMinSeq);
         map.put("conversationID", conversationID);
         if (null != startMsg) {
@@ -496,51 +516,15 @@ public class MessageManager {
 
             @Override
             public void onSuccess(String s) {
-                MessageListSeq messageListSeq = JsonUtil.toObj(s, MessageListSeq.class);
-                MessageManager.this.lastMinSeq = messageListSeq.lastMinSeq;
-                if (null != callBack) callBack.onSuccess(messageListSeq.messageList);
+                AdvancedMessage messageListSeq = JsonUtil.toObj(s, AdvancedMessage.class);
+                MessageManager.this.lastMinSeq = messageListSeq.getLastMinSeq();
+                CommonUtil.runMainThread(()->{
+                    if (null != callBack) callBack.onSuccess(messageListSeq);
+                });
             }
         }, ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
-    /**
-     * 撤回消息（新版本）
-     * 调用此方法会触发：onRecvMessageRevokedV2回调
-     *
-     * @param message {@link Message}
-     */
-    public void revokeMessageV2(OnBase<String> callBack, Message message) {
-        Open_im_sdk.revokeMessage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
-    }
-
-    /**
-     * 获取历史消息（超级群使用）
-     * 在搜索消息时定位到消息位置，获取新消息列表
-     * getHistoryMessageList是获取该条消息之前的记录（旧消息），getHistoryMessageListReverse是获取该条消息之后的记录（新消息）
-     *
-     * @param userID         用户id
-     * @param groupID        组ID
-     * @param conversationID 会话id，如果不传userID跟groupID，则按会话id查询历史记录
-     * @param lastMinSeq     第一页消息不用传，获取第二页开始必传 跟[startMsg]一样
-     * @param startMsg       从startMsg {@link Message}开始拉取消息
-     *                       startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到 list；
-     *                       下一次拉取消息记录参数：startMsg=list.last && count =20；以此内推，startMsg始终为list的最后一条。
-     * @param count          一次拉取count条
-     * @param base           callback <{@link AdvancedMessage}>
-     */
-    public void getAdvancedHistoryMessageList(OnBase<AdvancedMessage> base, String userID, String groupID, String conversationID, int lastMinSeq,
-                                              Message startMsg, int count) {
-        Map<String, Object> map = new ArrayMap<>();
-        map.put("userID", userID);
-        map.put("groupID", groupID);
-        map.put("conversationID", conversationID);
-        map.put("lastMinSeq", lastMinSeq);
-        if (null != startMsg) {
-            map.put("startClientMsgID", startMsg.getClientMsgID());
-        }
-        map.put("count", count);
-        Open_im_sdk.getAdvancedHistoryMessageList(BaseImpl.objectBase(base, AdvancedMessage.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
-    }
 
     /**
      * 查询消息
