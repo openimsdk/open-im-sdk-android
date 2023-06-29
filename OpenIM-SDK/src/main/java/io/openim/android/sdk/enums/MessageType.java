@@ -44,10 +44,7 @@ public class MessageType {
      * 自定义类型
      */
     public static final int CUSTOM = 110;
-    /**
-     * 撤回
-     */
-    public static final int REVOKE = 111;
+
     /**
      * 已读
      */

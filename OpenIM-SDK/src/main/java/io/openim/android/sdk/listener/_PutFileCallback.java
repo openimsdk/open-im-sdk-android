@@ -7,7 +7,7 @@ import open_im_sdk_callback.PutFileCallback;
 
 public class _PutFileCallback extends BaseListener<OnPutFileListener> implements PutFileCallback {
 
-    public _PutFileCallback(@NotNull("OnPutFileListener can't is null") OnPutFileListener listener) {
+    public _PutFileCallback(OnPutFileListener listener) {
         super(listener);
     }
 

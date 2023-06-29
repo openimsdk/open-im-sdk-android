@@ -31,7 +31,6 @@ final public class BaseImpl {
         @Override
         public void onError(int l, String s) {
             CommonUtil.returnError(base, l, s);
-
         }
 
         @Override

@@ -15,7 +15,7 @@ import io.openim.android.sdk.utils.JsonUtil;
 final public class _AdvanceMsgListener extends  BaseListener<OnAdvanceMsgListener>
     implements open_im_sdk_callback.OnAdvancedMsgListener {
 
-    public _AdvanceMsgListener(@NotNull("'OnAdvanceMsgListener' can't null") OnAdvanceMsgListener listener) {
+    public _AdvanceMsgListener(OnAdvanceMsgListener listener) {
         super(listener);
     }
 
@@ -28,48 +28,48 @@ final public class _AdvanceMsgListener extends  BaseListener<OnAdvanceMsgListene
     @Override
     public void onNewRecvMessageRevoked(String s) {
             RevokedInfo info = JsonUtil.toObj(s, RevokedInfo.class);
-            CommonUtil.runMainThread(() -> listener.onRecvMessageRevokedV2(info));
+            post(() -> listener.onRecvMessageRevokedV2(info));
     }
 
     @Override
     public void onRecvC2CReadReceipt(String s) {
             List<ReadReceiptInfo> list = JsonUtil.toArray(s, ReadReceiptInfo.class);
-            CommonUtil.runMainThread(() -> listener.onRecvC2CReadReceipt(list));
+            post(() -> listener.onRecvC2CReadReceipt(list));
     }
 
     @Override
     public void onRecvGroupReadReceipt(String s) {
             List<ReadReceiptInfo> list = JsonUtil.toArray(s, ReadReceiptInfo.class);
-            CommonUtil.runMainThread(() -> listener.onRecvGroupMessageReadReceipt(list));
+            post(() -> listener.onRecvGroupMessageReadReceipt(list));
     }
 
     @Override
     public void onRecvMessageExtensionsAdded(String s, String s1) {
             List<KeyValue> list = JsonUtil.toArray(s1, KeyValue.class);
-            CommonUtil.runMainThread(() -> listener.onRecvMessageExtensionsAdded(s, list));
+            post(() -> listener.onRecvMessageExtensionsAdded(s, list));
     }
 
     @Override
     public void onRecvMessageExtensionsChanged(String s, String s1) {
             List<KeyValue> list = JsonUtil.toArray(s1, KeyValue.class);
-            CommonUtil.runMainThread(() -> listener.onRecvMessageExtensionsChanged(s, list));
+            post(() -> listener.onRecvMessageExtensionsChanged(s, list));
     }
 
     @Override
     public void onRecvMessageExtensionsDeleted(String s, String s1) {
             List<String> list = JsonUtil.toArray(s1, String.class);
-            CommonUtil.runMainThread(() -> listener.onRecvMessageExtensionsDeleted(s, list));
+            post(() -> listener.onRecvMessageExtensionsDeleted(s, list));
     }
 
     @Override
     public void onRecvNewMessage(String s) {
         Message msg = JsonUtil.toObj(s, Message.class);
-        CommonUtil.runMainThread(() -> listener.onRecvNewMessage(msg));
+        post(() -> listener.onRecvNewMessage(msg));
     }
 
     @Override
     public void onRecvOfflineNewMessages(String s) {
         List<Message> list = JsonUtil.toArray(s, Message.class);
-        CommonUtil.runMainThread(() -> listener.onRecvOfflineNewMessages(list));
+        post(() -> listener.onRecvOfflineNewMessages(list));
     }
 }

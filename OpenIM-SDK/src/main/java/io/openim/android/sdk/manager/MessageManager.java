@@ -18,6 +18,7 @@ import io.openim.android.sdk.listener._MessageKvInfoListener;
 import io.openim.android.sdk.listener._MsgSendProgressListener;
 import io.openim.android.sdk.models.AdvancedMessage;
 import io.openim.android.sdk.models.AtUserInfo;
+import io.openim.android.sdk.models.CardElem;
 import io.openim.android.sdk.models.FileElem;
 import io.openim.android.sdk.models.KeyValue;
 import io.openim.android.sdk.models.Message;
@@ -67,28 +68,14 @@ public class MessageManager {
 
 
     /**
-     * 撤回消息
-     * 调用此方法会触发：onRecvMessageRevoked和onRecvNewMessage回调
-     *
-     * @param message {@link Message}
-     * @param base    callback String
-     *                撤回成功需要将已显示到界面的消息类型替换为revoke类型并刷新界面
-     */
-    @Deprecated
-    public void revokeMessage(OnBase<String> base, Message message) {
-        Open_im_sdk.revokeMessage(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
-    }
-
-    /**
      * 删除消息（从本地）
      *
      * @param conversationID 会话id
-     * @param clientMsgIDs   客户端消息ids
+     * @param clientMsgID    客户端消息id
      * @param callBack
      */
-    public void deleteMessageFromLocalStorage(String conversationID, List<String> clientMsgIDs, OnBase<String> callBack) {
-        Open_im_sdk.deleteMessageFromLocalStorage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID,
-            JsonUtil.toString(clientMsgIDs));
+    public void deleteMessageFromLocalStorage(String conversationID, String clientMsgID, OnBase<String> callBack) {
+        Open_im_sdk.deleteMessageFromLocalStorage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID, clientMsgID);
     }
 
 
@@ -337,11 +324,11 @@ public class MessageManager {
     /**
      * 创建名片消息
      *
-     * @param content json String
+     * @param cardElem json String
      * @return {@link Message}
      */
-    public Message createCardMessage(String content) {
-        return parse(Open_im_sdk.createCardMessage(ParamsUtil.buildOperationID(), content));
+    public Message createCardMessage(CardElem cardElem) {
+        return parse(Open_im_sdk.createCardMessage(ParamsUtil.buildOperationID(), JsonUtil.toString(cardElem)));
     }
 
     /**
@@ -428,13 +415,6 @@ public class MessageManager {
         Open_im_sdk.markConversationMessageAsRead(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID);
     }
 
-    /**
-     * 聊天设置里清除聊天记录
-     */
-    public void clearConversationAndDeleteAllMsg(OnBase<String> callBack, String conversationID) {
-        Open_im_sdk.clearConversationAndDeleteAllMsg(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID);
-    }
-
 
     private int lastMinSeq;
 
@@ -442,10 +422,13 @@ public class MessageManager {
      * 撤回消息（新版本）
      * 调用此方法会触发：onRecvMessageRevokedV2回调
      *
-     * @param message {@link Message}
+     * @param conversationID 会话ID
+     * @param clientMsgID    msg client ID
+     * @param callBack       callback String
+     *                       撤回成功需要将已显示到界面的消息类型替换为revoke类型并刷新界面
      */
-    public void revokeMessageV2(OnBase<String> callBack, Message message) {
-        Open_im_sdk.revokeMessage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), JsonUtil.toString(message));
+    public void revokeMessageV2(OnBase<String> callBack, String conversationID, String clientMsgID) {
+        Open_im_sdk.revokeMessage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID, clientMsgID);
     }
 
     /**
@@ -458,10 +441,9 @@ public class MessageManager {
      *                       startMsg：如第一次拉取20条记录 startMsg=null && count=20 得到 list；
      *                       下一次拉取消息记录参数：startMsg=list.last && count =20；以此内推，startMsg始终为list的最后一条。
      * @param count          一次拉取count条
-     * @param callBack           callback <{@link AdvancedMessage}>
+     * @param callBack       callback <{@link AdvancedMessage}>
      */
-    public void getAdvancedHistoryMessageList(OnBase<AdvancedMessage> callBack,  String conversationID,
-                                              Message startMsg, int count) {
+    public void getAdvancedHistoryMessageList(OnBase<AdvancedMessage> callBack, String conversationID, Message startMsg, int count) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("lastMinSeq", MessageManager.this.lastMinSeq);
         map.put("conversationID", conversationID);
@@ -480,7 +462,7 @@ public class MessageManager {
             public void onSuccess(String s) {
                 AdvancedMessage messageListSeq = JsonUtil.toObj(s, AdvancedMessage.class);
                 MessageManager.this.lastMinSeq = messageListSeq.getLastMinSeq();
-                CommonUtil.runMainThread(()->{
+                CommonUtil.runMainThread(() -> {
                     if (null != callBack) callBack.onSuccess(messageListSeq);
                 });
             }
@@ -518,7 +500,7 @@ public class MessageManager {
             public void onSuccess(String s) {
                 AdvancedMessage messageListSeq = JsonUtil.toObj(s, AdvancedMessage.class);
                 MessageManager.this.lastMinSeq = messageListSeq.getLastMinSeq();
-                CommonUtil.runMainThread(()->{
+                CommonUtil.runMainThread(() -> {
                     if (null != callBack) callBack.onSuccess(messageListSeq);
                 });
             }
@@ -628,7 +610,7 @@ public class MessageManager {
 //        Open_im_sdk.setMessageReactionExtensions(BaseImpl.arrayBase(base, TypeKeySetResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(message),
 //            JsonUtil.toString(list));
 //    }
-//
+
 //    public void deleteMessageReactionExtensions(OnBase<List<TypeKeySetResult>> base, Message message, List<String> list) {
 //        Open_im_sdk.deleteMessageReactionExtensions(BaseImpl.arrayBase(base, TypeKeySetResult.class), ParamsUtil.buildOperationID(),
 //            JsonUtil.toString(message), JsonUtil.toString(list));

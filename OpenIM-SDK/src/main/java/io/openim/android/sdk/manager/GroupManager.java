@@ -40,8 +40,8 @@ public class GroupManager {
      * @param reason  邀请说明
      * @param base    callback List<{@link GroupInviteResult}>>
      */
-    public void inviteUserToGroup(OnBase<List<GroupInviteResult>> base, String groupId, List<String> uidList, String reason) {
-        Open_im_sdk.inviteUserToGroup(BaseImpl.arrayBase(base, GroupInviteResult.class), ParamsUtil.buildOperationID(), groupId, reason,
+    public void inviteUserToGroup(OnBase<String> base, String groupId, List<String> uidList, String reason) {
+        Open_im_sdk.inviteUserToGroup(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupId, reason,
             JsonUtil.toString(uidList));
     }
 
@@ -53,8 +53,8 @@ public class GroupManager {
      * @param reason  说明
      * @param base    callback List<{@link GroupInviteResult}>>
      */
-    public void kickGroupMember(OnBase<List<GroupInviteResult>> base, String groupId, List<String> uidList, String reason) {
-        Open_im_sdk.kickGroupMember(BaseImpl.arrayBase(base, GroupInviteResult.class), ParamsUtil.buildOperationID(), groupId, reason,
+    public void kickGroupMember(OnBase<String> base, String groupId, List<String> uidList, String reason) {
+        Open_im_sdk.kickGroupMember(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupId, reason,
             JsonUtil.toString(uidList));
     }
 

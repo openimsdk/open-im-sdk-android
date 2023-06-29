@@ -8,7 +8,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.List;
 
 import io.openim.android.sdk.OpenIMClient;
+import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnConnListener;
+import io.openim.android.sdk.listener.OnConversationListener;
+import io.openim.android.sdk.listener.OnMsgSendCallback;
+import io.openim.android.sdk.models.AdvancedMessage;
+import io.openim.android.sdk.models.AtUserInfo;
+import io.openim.android.sdk.models.ConversationInfo;
+import io.openim.android.sdk.models.FileElem;
+import io.openim.android.sdk.models.KeyValue;
+import io.openim.android.sdk.models.Message;
+import io.openim.android.sdk.models.OfflinePushInfo;
+import io.openim.android.sdk.models.PictureInfo;
+import io.openim.android.sdk.models.RichMessage;
+import io.openim.android.sdk.models.SearchResult;
+import io.openim.android.sdk.models.SoundElem;
+import io.openim.android.sdk.models.TypeKeySetResult;
 
 
 /**
@@ -19,32 +34,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        OpenIMClient.getInstance().initSDK(getApplication(),1, "w323", "321323", null, 1, true,
-            "", false, new OnConnListener() {
-                @Override
-                public void onConnectFailed(long code, String error) {
 
-                }
-
-                @Override
-                public void onConnectSuccess() {
-
-                }
-
-                @Override
-                public void onConnecting() {
-
-                }
-
-                @Override
-                public void onKickedOffline() {
-
-                }
-
-                @Override
-                public void onUserTokenExpired() {
-
-                }
-            });
     }
 }

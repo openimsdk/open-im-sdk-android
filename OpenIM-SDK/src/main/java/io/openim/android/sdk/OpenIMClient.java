@@ -40,6 +40,7 @@ import io.openim.android.sdk.manager.MessageManager;
 import io.openim.android.sdk.manager.SignalingManager;
 import io.openim.android.sdk.manager.UserInfoManager;
 import io.openim.android.sdk.manager.WorkMomentsManager;
+import io.openim.android.sdk.models.PutArgs;
 import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
@@ -99,7 +100,7 @@ public class OpenIMClient {
     public boolean initSDK(Application application, int platform, String apiUrl, String wsUrl,
                            String storageDir, int logLevel, boolean isLogStandardOutput,
                            String logFilePath, boolean isExternalExtensions, @NotNull OnConnListener listener) {
-        this.app=application;
+        this.app = application;
         Map<String, Object> map = new ArrayMap<>();
         map.put("platformID", platform);
         map.put("apiAddr", apiUrl);
@@ -114,6 +115,7 @@ public class OpenIMClient {
         LogcatHelper.logDInDebug(String.format("Initialization successful: %s", initialized));
         return initialized;
     }
+
 
     private void registerNetworkCallback() {
         ConnectivityManager connectivityManager = (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -198,11 +200,11 @@ public class OpenIMClient {
 
             @Override
             public void onSuccess(String s) {
-               CommonUtil.runMainThread(() -> {
+                CommonUtil.runMainThread(() -> {
 //                   registerActivityLifecycleCallbacks();
 //                   registerNetworkCallback();
-                   base.onSuccess(s);
-               });
+                    base.onSuccess(s);
+                });
             }
         }, ParamsUtil.buildOperationID(), uid, token);
     }
@@ -222,14 +224,23 @@ public class OpenIMClient {
         return (int) Open_im_sdk.getLoginStatus();
     }
 
+    /**
+     * 查询已登录 uid
+     */
+    public String getLoginUserID() {
+        return Open_im_sdk.getLoginUserID();
+    }
+
 
     /**
      * 上传文件到服务器
      *
-     * @param path 路径
+     * @param putArgs 实体
      */
-    public void uploadFile(OnBase<String> base, OnPutFileListener listener, String path) {
-        Open_im_sdk.putFile(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), path, new _PutFileCallback(listener));
+    public void uploadFile(OnBase<String> base, OnPutFileListener listener,
+                           PutArgs putArgs) {
+        Open_im_sdk.putFile(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(),
+            JsonUtil.toString(putArgs), new _PutFileCallback(listener));
     }
 
     /**
@@ -242,7 +253,7 @@ public class OpenIMClient {
     }
 
     public void setOnListenerForService(OnListenerForService listener) {
-        Open_im_sdk.setListenerForService(new _ListenerForService(listener));
+//        Open_im_sdk.setListenerForService(new _ListenerForService(listener));
     }
 
     public void networkChanged() {
