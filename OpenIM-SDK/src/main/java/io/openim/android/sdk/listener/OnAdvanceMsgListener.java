@@ -55,4 +55,6 @@ public interface OnAdvanceMsgListener {
      */
     void onMsgDeleted(Message message);
     void onRecvOfflineNewMessages(List<Message> list);
+
+    void onRecvOfflineNewMessage(List<Message> msg);
 }

@@ -69,13 +69,16 @@ task syncAllAars(dependsOn: ':OpenIM-SDK:assemble') {
 task makeJar(type: Jar) {
     archiveName = 'classes.jar'
     def dir = new File(buildDir.getPath() + "/outputs/aar/libs")
-    files(dir.listFiles()).each { file ->
+    if (dir.canExecute()){
+        files(dir.listFiles()).each { file ->
 
-        if (file.name.endsWith('.jar')) {
-            from(project.zipTree(file.absolutePath))
+            if (file.name.endsWith('.jar')) {
+                from(project.zipTree(file.absolutePath))
+            }
         }
+        destinationDirectory = file(buildDir.getPath() + "/outputs/aar")
     }
-    destinationDirectory = file(buildDir.getPath() + "/outputs/aar")
+
 }
 
 task fataar(dependsOn: [syncAllAars, syncAllJars, makeJar]) {
