@@ -1,7 +1,5 @@
 package io.openim.android.sdk;
 
-import android.accessibilityservice.AccessibilityService;
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -10,9 +8,7 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.os.Build;
-import android.os.Bundle;
 import android.util.ArrayMap;
-import android.util.Log;
 
 
 import androidx.annotation.NonNull;
@@ -28,10 +24,11 @@ import io.openim.android.sdk.internal.log.LogcatHelper;
 import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnConnListener;
+import io.openim.android.sdk.listener.OnCustomBusinessListener;
 import io.openim.android.sdk.listener.OnListenerForService;
 import io.openim.android.sdk.listener.OnPutFileListener;
 import io.openim.android.sdk.listener._ConnListener;
-import io.openim.android.sdk.listener._ListenerForService;
+import io.openim.android.sdk.listener._CustomBusinessListener;
 import io.openim.android.sdk.listener._PutFileCallback;
 import io.openim.android.sdk.manager.ConversationManager;
 import io.openim.android.sdk.manager.FriendshipManager;
@@ -39,14 +36,12 @@ import io.openim.android.sdk.manager.GroupManager;
 import io.openim.android.sdk.manager.MessageManager;
 import io.openim.android.sdk.manager.SignalingManager;
 import io.openim.android.sdk.manager.UserInfoManager;
-import io.openim.android.sdk.manager.WorkMomentsManager;
 import io.openim.android.sdk.models.PutArgs;
 import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
 import open_im_sdk_callback.Base;
-import open_im_sdk_callback.PutFileCallback;
 
 public class OpenIMClient {
     public ConversationManager conversationManager;
@@ -55,7 +50,6 @@ public class OpenIMClient {
     public MessageManager messageManager;
     public UserInfoManager userInfoManager;
     public SignalingManager signalingManager;
-    public WorkMomentsManager workMomentsManager;
 
     //前台Activity数量
     @NotNull("You need to call the 'initSDK' method first")
@@ -68,7 +62,6 @@ public class OpenIMClient {
         messageManager = new MessageManager();
         userInfoManager = new UserInfoManager();
         signalingManager = new SignalingManager();
-        workMomentsManager = new WorkMomentsManager();
     }
 
     private static class Singleton {
@@ -221,7 +214,7 @@ public class OpenIMClient {
      * 查询登录状态
      */
     public int getLoginStatus() {
-        return (int) Open_im_sdk.getLoginStatus();
+        return (int) Open_im_sdk.getLoginStatus(ParamsUtil.buildOperationID());
     }
 
     /**
@@ -239,8 +232,8 @@ public class OpenIMClient {
      */
     public void uploadFile(OnBase<String> base, OnPutFileListener listener,
                            PutArgs putArgs) {
-        Open_im_sdk.putFile(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(),
-            JsonUtil.toString(putArgs), new _PutFileCallback(listener));
+        Open_im_sdk.uploadFile(BaseImpl.stringBase(base),
+            ParamsUtil.buildOperationID(), JsonUtil.toString(putArgs),new _PutFileCallback(listener));
     }
 
     /**
@@ -268,6 +261,13 @@ public class OpenIMClient {
 
             }
         }, ParamsUtil.buildOperationID());
+    }
+
+    /**
+     *  自定义业务通知
+     */
+    public void setCustomBusinessListener(OnCustomBusinessListener customBusinessListener){
+        Open_im_sdk.setCustomBusinessListener(new _CustomBusinessListener(customBusinessListener));
     }
 }
 

@@ -31,13 +31,6 @@ public interface OnAdvanceMsgListener {
 
     /**
      * 对方撤回了消息
-     * 需要将消息类型更改为MessageType.REVOKE，然后刷新界面
-     */
-    @Deprecated
-    void onRecvMessageRevoked(String msgId);
-
-    /**
-     * 对方撤回了消息
      * 单聊撤回，群聊测回以及群组管理员撤回其他人消息
      * 新版本只会通过此回调回传被撤回的详细信息，不会触发onRecvNewMessage回调
      */
@@ -54,7 +47,6 @@ public interface OnAdvanceMsgListener {
      * @param message
      */
     void onMsgDeleted(Message message);
-    void onRecvOfflineNewMessages(List<Message> list);
 
     void onRecvOfflineNewMessage(List<Message> msg);
 }

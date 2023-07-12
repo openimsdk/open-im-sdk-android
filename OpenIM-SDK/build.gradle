@@ -35,6 +35,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-process:2.4.1'
     implementation 'androidx.annotation:annotation:1.6.0'
 
-    compileOnly 'io.openim:core-sdk:3.0.0-beta04@aar'
+    compileOnly fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+//    compileOnly 'io.openim:core-sdk:3.0.0-beta04@aar'
     compileOnly 'com.google.code.gson:gson:2.9.1'
 }

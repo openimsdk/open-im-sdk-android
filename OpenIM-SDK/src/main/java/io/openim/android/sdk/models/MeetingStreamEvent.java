@@ -1,16 +1,16 @@
 package io.openim.android.sdk.models;
 
 public class MeetingStreamEvent {
-    private String meetingID;
+    private String roomID;
     private String streamType;
     private boolean mute;
 
     public String getMeetingID() {
-        return meetingID;
+        return roomID;
     }
 
-    public void setMeetingID(String meetingID) {
-        this.meetingID = meetingID;
+    public void setMeetingID(String roomID) {
+        this.roomID = roomID;
     }
 
     public String getStreamType() {

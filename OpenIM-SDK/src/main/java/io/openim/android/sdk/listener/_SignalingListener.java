@@ -72,6 +72,14 @@ final public class _SignalingListener implements open_im_sdk_callback.OnSignalin
     }
 
     @Override
+    public void onReceiveCustomSignal(String s) {
+        if (listener != null) {
+            CustomSignalingInfo info = JsonUtil.toObj(s, CustomSignalingInfo.class);
+            CommonUtil.runMainThread(() -> listener.onReceiveCustomSignal(info));
+        }
+    }
+
+    @Override
     public void onReceiveNewInvitation(String s) {
         if (listener != null) {
             SignalingInfo info = JsonUtil.toObj(s, SignalingInfo.class);
@@ -92,6 +100,13 @@ final public class _SignalingListener implements open_im_sdk_callback.OnSignalin
         if (listener != null) {
             RoomCallingInfo info = JsonUtil.toObj(s, RoomCallingInfo.class);
             CommonUtil.runMainThread(() -> listener.onRoomParticipantDisconnected(info));
+        }
+    }
+
+    @Override
+    public void onStreamChange(String s) {
+        if (listener != null) {
+            CommonUtil.runMainThread(() -> listener.onStreamChange(s));
         }
     }
 

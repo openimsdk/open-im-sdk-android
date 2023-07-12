@@ -1,10 +1,8 @@
 package io.openim.android.sdk.models;
 
+import io.openim.android.sdk.utils.CommonUtil;
+
 public class PutArgs {
-    /**
-     * userId_ Random number
-     */
-    public String putID;
     /**
      * 本地文件路径
      */
@@ -13,6 +11,11 @@ public class PutArgs {
      * 文件名
      */
     public String name;
+
+    /**
+     * 类型
+     */
+    public String cuase;
 
     public PutArgs(String filepath) {
         this.filepath = filepath;

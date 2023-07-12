@@ -23,49 +23,49 @@ public class SignalingManager {
      * 设置信令监听
      */
     public void setSignalingListener(OnSignalingListener listener) {
-//        Open_im_sdk.setSignalingListener(new _SignalingListener(listener));
+        Open_im_sdk.setSignalingListener(new _SignalingListener(listener));
     }
 
     /**
      * 邀请个人加入音视频
      */
     public void signalingInvite(OnBase<SignalingCertificate> base, SignalingInfo info) {
-//        Open_im_sdk.signalingInvite(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
+        Open_im_sdk.signalingInvite(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
     }
 
     /**
      * 邀请群里某些人加入音视频
      */
     public void signalingInviteInGroup(OnBase<SignalingCertificate> base, SignalingInfo info) {
-//        Open_im_sdk.signalingInviteInGroup(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
+        Open_im_sdk.signalingInviteInGroup(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
     }
 
     /**
      * 同意某人音视频邀请
      */
     public void signalingAccept(OnBase<SignalingCertificate> base, SignalingInfo info) {
-//        Open_im_sdk.signalingAccept(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
+        Open_im_sdk.signalingAccept(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
     }
 
     /**
      * 拒绝某人音视频邀请
      */
     public void signalingReject(OnBase<SignalingCertificate> base, SignalingInfo info) {
-//        Open_im_sdk.signalingReject(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
+        Open_im_sdk.signalingReject(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
     }
 
     /**
      * 邀请者取消音视频通话
      */
     public void signalingCancel(OnBase<SignalingCertificate> base, SignalingInfo info) {
-//        Open_im_sdk.signalingCancel(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
+        Open_im_sdk.signalingCancel(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
     }
 
     /**
      * 挂断
      */
     public void signalingHungUp(OnBase<SignalingCertificate> base, SignalingInfo info) {
-//        Open_im_sdk.signalingHungUp(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
+        Open_im_sdk.signalingHungUp(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
     }
 
 
@@ -73,14 +73,14 @@ public class SignalingManager {
      * 获取房间通话信息
      */
     public void signalingGetRoomByGroupID(OnBase<RoomCallingInfo> base, String groupID) {
-//        Open_im_sdk.signalingGetRoomByGroupID(BaseImpl.objectBase(base, RoomCallingInfo.class), ParamsUtil.buildOperationID(), groupID);
+        Open_im_sdk.signalingGetRoomByGroupID(BaseImpl.objectBase(base, RoomCallingInfo.class), ParamsUtil.buildOperationID(), groupID);
     }
 
     /**
      * 获取进入房间需要的token，url等数据
      */
     public void signalingGetTokenByRoomID(OnBase<SignalingCertificate> base, String roomID) {
-//        Open_im_sdk.signalingGetTokenByRoomID(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), roomID);
+        Open_im_sdk.signalingGetTokenByRoomID(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), roomID);
     }
 
     /**
@@ -111,7 +111,7 @@ public class SignalingManager {
      * List<String> reduceBeWatchedUserIDList,
      */
     public void signalingUpdateMeetingInfo(OnBase<String> base, Map<String, Object> configure) {
-//        Open_im_sdk.signalingUpdateMeetingInfo(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(configure));
+        Open_im_sdk.signalingUpdateMeetingInfo(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(configure));
     }
 
     /**
@@ -124,7 +124,8 @@ public class SignalingManager {
      * @param inviteeUserIDList 被邀请的人
      * @param ex                其他
      */
-    public void signalingCreateMeeting(OnBase<SignalingCertificate> base, String meetingName, String meetingHostUserID, long startTime, long duration, List<String> inviteeUserIDList, String ex) {
+    public void signalingCreateMeeting(OnBase<SignalingCertificate> base, String meetingName, String meetingHostUserID, long startTime, long duration,
+                                       List<String> inviteeUserIDList, String ex) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("meetingName", meetingName);
         map.put("meetingHostUserID", meetingHostUserID);
@@ -132,22 +133,22 @@ public class SignalingManager {
         map.put("meetingDuration", duration);
         map.put("inviteeUserIDList", inviteeUserIDList);
         map.put("ex", ex);
-//        Open_im_sdk.signalingCreateMeeting(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+        Open_im_sdk.signalingCreateMeeting(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
     /**
      * 创建会议室
      *
-     * @param meetingID           会议ID
+     * @param roomID              会议ID
      * @param meetingName         会议主题
      * @param participantNickname 参与者临时名
      */
-    public void signalingJoinMeeting(OnBase<SignalingCertificate> base, String meetingID, String meetingName, String participantNickname) {
+    public void signalingJoinMeeting(OnBase<SignalingCertificate> base, String roomID, String meetingName, String participantNickname) {
         Map<String, Object> map = new ArrayMap<>();
-        map.put("meetingID", meetingID);
+        map.put("roomID", roomID);
         map.put("meetingName", meetingName);
         map.put("participantNickname", participantNickname);
-//        Open_im_sdk.signalingJoinMeeting(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+        Open_im_sdk.signalingJoinMeeting(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
     /**
@@ -160,26 +161,32 @@ public class SignalingManager {
      * @param muteAll    禁言 video和audio
      */
     public void signalingOperateStream(OnBase<String> base, String roomID, String streamType, String userID, boolean mute, boolean muteAll) {
-//        Open_im_sdk.signalingOperateStream(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), roomID, streamType, userID, mute, muteAll);
+        Open_im_sdk.signalingOperateStream(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), roomID, streamType, userID, mute, muteAll);
     }
 
     /**
      * 获取所有的未完成会议
      */
     public void signalingGetMeetings(OnBase<MeetingInfoList> base) {
-//        Open_im_sdk.signalingGetMeetings(BaseImpl.objectBase(base, MeetingInfoList.class), ParamsUtil.buildOperationID());
+        Open_im_sdk.signalingGetMeetings(BaseImpl.objectBase(base, MeetingInfoList.class), ParamsUtil.buildOperationID());
     }
 
     /**
      * 结束会议
      *
-     * @param roomID 房间ID 或 meetingID
+     * @param roomID 房间ID 或 roomID
      */
     public void signalingCloseRoom(OnBase<MeetingInfoList> base, String roomID) {
-//        Open_im_sdk.signalingCloseRoom(BaseImpl.objectBase(base, MeetingInfoList.class), ParamsUtil.buildOperationID(), roomID);
+        Open_im_sdk.signalingCloseRoom(BaseImpl.objectBase(base, MeetingInfoList.class), ParamsUtil.buildOperationID(), roomID);
     }
 
     public void signalingSendCustomSignal(OnBase<String> base, String roomID, String customInfo) {
-//        Open_im_sdk.signalingSendCustomSignal(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), customInfo, roomID);
+        Open_im_sdk.signalingSendCustomSignal(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), customInfo, roomID);
     }
+
+    public void getSignalingInvitationInfoStartApp(OnBase<SignalingInfo> callBack) {
+        Open_im_sdk.getSignalingInvitationInfoStartApp(BaseImpl.objectBase(callBack, SignalingInfo.class), ParamsUtil.buildOperationID());
+    }
+
+
 }

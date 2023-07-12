@@ -3,7 +3,7 @@ package io.openim.android.sdk.models;
 import java.util.List;
 
 public class MeetingInfo {
-    private String meetingID;
+    private String roomID;
     private String meetingName;
     private String hostUserID;
     private long createTime;
@@ -17,11 +17,11 @@ public class MeetingInfo {
     private List<String> inviteeUserIDList;
 
     public String getMeetingID() {
-        return meetingID;
+        return roomID;
     }
 
-    public void setMeetingID(String meetingID) {
-        this.meetingID = meetingID;
+    public void setMeetingID(String roomID) {
+        this.roomID = roomID;
     }
 
     public String getMeetingName() {

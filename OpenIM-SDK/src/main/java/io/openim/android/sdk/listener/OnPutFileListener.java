@@ -3,40 +3,29 @@ package io.openim.android.sdk.listener;
 
 public interface OnPutFileListener    {
     /**
-     *  hash 完成
-     * @param hash md5值
-     * @param total  文件大小
+     *  上传完成 - onSuccess
+     * @param size
+     * @param url
+     * @param type
      */
-    void hashComplete(String hash, long total);
+     void complete(long size, String url, int type);
 
     /**
      *  hash 计算进度
-     * @param current 当前进度
-     * @param total 总大小
      */
-    void hashProgress(long current, long total);
+    void hashPartComplete(String s, String s1);
+
+    void hashPartProgress(int index, long size, String s);
 
     void open(long size);
 
+    void partSize(long l);
     /**
-     *  上传完成
-     * @param total  总大小
-     * @param putType  类型
+     *  上传进度
      */
-    void putComplete(long total, long putType);
+    void unloadProgress(long size, long progress, long l2);
 
-    /**
-     *上传 中
-     * @param save
-     * @param current 当前上传大小
-     * @param total  文件总大小
-     */
-    void putProgress(long save, long current, long total);
+    void uploadID(String s);
 
-    /**
-     * 开始上传
-     * @param current 当前上传大小
-     * @param total 文件总大小
-     */
-    void putStart(long current, long total);
+    void uploadPartComplete(int i, long l, String s);
 }

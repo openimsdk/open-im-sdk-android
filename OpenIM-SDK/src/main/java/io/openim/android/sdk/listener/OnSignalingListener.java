@@ -30,4 +30,6 @@ public interface OnSignalingListener {
     void onMeetingStreamChanged(MeetingStreamEvent e);
 
     void onReceiveCustomSignal(CustomSignalingInfo s);
+
+    void onStreamChange(String s);
 }

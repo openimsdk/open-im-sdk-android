@@ -75,7 +75,6 @@ public class MessageType {
     public static final int CUSTOM_MSG_ONLINE_ONLY = 120;
 
 
-
     public static final int NTF_BEGIN = 1000;
 
     public static final int FRIEND_NTF_BEGIN = 1200;
@@ -110,8 +109,8 @@ public class MessageType {
     public static final int GROUP_MEMBER_CANCEL_MUTED_NTF = 1513;
     public static final int GROUP_MUTED_NTF = 1514;
     public static final int GROUP_CANCEL_MUTED_NTF = 1515;
-    public static final int GROUP_NOTICE_CHANGED_NTF = 1516;
-    public static final int GROUP_MEMBER_INFO_CHANGED_NTF = 1519;
+    public static final int GROUP_MEMBER_INFO_CHANGED_NTF = 1516;
+    public static final int GROUP_ANNOUNCEMENT_NTF = 1519;
     public static final int GROUP_NAME_CHANGED_NTF = 1520;
     public static final int SIGNALING_NTF_BEGIN = 1600;
     public static final int SIGNALING_NTF = 1601;

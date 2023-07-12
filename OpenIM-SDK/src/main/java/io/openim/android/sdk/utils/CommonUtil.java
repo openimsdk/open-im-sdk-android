@@ -3,6 +3,9 @@ package io.openim.android.sdk.utils;
 import android.os.Handler;
 import android.os.Looper;
 
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import io.openim.android.sdk.listener.OnBase;
