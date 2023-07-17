@@ -37,11 +37,13 @@ def path=project.rootDir.getAbsolutePath()+"/OpenIM-SDK/libs"
 task syncAllJars() {
     // 将指定路径下的所有 jar 包，打包至被打包的路径下
     def dir = new File(path)
-    files(dir.listFiles()).each { file ->
-        if (file.name.endsWith('.jar')) {
-            copy {
-                into buildDir.getPath() + "/outputs/aar/libs"
-                from file.absolutePath
+    if (dir.canExecute()){
+        files(dir.listFiles()).each { file ->
+            if (file.name.endsWith('.jar')) {
+                copy {
+                    into buildDir.getPath() + "/outputs/aar/libs"
+                    from file.absolutePath
+                }
             }
         }
     }
@@ -51,16 +53,18 @@ task syncAllAars(dependsOn: ':OpenIM-SDK:assemble') {
     def aarPath
     def destDir = buildDir.getPath() + "/outputs/aar"
     def dir = new File(path)
-    files(dir.listFiles()).each { file ->
-        aarPath = file.absolutePath
+    if (dir.canExecute()) {
+        files(dir.listFiles()).each { file ->
+            aarPath = file.absolutePath
 
-        if (file.name.endsWith('.aar')) {
-            jarName = "libs/" + file.name.replace(".aar", ".jar")
-            copy {
-                from zipTree(aarPath)
-                into destDir
-                include "**/*"
-                rename 'classes.jar', jarName
+            if (file.name.endsWith('.aar')) {
+                jarName = "libs/" + file.name.replace(".aar", ".jar")
+                copy {
+                    from zipTree(aarPath)
+                    into destDir
+                    include "**/*"
+                    rename 'classes.jar', jarName
+                }
             }
         }
     }
