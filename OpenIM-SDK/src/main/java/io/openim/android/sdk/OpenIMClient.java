@@ -34,6 +34,7 @@ import io.openim.android.sdk.manager.ConversationManager;
 import io.openim.android.sdk.manager.FriendshipManager;
 import io.openim.android.sdk.manager.GroupManager;
 import io.openim.android.sdk.manager.MessageManager;
+import io.openim.android.sdk.manager.SignalingManager;
 import io.openim.android.sdk.manager.UserInfoManager;
 import io.openim.android.sdk.models.PutArgs;
 import io.openim.android.sdk.utils.CommonUtil;
@@ -48,6 +49,7 @@ public class OpenIMClient {
     public GroupManager groupManager;
     public MessageManager messageManager;
     public UserInfoManager userInfoManager;
+    public SignalingManager signalingManager;
 
     //前台Activity数量
     @NotNull("You need to call the 'initSDK' method first")
@@ -59,6 +61,7 @@ public class OpenIMClient {
         groupManager = new GroupManager();
         messageManager = new MessageManager();
         userInfoManager = new UserInfoManager();
+        signalingManager = new SignalingManager();
     }
 
     private static class Singleton {
