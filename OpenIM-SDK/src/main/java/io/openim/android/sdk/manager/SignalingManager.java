@@ -161,7 +161,7 @@ public class SignalingManager {
      * @param muteAll    禁言 video和audio
      */
     public void signalingOperateStream(OnBase<String> base, String roomID, String streamType, String userID, boolean mute, boolean muteAll) {
-        Open_im_sdk.signalingOperateStream(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), roomID, streamType, userID, mute, muteAll);
+        Open_im_sdk.signalingOperateStream(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), streamType, roomID, userID, mute, muteAll);
     }
 
     /**
