@@ -1,16 +1,16 @@
 package io.openim.android.sdk.models;
 
 public class SignalingInfo {
-    private String opUserID;
+    private String user;
     private SignalingInvitationInfo invitation;
     private OfflinePushInfo offlinePushInfo;
 
     public String getOpUserID() {
-        return opUserID;
+        return user;
     }
 
     public void setOpUserID(String opUserID) {
-        this.opUserID = opUserID;
+        this.user = opUserID;
     }
 
     public SignalingInvitationInfo getInvitation() {
