@@ -176,8 +176,8 @@ public class SignalingManager {
      *
      * @param roomID 房间ID 或 roomID
      */
-    public void signalingCloseRoom(OnBase<MeetingInfoList> base, String roomID) {
-        Open_im_sdk.signalingCloseRoom(BaseImpl.objectBase(base, MeetingInfoList.class), ParamsUtil.buildOperationID(), roomID);
+    public void signalingCloseRoom(OnBase<String> base, String roomID) {
+        Open_im_sdk.signalingCloseRoom(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), roomID);
     }
 
     public void signalingSendCustomSignal(OnBase<String> base, String roomID, String customInfo) {

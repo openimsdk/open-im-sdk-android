@@ -11,18 +11,18 @@ public class _PutFileCallback extends BaseListener<OnPutFileListener> implements
 
 
     @Override
-    public void complete(long l, String s, int i) {
-        post(() -> listener.complete(l,s,i));
+    public void complete(long l, String s, long l1) {
+        post(() -> listener.complete(l, s, l1));
     }
 
     @Override
     public void hashPartComplete(String s, String s1) {
-        post(() -> listener.hashPartComplete(s,s1));
+        post(() -> listener.hashPartComplete(s, s1));
     }
 
     @Override
-    public void hashPartProgress(int i, long l, String s) {
-        post(() -> listener.hashPartProgress(i,l,s));
+    public void hashPartProgress(long l, long l1, String s) {
+        post(() -> listener.hashPartProgress(l, l1, s));
     }
 
     @Override
@@ -31,13 +31,14 @@ public class _PutFileCallback extends BaseListener<OnPutFileListener> implements
     }
 
     @Override
-    public void partSize(long l, int i) {
-        post(() -> listener.partSize(l));
+    public void partSize(long l, long l1) {
+        post(() -> listener.partSize(l, l1));
     }
+
 
     @Override
     public void uploadComplete(long l, long l1, long l2) {
-        post(() -> listener.unloadProgress(l, l1, l2));
+        post(() -> listener.uploadComplete(l, l1, l2));
     }
 
     @Override
@@ -46,7 +47,7 @@ public class _PutFileCallback extends BaseListener<OnPutFileListener> implements
     }
 
     @Override
-    public void uploadPartComplete(int i, long l, String s) {
-        post(() -> listener.uploadPartComplete(i, l, s));
+    public void uploadPartComplete(long l, long l1, String s) {
+        post(() -> listener.uploadPartComplete(l, l1, s));
     }
 }

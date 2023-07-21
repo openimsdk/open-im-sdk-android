@@ -8,24 +8,22 @@ public interface OnPutFileListener    {
      * @param url
      * @param type
      */
-     void complete(long size, String url, int type);
+    void complete(long size, String url, long type);
 
-    /**
-     *  hash 计算进度
-     */
-    void hashPartComplete(String s, String s1);
+    void hashPartComplete(String var1, String var2);
 
-    void hashPartProgress(int index, long size, String s);
+    void hashPartProgress(long var1, long var3, String var5);
 
-    void open(long size);
+    void open(long var1);
 
-    void partSize(long l);
+    void partSize(long var1, long var3);
+
     /**
      *  上传进度
      */
-    void unloadProgress(long size, long progress, long l2);
+    void uploadComplete(long size, long progress, long l2);
 
-    void uploadID(String s);
+    void uploadID(String var1);
 
-    void uploadPartComplete(int i, long l, String s);
+    void uploadPartComplete(long var1, long var3, String var5);
 }
