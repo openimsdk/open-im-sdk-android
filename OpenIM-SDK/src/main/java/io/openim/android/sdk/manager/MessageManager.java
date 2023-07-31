@@ -1,6 +1,7 @@
 package io.openim.android.sdk.manager;
 
 
+import android.text.TextUtils;
 import android.util.ArrayMap;
 
 import java.util.List;
@@ -417,6 +418,7 @@ public class MessageManager {
 
 
     private int lastMinSeq;
+    private String lastConversationID;
 
     /**
      * 撤回消息（新版本）
@@ -431,6 +433,7 @@ public class MessageManager {
         Open_im_sdk.revokeMessage(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID, clientMsgID);
     }
 
+
     /**
      * 获取历史消息
      * 在搜索消息时定位到消息位置，获取新消息列表
@@ -444,6 +447,7 @@ public class MessageManager {
      * @param callBack       callback <{@link AdvancedMessage}>
      */
     public void getAdvancedHistoryMessageList(OnBase<AdvancedMessage> callBack, String conversationID, Message startMsg, int count) {
+        isClearSeq(conversationID);
         Map<String, Object> map = new ArrayMap<>();
         map.put("lastMinSeq", MessageManager.this.lastMinSeq);
         map.put("conversationID", conversationID);
@@ -469,6 +473,14 @@ public class MessageManager {
         }, ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
+    private void isClearSeq(String conversationID) {
+        if (!TextUtils.equals(lastConversationID,
+            conversationID))
+            lastMinSeq = 0;
+        lastConversationID = conversationID;
+
+    }
+
 
     /**
      * 获取历史消息 消息倒叙
@@ -482,6 +494,7 @@ public class MessageManager {
      * @param count          一次拉取count条
      */
     public void getAdvancedHistoryMessageListReverse(OnBase<AdvancedMessage> callBack, String conversationID, Message startMsg, int count) {
+        isClearSeq(conversationID);
         Map<String, Object> map = new ArrayMap<>();
         map.put("lastMinSeq", MessageManager.this.lastMinSeq);
         map.put("conversationID", conversationID);
