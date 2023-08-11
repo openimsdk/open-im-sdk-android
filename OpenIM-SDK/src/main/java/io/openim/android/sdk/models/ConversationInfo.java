@@ -84,6 +84,30 @@ public class ConversationInfo {
      */
     private int burnDuration;
 
+    /**
+     *  定期删除时间
+     */
+    private long msgDestructTime;
+    /**
+     *  开启定期删除时间
+     */
+    private boolean isMsgDestruct;
+
+    public long getMsgDestructTime() {
+        return msgDestructTime;
+    }
+
+    public void setMsgDestructTime(long msgDestructTime) {
+        this.msgDestructTime = msgDestructTime;
+    }
+
+    public boolean isMsgDestruct() {
+        return isMsgDestruct;
+    }
+
+    public void setMsgDestruct(boolean msgDestruct) {
+        isMsgDestruct = msgDestruct;
+    }
 
     public String getConversationID() {
         return conversationID;

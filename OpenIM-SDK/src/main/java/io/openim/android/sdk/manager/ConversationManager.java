@@ -68,9 +68,9 @@ public class ConversationManager {
      * @param base            callback List<{@link ConversationInfo}>
      */
     public void getMultipleConversation(OnBase<List<ConversationInfo>> base, List<String> conversationIDs) {
-        Open_im_sdk.getMultipleConversation(BaseImpl.arrayBase(base, ConversationInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(conversationIDs));
+        Open_im_sdk.getMultipleConversation(BaseImpl.arrayBase(base, ConversationInfo.class), ParamsUtil.buildOperationID(),
+            JsonUtil.toString(conversationIDs));
     }
-
 
 
     /**
@@ -129,7 +129,7 @@ public class ConversationManager {
      * @param sessionType: 单聊：1；群聊：2
      */
     public String getConversationIDBySessionType(String sourceId, int sessionType) {
-        return Open_im_sdk.getConversationIDBySessionType(ParamsUtil.buildOperationID(),sourceId, sessionType);
+        return Open_im_sdk.getConversationIDBySessionType(ParamsUtil.buildOperationID(), sourceId, sessionType);
     }
 
     /**
@@ -147,7 +147,8 @@ public class ConversationManager {
      * [{"conversationId":"single_13922222222","result":0}]
      */
     public void getConversationRecvMessageOpt(OnBase<List<NotDisturbInfo>> base, List<String> conversationIDs) {
-        Open_im_sdk.getConversationRecvMessageOpt(BaseImpl.arrayBase(base, NotDisturbInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(conversationIDs));
+        Open_im_sdk.getConversationRecvMessageOpt(BaseImpl.arrayBase(base, NotDisturbInfo.class), ParamsUtil.buildOperationID(),
+            JsonUtil.toString(conversationIDs));
     }
 
     /***
@@ -212,6 +213,27 @@ public class ConversationManager {
         Open_im_sdk.setConversationBurnDuration(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID,
             burnDuration);
     }
+
+    /**
+     * 设置 到期删除
+     * @param base
+     * @param conversationID
+     * @param isMsgDestruct
+     */
+    public void setConversationIsMsgDestruct(OnBase<String> base, String conversationID, boolean isMsgDestruct) {
+        Open_im_sdk.setConversationIsMsgDestruct(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, isMsgDestruct);
+    }
+
+    /**
+     *设置到期删除时间
+     * @param base
+     * @param conversationID
+     * @param msgDestructTime 秒
+     */
+    public void setConversationMsgDestructTime(OnBase<String> base, String conversationID,  long msgDestructTime) {
+        Open_im_sdk.setConversationMsgDestructTime(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, msgDestructTime);
+    }
+
 
     /**
      * 会话排序比较器
