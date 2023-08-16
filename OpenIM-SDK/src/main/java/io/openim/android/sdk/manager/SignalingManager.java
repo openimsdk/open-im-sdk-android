@@ -50,22 +50,22 @@ public class SignalingManager {
     /**
      * 拒绝某人音视频邀请
      */
-    public void signalingReject(OnBase<SignalingCertificate> base, SignalingInfo info) {
-        Open_im_sdk.signalingReject(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
+    public void signalingReject(OnBase<String> base, SignalingInfo info) {
+        Open_im_sdk.signalingReject(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
     }
 
     /**
      * 邀请者取消音视频通话
      */
-    public void signalingCancel(OnBase<SignalingCertificate> base, SignalingInfo info) {
-        Open_im_sdk.signalingCancel(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
+    public void signalingCancel(OnBase<String> base, SignalingInfo info) {
+        Open_im_sdk.signalingCancel(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
     }
 
     /**
      * 挂断
      */
-    public void signalingHungUp(OnBase<SignalingCertificate> base, SignalingInfo info) {
-        Open_im_sdk.signalingHungUp(BaseImpl.objectBase(base, SignalingCertificate.class), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
+    public void signalingHungUp(OnBase<String> base, SignalingInfo info) {
+        Open_im_sdk.signalingHungUp(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(info));
     }
 
 
