@@ -8,4 +8,6 @@ public interface OnUserListener {
      * 可以在 UI 上更新自己的头像和昵称。
      */
     void onSelfInfoUpdated(UserInfo info);
+
+    void onUserStatusChanged(String s);
 }

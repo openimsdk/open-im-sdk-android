@@ -17,4 +17,9 @@ public class _UserListener implements open_im_sdk_callback.OnUserListener {
             CommonUtil.runMainThread(() -> listener.onSelfInfoUpdated(JsonUtil.toObj(s, UserInfo.class)));
         }
     }
+
+    @Override
+    public void onUserStatusChanged(String s) {
+        CommonUtil.runMainThread(() -> listener.onUserStatusChanged(s));
+    }
 }
