@@ -13,6 +13,7 @@ import io.openim.android.sdk.listener.OnUserListener;
 import io.openim.android.sdk.listener._GroupListener;
 import io.openim.android.sdk.listener._UserListener;
 import io.openim.android.sdk.models.UserInfo;
+import io.openim.android.sdk.models.UsersOnlineStatus;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
@@ -46,7 +47,8 @@ public class UserInfoManager {
      * @param email       邮箱
      * @param base        callback String
      */
-    public void setSelfInfo(OnBase<String> base, String nickname, String faceURL, int gender, int appMangerLevel, String phoneNumber, long birth, String email, String ex) {
+    public void setSelfInfo(OnBase<String> base, String nickname, String faceURL, int gender, int appMangerLevel, String phoneNumber, long birth,
+                            String email, String ex) {
         Map<String, Object> map = new ArrayMap<>();
         map.put("nickname", nickname);
         map.put("faceURL", faceURL);
@@ -64,5 +66,37 @@ public class UserInfoManager {
      */
     public void getSelfUserInfo(OnBase<UserInfo> base) {
         Open_im_sdk.getSelfUserInfo(BaseImpl.objectBase(base, UserInfo.class), ParamsUtil.buildOperationID());
+
     }
+
+    /**
+     * subscribe the status of the user
+     *
+     * @param callBack
+     * @param uid
+     */
+    public void subscribeUsersOnlineStatus(OnBase<List<UsersOnlineStatus>> callBack, List<String> uid) {
+        Open_im_sdk.subscribeUsersStatus(BaseImpl.arrayBase(callBack,
+            UsersOnlineStatus.class), ParamsUtil.buildOperationID(), JsonUtil.toString(uid));
+    }
+
+    /**
+     * Do not receive the user's online status
+     *
+     * @param callBack
+     * @param uid
+     */
+    public void unsubscribeOnlineUsersStatus(OnBase<String> callBack, List<String> uid) {
+        Open_im_sdk.subscribeUsersStatus(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), JsonUtil.toString(uid));
+    }
+
+    /**
+     * get all subscriber's online status
+     * @param callBack
+     */
+    public void getSubscribeOnlineUsersStatus(OnBase<List<UsersOnlineStatus>> callBack) {
+        Open_im_sdk.getSubscribeUsersStatus(BaseImpl.arrayBase(callBack,
+            UsersOnlineStatus.class),ParamsUtil.buildOperationID());
+    }
+
 }
