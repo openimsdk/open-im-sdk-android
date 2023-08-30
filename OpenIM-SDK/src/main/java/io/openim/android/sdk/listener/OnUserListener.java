@@ -1,6 +1,7 @@
 package io.openim.android.sdk.listener;
 
 import io.openim.android.sdk.models.UserInfo;
+import io.openim.android.sdk.models.UsersOnlineStatus;
 
 public interface OnUserListener {
     /**
@@ -9,5 +10,9 @@ public interface OnUserListener {
      */
     void onSelfInfoUpdated(UserInfo info);
 
-    void onUserStatusChanged(String s);
+    /**
+     *  When the user's online status changes, call
+     * @param onlineStatus
+     */
+    void onUserStatusChanged(UsersOnlineStatus onlineStatus);
 }
