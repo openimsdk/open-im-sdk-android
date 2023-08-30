@@ -1,6 +1,7 @@
 package io.openim.android.sdk.listener;
 
 import io.openim.android.sdk.models.UserInfo;
+import io.openim.android.sdk.models.UsersOnlineStatus;
 import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
 
@@ -16,5 +17,10 @@ public class _UserListener implements open_im_sdk_callback.OnUserListener {
         if (null != listener) {
             CommonUtil.runMainThread(() -> listener.onSelfInfoUpdated(JsonUtil.toObj(s, UserInfo.class)));
         }
+    }
+
+    @Override
+    public void onUserStatusChanged(String s) {
+        CommonUtil.runMainThread(() -> listener.onUserStatusChanged(JsonUtil.toObj(s, UsersOnlineStatus.class)));
     }
 }
