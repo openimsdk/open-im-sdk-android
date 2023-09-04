@@ -605,8 +605,21 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createFileMessageByURL(FileElem fileElem) {
+
         return parse(Open_im_sdk.createFileMessageByURL(ParamsUtil.buildOperationID(), JsonUtil.toString(fileElem)));
     }
+
+    /**
+     * 修改消息本地 ex 字段，如：下载文件后设置保存路径等。
+     * @param callBack
+     * @param conversationID
+     * @param clientMsgID
+     * @param localEx
+     */
+    public void setMessageLocalEx(OnBase<String> callBack, String conversationID, String clientMsgID, String localEx) {
+        Open_im_sdk.setMessageLocalEx(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID, clientMsgID, localEx);
+    }
+
 
     /**
      * 自定义业务消息监听

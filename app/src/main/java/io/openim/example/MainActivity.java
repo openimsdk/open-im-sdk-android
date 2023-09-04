@@ -24,6 +24,7 @@ import io.openim.android.sdk.models.RichMessage;
 import io.openim.android.sdk.models.SearchResult;
 import io.openim.android.sdk.models.SoundElem;
 import io.openim.android.sdk.models.TypeKeySetResult;
+import io.openim.android.sdk.models.UsersOnlineStatus;
 
 
 /**

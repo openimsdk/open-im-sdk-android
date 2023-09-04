@@ -99,4 +99,11 @@ public class UserInfoManager {
             UsersOnlineStatus.class),ParamsUtil.buildOperationID());
     }
 
+
+    public void getUserStatus(OnBase<List<UsersOnlineStatus>> callback,List<String> ids){
+        Open_im_sdk.getUserStatus(BaseImpl.arrayBase(callback,UsersOnlineStatus.class),ParamsUtil.buildOperationID(),JsonUtil.toString(ids));
+    }
+
+
+
 }
