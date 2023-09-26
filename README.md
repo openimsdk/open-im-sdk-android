@@ -1,4 +1,4 @@
-## 可以免费使用，必须在app启动页加上 (由OpenIM提供技术支持)
+
 
 <img src="https://github.com/OpenIMSDK/OpenIM-Docs/blob/main/docs/images/WechatIMG20.jpeg" alt="image" style="width: 350px; " />
 
