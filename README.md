@@ -67,24 +67,7 @@ OpenIMClient.getInstance().initSDK(
  OpenIMClient.getInstance().groupManager.setOnGroupListener(new OnGroupListener(){})
 
 // Retrieve the profile of the currently logged-in user
-public void login() {
-        Parameter parameter = getParameter(null);
-	//1.Log in to your business server to obtain the userID and token.
-        N.API(OpenIMService.class).login(parameter.buildJsonBody())
-            .compose(N.IOMain())
-            .subscribe(new NetObserver<ResponseBody>(getContext()) {
-
-                @Override
-                public void onSuccess(ResponseBody o) {
-                    try {
-                        String body = o.string();
-                        Base<LoginCertificate> loginCertificate = GsonHel.dataObject(body, LoginCertificate.class);
-                        if (loginCertificate.errCode != 0) {
-                            IView.err(loginCertificate.errMsg);
-                            return;
-                        }
-			//2.Use the userID and token obtained in step 1 to log in to the IM (Instant Messaging) server.
-                        OpenIMClient.getInstance().login(new OnBase<String>() {
+ OpenIMClient.getInstance().login(new OnBase<String>() {
                             @Override
                             public void onError(int code, String error) {
                                 IView.err(error);
@@ -95,20 +78,7 @@ public void login() {
                                 //Cache login information and start a delightful chat
                    
                             }
-                        }, loginCertificate.data.userID, loginCertificate.data.token);
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                @Override
-                protected void onFailure(Throwable e) {
-                    IView.err(e.getMessage());
-                }
-            });
-    }
+                        }, userID, token);
 ```
 
 To log into the IM server, you need to create an account and obtain a user ID and token. Refer to the [access token documentation](https://doc.rentsoft.cn/restapi/userManagement/userRegister) for details.
