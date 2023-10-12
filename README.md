@@ -152,7 +152,7 @@ OpenIMClient.getInstance().messageManager.setAdvancedMsgListener(new OnAdvanceMs
 
 ## Examples 🌟
 
-You can find a demo Flutter app that uses the SDK in the [open-im-android-demo](https://github.com/openimsdk/open-im-android-demo) repository.
+You can find a demo Android app that uses the SDK in the [open-im-android-demo](https://github.com/openimsdk/open-im-android-demo) repository.
 
 
 ## Community :busts_in_silhouette:
