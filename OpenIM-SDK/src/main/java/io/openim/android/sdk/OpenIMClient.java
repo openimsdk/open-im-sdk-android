@@ -108,7 +108,9 @@ public class OpenIMClient {
         LogcatHelper.logDInDebug(String.format("Initialization successful: %s", initialized));
         return initialized;
     }
-
+    public void unInit(){
+        Open_im_sdk.unInitSDK(ParamsUtil.buildOperationID());
+    }
 
     private void registerNetworkCallback() {
         ConnectivityManager connectivityManager = (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);

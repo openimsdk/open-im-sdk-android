@@ -1,6 +1,8 @@
 package io.openim.android.sdk.models;
 
-public class AttachedInfoElem {
+import java.io.Serializable;
+
+public class AttachedInfoElem implements Serializable {
     /**
      * 组信息已读详细
      */
@@ -18,6 +20,34 @@ public class AttachedInfoElem {
      * 即从hasReadTime时间算起，超过了burnDuration秒触发销毁
      */
     private int burnDuration;
+
+    private boolean notSenderNotificationPush;
+    private boolean isEncryption;
+    private boolean inEncryptStatus;
+
+    public boolean isNotSenderNotificationPush() {
+        return notSenderNotificationPush;
+    }
+
+    public void setNotSenderNotificationPush(boolean notSenderNotificationPush) {
+        this.notSenderNotificationPush = notSenderNotificationPush;
+    }
+
+    public boolean isEncryption() {
+        return isEncryption;
+    }
+
+    public void setEncryption(boolean encryption) {
+        isEncryption = encryption;
+    }
+
+    public boolean isInEncryptStatus() {
+        return inEncryptStatus;
+    }
+
+    public void setInEncryptStatus(boolean inEncryptStatus) {
+        this.inEncryptStatus = inEncryptStatus;
+    }
 
     public GroupHasReadInfo getGroupHasReadInfo() {
         return groupHasReadInfo;
