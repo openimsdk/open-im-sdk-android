@@ -62,7 +62,7 @@ OpenIMClient.getInstance().initSDK(
  //Friendship Status Change Listener
  OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFriendshipListener() {})
  //Conversation-related Listener
- OpenIMClient.getInstance().conversationManager.setOnConversationListener(new OnConversationListener()
+ OpenIMClient.getInstance().conversationManager.setOnConversationListener(new OnConversationListener(){})
  //Group-related Listener
  OpenIMClient.getInstance().groupManager.setOnGroupListener(new OnGroupListener(){})
 
