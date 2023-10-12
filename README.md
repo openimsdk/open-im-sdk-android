@@ -50,9 +50,7 @@ OpenIMClient.getInstance().initSDK(
 ```
 ### Logging In and Listening for Connection Status
 
-> Note1: Log in to your business server to obtain the userID and token.  
-> Note2: Use the userID and token obtained in step 1 to log in to the IM (Instant Messaging)server.  
-> Note2: You need to set up the listeners first and then log in.
+> Note1: You need to set up the listeners first and then log in.
 
 
 ```java
