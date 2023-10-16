@@ -2,7 +2,7 @@ package io.openim.android.sdk.models;
 
 import java.util.List;
 
-public class ReadReceiptInfo {
+public class C2CReadReceiptInfo {
     /**
      * 用户id
      */
