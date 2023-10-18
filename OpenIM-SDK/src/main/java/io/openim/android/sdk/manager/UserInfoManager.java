@@ -37,6 +37,17 @@ public class UserInfoManager {
     }
 
     /**
+     * 从缓存获取用户信息
+     * @param callBack
+     * @param uidList
+     * @param groupID
+     */
+    public void getUsersInfoWithCache(OnBase<List<UserInfo>> callBack,List<String> uidList,String groupID){
+        Open_im_sdk.getUsersInfoWithCache(BaseImpl.arrayBase(callBack, UserInfo.class),
+            ParamsUtil.buildOperationID(),JsonUtil.toString(uidList),groupID);
+    }
+
+    /**
      * 修改资料
      *
      * @param nickname    名字

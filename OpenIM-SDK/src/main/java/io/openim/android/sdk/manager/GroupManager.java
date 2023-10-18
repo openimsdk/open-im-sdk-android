@@ -5,6 +5,7 @@ import android.util.ArrayMap;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +33,17 @@ public class GroupManager {
         Open_im_sdk.setGroupListener(new _GroupListener(listener));
     }
 
+    /**
+     *修改群成员信息
+     * @param callBack
+     */
+    public void setGroupMemberInfo(String groupID,String userID,String ex,OnBase<String> callBack){
+        HashMap<String,String> map=new HashMap<>();
+        map.put("groupID",groupID);
+        map.put("userID",userID);
+        map.put("ex",ex);
+        Open_im_sdk.setGroupMemberInfo(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(),JsonUtil.toString(map));
+    }
     /**
      * 邀请进群
      *
