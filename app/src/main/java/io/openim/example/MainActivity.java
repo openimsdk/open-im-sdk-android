@@ -2,6 +2,8 @@ package io.openim.example;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
+import io.openim.android.sdk.OpenIMClient;
+
 
 /**
  * 此项目是纯纯的sdk
