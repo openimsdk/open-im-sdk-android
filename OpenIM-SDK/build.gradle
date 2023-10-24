@@ -41,8 +41,6 @@ android {
                     groupId = 'com.github.openimsdk'
                     //建议和github仓库名称对应，否则对jitpack无效
                     artifactId = 'open-im-sdk-android'
-                    //建议和release的tag相同，否则对jitpack无效
-//                    version = 'v3.3.1'
                 }
             }
         }
