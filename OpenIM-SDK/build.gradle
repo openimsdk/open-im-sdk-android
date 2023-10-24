@@ -55,6 +55,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-process:2.6.1'
     implementation 'androidx.annotation:annotation:1.6.0'
 
-    compileOnly fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-    compileOnly 'com.google.code.gson:gson:2.9.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation 'com.google.code.gson:gson:2.9.1'
 }
