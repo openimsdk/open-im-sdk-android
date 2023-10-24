@@ -6,12 +6,14 @@ buildscript {
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
         maven { url 'https://open-im-online.rentsoft.cn:51000/repository/maven2/' }
+
+        maven { url 'https://jitpack.io' }
         google()
         mavenCentral()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.2.2"
-
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -24,6 +26,8 @@ allprojects {
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
         maven { url 'https://open-im-online.rentsoft.cn:51000/repository/maven2/' }
+
+        maven { url 'https://jitpack.io' }
         google()
         mavenCentral()
     }

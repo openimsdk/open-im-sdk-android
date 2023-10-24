@@ -35,6 +35,7 @@ import io.openim.android.sdk.manager.FriendshipManager;
 import io.openim.android.sdk.manager.GroupManager;
 import io.openim.android.sdk.manager.MessageManager;
 import io.openim.android.sdk.manager.UserInfoManager;
+import io.openim.android.sdk.models.InitConfig;
 import io.openim.android.sdk.models.PutArgs;
 import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
@@ -49,8 +50,6 @@ public class OpenIMClient {
     public MessageManager messageManager;
     public UserInfoManager userInfoManager;
 
-    //前台Activity数量
-    @NotNull("You need to call the 'initSDK' method first")
     private Application app;
 
     private OpenIMClient() {
@@ -76,36 +75,19 @@ public class OpenIMClient {
      * 需要将文件自行拷贝到dbPath目录下，如果此时文件路径为 apath+"/sound/a.mp3"，则参数path的值为：/sound/a.mp3。
      * 如果选择的全路径方法，路径为你文件的实际路径不需要再拷贝。
      *
-     * @param platform             平台{@link io.openim.android.sdk.enums.Platform}
-     * @param apiUrl               SDK的API接口地址。如：http:xxx:10000
-     * @param wsUrl                SDK的web socket地址。如： ws:xxx:17778
-     * @param storageDir           数据存储目录路径
-     * @param logLevel             日志等级，如：6
-     * @param isLogStandardOutput  控制台是否输出日志
-     * @param logFilePath          日志输出的路径
      * @param listener             SDK初始化监听
-     * @param isExternalExtensions 消息扩展
      * @return boolean   true成功; false失败
      */
-    public boolean initSDK(Application application, int platform, String apiUrl, String wsUrl,
-                           String storageDir, int logLevel, boolean isLogStandardOutput,
-                           String logFilePath, boolean isExternalExtensions, @NotNull OnConnListener listener) {
+    public boolean initSDK(Application application, InitConfig initConfig, @NotNull OnConnListener listener) {
         this.app = application;
-        Map<String, Object> map = new ArrayMap<>();
-        map.put("platformID", platform);
-        map.put("apiAddr", apiUrl);
-        map.put("wsAddr", wsUrl);
-        map.put("dataDir", storageDir);
-        map.put("logLevel", logLevel);
-        map.put("isLogStandardOutput", isLogStandardOutput);
-        map.put("logFilePath", logFilePath);
-        map.put("isExternalExtensions", isExternalExtensions);
-
-        boolean initialized = Open_im_sdk.initSDK(new _ConnListener(listener), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+        boolean initialized = Open_im_sdk.initSDK(new _ConnListener(listener),
+            ParamsUtil.buildOperationID(), JsonUtil.toString(initConfig));
         LogcatHelper.logDInDebug(String.format("Initialization successful: %s", initialized));
         return initialized;
     }
-
+    public void unInit(){
+        Open_im_sdk.unInitSDK(ParamsUtil.buildOperationID());
+    }
 
     private void registerNetworkCallback() {
         ConnectivityManager connectivityManager = (ConnectivityManager) app.getSystemService(Context.CONNECTIVITY_SERVICE);

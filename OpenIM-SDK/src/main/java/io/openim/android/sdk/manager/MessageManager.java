@@ -21,6 +21,7 @@ import io.openim.android.sdk.models.AdvancedMessage;
 import io.openim.android.sdk.models.AtUserInfo;
 import io.openim.android.sdk.models.CardElem;
 import io.openim.android.sdk.models.FileElem;
+import io.openim.android.sdk.models.GroupMembersInfo;
 import io.openim.android.sdk.models.KeyValue;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.OfflinePushInfo;
@@ -41,6 +42,42 @@ import open_im_sdk_callback.Base;
  * 消息管理器
  */
 public class MessageManager {
+    /**
+     * 发送群消息已读回执
+     * @param conversationID
+     * @param clientMsgIDs
+     * @param callBack
+     */
+    public void sendGroupMessageReadReceipt(String conversationID,List<String> clientMsgIDs,OnBase<String> callBack){
+        Open_im_sdk.sendGroupMessageReadReceipt(BaseImpl.stringBase(callBack),
+            ParamsUtil.buildOperationID(),
+            conversationID,
+            JsonUtil.toString(clientMsgIDs));
+    }
+
+    /**
+     * 获取已读/未读列表
+     * @param conversationID
+     * @param clientMsgID
+     * @param filter 0: read 1: unread
+     * @param offset
+     * @param count
+     * @param callBack
+     */
+    public void  getGroupMessageReaderList(String conversationID,
+                                           String clientMsgID,
+                                           int filter,
+                                           int offset,
+                                           int count,
+                                           OnBase<List<GroupMembersInfo>> callBack){
+        Open_im_sdk.getGroupMessageReaderList(BaseImpl.arrayBase(callBack,GroupMembersInfo.class),
+            ParamsUtil.buildOperationID(),
+            conversationID,
+            clientMsgID,
+            filter,
+            offset,
+            count);
+    }
     /**
      * 添加消息监听
      * <p>
@@ -576,8 +613,8 @@ public class MessageManager {
      *
      * @return {@link Message}
      */
-    public Message createImageMessageByURL(PictureInfo sourcePicture, PictureInfo bigPicture, PictureInfo snapshotPicture) {
-        return parse(Open_im_sdk.createImageMessageByURL(ParamsUtil.buildOperationID(), JsonUtil.toString(sourcePicture), JsonUtil.toString(bigPicture),
+    public Message createImageMessageByURL(String sourcePath,PictureInfo sourcePicture, PictureInfo bigPicture, PictureInfo snapshotPicture) {
+        return parse(Open_im_sdk.createImageMessageByURL(ParamsUtil.buildOperationID(), sourcePath,JsonUtil.toString(sourcePicture), JsonUtil.toString(bigPicture),
             JsonUtil.toString(snapshotPicture)));
     }
 
@@ -605,8 +642,21 @@ public class MessageManager {
      * @return {@link Message}
      */
     public Message createFileMessageByURL(FileElem fileElem) {
+
         return parse(Open_im_sdk.createFileMessageByURL(ParamsUtil.buildOperationID(), JsonUtil.toString(fileElem)));
     }
+
+    /**
+     * 修改消息本地 ex 字段，如：下载文件后设置保存路径等。
+     * @param callBack
+     * @param conversationID
+     * @param clientMsgID
+     * @param localEx
+     */
+    public void setMessageLocalEx(OnBase<String> callBack, String conversationID, String clientMsgID, String localEx) {
+        Open_im_sdk.setMessageLocalEx(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID, clientMsgID, localEx);
+    }
+
 
     /**
      * 自定义业务消息监听

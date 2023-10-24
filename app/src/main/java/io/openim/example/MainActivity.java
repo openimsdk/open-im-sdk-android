@@ -16,6 +16,7 @@ import io.openim.android.sdk.models.AdvancedMessage;
 import io.openim.android.sdk.models.AtUserInfo;
 import io.openim.android.sdk.models.ConversationInfo;
 import io.openim.android.sdk.models.FileElem;
+import io.openim.android.sdk.models.GroupInfo;
 import io.openim.android.sdk.models.KeyValue;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.OfflinePushInfo;
@@ -24,6 +25,8 @@ import io.openim.android.sdk.models.RichMessage;
 import io.openim.android.sdk.models.SearchResult;
 import io.openim.android.sdk.models.SoundElem;
 import io.openim.android.sdk.models.TypeKeySetResult;
+import io.openim.android.sdk.models.UserInfo;
+import io.openim.android.sdk.models.UsersOnlineStatus;
 
 
 /**
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
     }
 }

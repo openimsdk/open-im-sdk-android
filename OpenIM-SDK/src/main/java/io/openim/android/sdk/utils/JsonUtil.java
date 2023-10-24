@@ -18,9 +18,13 @@ public class JsonUtil {
      * 将object对象转成json字符串
      */
     public static String toString(Object object) {
-        String gsonString = null;
-        if (null != object) {
-            gsonString = gson.toJson(object);
+        String gsonString = "";
+        try {
+            if (null != object) {
+                gsonString = gson.toJson(object);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return gsonString;
     }
@@ -31,8 +35,12 @@ public class JsonUtil {
      */
     public static <T> T toObj(String gsonString, Class<T> cls) {
         T t = null;
-        if (null != gsonString) {
-            t = gson.fromJson(gsonString, cls);
+        try {
+            if (null != gsonString) {
+                t = gson.fromJson(gsonString, cls);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return t;
     }
@@ -60,12 +68,16 @@ public class JsonUtil {
      */
     public static <T> List<T> toArray(String json, Class<T> cls) {
         List<T> list = null;
-        if (null != json) {
-            list = new ArrayList<T>();
-            JsonArray array = JsonParser.parseString(json).getAsJsonArray();
-            for (final JsonElement elem : array) {
-                list.add(gson.fromJson(elem, cls));
+        try {
+            if (null != json) {
+                list = new ArrayList<T>();
+                JsonArray array = JsonParser.parseString(json).getAsJsonArray();
+                for (final JsonElement elem : array) {
+                    list.add(gson.fromJson(elem, cls));
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return list;
     }

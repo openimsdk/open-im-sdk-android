@@ -15,7 +15,7 @@ android {
         consumerProguardFiles "consumer-rules.pro"
 
         ndk {
-            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a"
+            abiFilters "armeabi-v7a", "x86"
         }
     }
 
@@ -30,12 +30,32 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
 
+    afterEvaluate {
+        publishing {
+            publications {
+                // Creates a Maven publication called "release".
+                release(MavenPublication) {
+                    from components.release
+                    //建议和github地址对应，否则对jitpack无效
+                    groupId = 'com.github.openimsdk'
+                    //建议和github仓库名称对应，否则对jitpack无效
+                    artifactId = 'android'
+                    //建议和release的tag相同，否则对jitpack无效
+                    version = '3.3.1-alpha.3-e-v1.1.2'
+                }
+            }
+        }
+    }
+}
 dependencies {
-    implementation 'androidx.lifecycle:lifecycle-process:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-process:2.6.1'
     implementation 'androidx.annotation:annotation:1.6.0'
 
     compileOnly fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-    compileOnly 'io.openim:core-sdk:3.2.0@aar'
     compileOnly 'com.google.code.gson:gson:2.9.1'
 }

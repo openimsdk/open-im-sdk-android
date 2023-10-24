@@ -1,28 +1,19 @@
 package io.openim.android.sdk.models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class GroupHasReadInfo {
+public class GroupHasReadInfo implements Serializable {
+
     /**
-     * 已读的用户id列表
-     */
-    private List<String> hasReadUserIDList;
-    /**
-     * 已读总数
+     * 已读数
      */
     private int hasReadCount;
     /**
-     * 发送此条消息时的群人数
+     * 未读数
      */
-    private int groupMemberCount;
+    private int unreadCount;
 
-    public List<String> getHasReadUserIDList() {
-        return hasReadUserIDList;
-    }
-
-    public void setHasReadUserIDList(List<String> hasReadUserIDList) {
-        this.hasReadUserIDList = hasReadUserIDList;
-    }
 
     public int getHasReadCount() {
         return hasReadCount;
@@ -32,11 +23,11 @@ public class GroupHasReadInfo {
         this.hasReadCount = hasReadCount;
     }
 
-    public int getGroupMemberCount() {
-        return groupMemberCount;
+    public int getUnreadCount() {
+        return unreadCount;
     }
 
-    public void setGroupMemberCount(int groupMemberCount) {
-        this.groupMemberCount = groupMemberCount;
+    public void setUnreadCount(int unreadCount) {
+        this.unreadCount = unreadCount;
     }
 }
