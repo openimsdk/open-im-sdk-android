@@ -48,7 +48,7 @@ repositories {
                     //建议和github仓库名称对应，否则对jitpack无效
                     artifactId = 'android'
                     //建议和release的tag相同，否则对jitpack无效
-                    version = '3.3.1'
+                    version = '3.3.1-alpha.3-e-v1.1.2'
                 }
             }
         }
