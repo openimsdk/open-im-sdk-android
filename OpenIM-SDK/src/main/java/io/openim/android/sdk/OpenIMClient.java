@@ -52,8 +52,6 @@ public class OpenIMClient {
     public UserInfoManager userInfoManager;
     public SignalingManager signalingManager;
 
-    //前台Activity数量
-    @NotNull("You need to call the 'initSDK' method first")
     private Application app;
 
     private OpenIMClient() {

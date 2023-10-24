@@ -1,6 +1,6 @@
 plugins {
     id 'com.android.library'
-//    id 'com.github.dcendents.android-maven'
+    id 'maven-publish'
 }
 //group='io.openim.android.sdk' //this is your github name
 
@@ -36,12 +36,28 @@ repositories {
     flatDir {
         dirs 'libs'
     }
+
+    afterEvaluate {
+        publishing {
+            publications {
+                // Creates a Maven publication called "release".
+                release(MavenPublication) {
+                    from components.release
+                    //建议和github地址对应，否则对jitpack无效
+                    groupId = 'com.github.openimsdk'
+                    //建议和github仓库名称对应，否则对jitpack无效
+                    artifactId = 'android'
+                    //建议和release的tag相同，否则对jitpack无效
+                    version = '3.3.1'
+                }
+            }
+        }
+    }
 }
 dependencies {
-    implementation 'androidx.lifecycle:lifecycle-process:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-process:2.6.1'
     implementation 'androidx.annotation:annotation:1.6.0'
 
     compileOnly fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-//    compileOnly 'io.openim:core-sdk:3.2.0@aar'
     compileOnly 'com.google.code.gson:gson:2.9.1'
 }
