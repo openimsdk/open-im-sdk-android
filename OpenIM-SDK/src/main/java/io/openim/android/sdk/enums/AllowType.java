@@ -1,7 +1,7 @@
 package io.openim.android.sdk.enums;
 
 public enum AllowType {
-    Allowed(0),NotAllowed(1);
+    Allowed(1),NotAllowed(2);
 
     public final  int value;
     AllowType(int v) {
