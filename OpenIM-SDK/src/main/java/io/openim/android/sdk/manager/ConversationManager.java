@@ -172,13 +172,6 @@ public class ConversationManager {
         Open_im_sdk.deleteConversationAndDeleteAllMsg(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversionID);
     }
 
-    /***
-     * 从本地删除所有会话
-     * */
-    public void deleteAllConversationFromLocal(OnBase<String> base) {
-        Open_im_sdk.deleteAllConversationFromLocal(BaseImpl.stringBase(base), ParamsUtil.buildOperationID());
-    }
-
     /**
      * 清除@消息标志位
      *

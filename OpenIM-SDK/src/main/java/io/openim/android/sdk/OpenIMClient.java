@@ -220,8 +220,8 @@ public class OpenIMClient {
      *
      * @param fcmToken token
      */
-    public void updateFcmToken(OnBase<String> base, String fcmToken) {
-        Open_im_sdk.updateFcmToken(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), fcmToken);
+    public void updateFcmToken(OnBase<String> base, String fcmToken,long expireTime) {
+        Open_im_sdk.updateFcmToken(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), fcmToken,expireTime);
     }
 
     public void setOnListenerForService(OnListenerForService listener) {
