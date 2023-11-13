@@ -36,18 +36,13 @@ package io.openim.android.sdk;
 ```
 ### Initialize
 ```java
-OpenIMClient.getInstance().initSDK(
-	app  //Application
-    2,  //Platform code
-    "Your IM server address",
-    "Your IM server socket address",
-    getStorageDir(), //Storage path
-    1,
-    "minio",
-    "",
-    IMEvent.getInstance().connListener
-);
+  InitConfig initConfig = new InitConfig("Your IM server address",
+            "Your IM server socket address", getStorageDir()); //Storage path
+        initConfig.isLogStandardOutput = true;
 
+        ///IM 初始化
+        OpenIMClient.getInstance().initSDK('Your Application',
+            initConfig, IMEvent.getInstance().connListener);
 ```
 ### Logging In and Listening for Connection Status
 
