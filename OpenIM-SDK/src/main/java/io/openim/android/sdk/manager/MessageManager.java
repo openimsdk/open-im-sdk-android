@@ -42,42 +42,7 @@ import open_im_sdk_callback.Base;
  * 消息管理器
  */
 public class MessageManager {
-    /**
-     * 发送群消息已读回执
-     * @param conversationID
-     * @param clientMsgIDs
-     * @param callBack
-     */
-    public void sendGroupMessageReadReceipt(String conversationID,List<String> clientMsgIDs,OnBase<String> callBack){
-        Open_im_sdk.sendGroupMessageReadReceipt(BaseImpl.stringBase(callBack),
-            ParamsUtil.buildOperationID(),
-            conversationID,
-            JsonUtil.toString(clientMsgIDs));
-    }
 
-    /**
-     * 获取已读/未读列表
-     * @param conversationID
-     * @param clientMsgID
-     * @param filter 0: read 1: unread
-     * @param offset
-     * @param count
-     * @param callBack
-     */
-    public void  getGroupMessageReaderList(String conversationID,
-                                           String clientMsgID,
-                                           int filter,
-                                           int offset,
-                                           int count,
-                                           OnBase<List<GroupMembersInfo>> callBack){
-        Open_im_sdk.getGroupMessageReaderList(BaseImpl.arrayBase(callBack,GroupMembersInfo.class),
-            ParamsUtil.buildOperationID(),
-            conversationID,
-            clientMsgID,
-            filter,
-            offset,
-            count);
-    }
     /**
      * 添加消息监听
      * <p>
