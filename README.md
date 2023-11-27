@@ -17,12 +17,12 @@ For the SDK reference, see [https://doc.rentsoft.cn/sdks/quickstart/android](htt
 ## Installation 💻
 ### Adding repositories
 ```
-   maven { url 'https://jitpack.io' }
+   maven { url 'https://open-im-online.rentsoft.cn:51000/repository/maven2/' }
 ```
 ### Adding Dependencies
 ```
-   implementation 'com.github.openimsdk:open-im-sdk-android:latest.release'
-   implementation 'io.openim:core-sdk:latest.release'
+   implementation 'io.openim:android-sdk:3.4.1@aar'
+   implementation 'io.openim:core-sdk:3.4.1-alpha.4@aar'
    implementation 'com.google.code.gson:gson:2.9.0'
 ```
 ## Usage 🚀
@@ -35,18 +35,13 @@ package io.openim.android.sdk;
 ```
 ### Initialize
 ```java
-OpenIMClient.getInstance().initSDK(
-	app  //Application
-    2,  //Platform code
-    "Your IM server address",
-    "Your IM server socket address",
-    getStorageDir(), //Storage path
-    1,
-    "minio",
-    "",
-    IMEvent.getInstance().connListener
-);
+  InitConfig initConfig = new InitConfig("Your IM server address",
+            "Your IM server socket address", getStorageDir()); //Storage path
+        initConfig.isLogStandardOutput = true;
 
+        ///IM 初始化
+        OpenIMClient.getInstance().initSDK('Your Application',
+            initConfig, IMEvent.getInstance().connListener);
 ```
 ### Logging In and Listening for Connection Status
 
