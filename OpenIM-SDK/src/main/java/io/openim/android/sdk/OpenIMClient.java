@@ -18,6 +18,8 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.openim.android.sdk.internal.log.LogcatHelper;
@@ -214,6 +216,16 @@ public class OpenIMClient {
         Open_im_sdk.uploadFile(BaseImpl.stringBase(base),
             ParamsUtil.buildOperationID(), JsonUtil.toString(putArgs),new _PutFileCallback(listener));
     }
+
+    /**
+     *  上传出错日志
+     * @param base
+     * @param params
+     */
+    public void uploadLogs(OnBase<String> base, List<String> params) {
+        Open_im_sdk.uploadLogs(BaseImpl.stringBase(base),ParamsUtil.buildOperationID(),JsonUtil.toString(params));
+    }
+
 
     /**
      * 更新firebase token
