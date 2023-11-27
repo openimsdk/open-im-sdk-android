@@ -17,13 +17,12 @@ For the SDK reference, see [https://doc.rentsoft.cn/sdks/quickstart/android](htt
 ## Installation 💻
 ### Adding repositories
 ```
-   maven { url 'https://jitpack.io' }
    maven { url 'https://open-im-online.rentsoft.cn:51000/repository/maven2/' }
 ```
 ### Adding Dependencies
 ```
-   implementation 'com.github.openimsdk:open-im-sdk-android:latest.release'
-   implementation 'io.openim:core-sdk:3.4.0@aar'
+   implementation 'io.openim:android-sdk:3.4.1@aar'
+   implementation 'io.openim:core-sdk:3.4.1-alpha.4@aar'
    implementation 'com.google.code.gson:gson:2.9.0'
 ```
 ## Usage 🚀
