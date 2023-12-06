@@ -11,29 +11,29 @@ import io.openim.android.sdk.models.UserInfo;
  */
 public interface OnFriendshipListener {
 
-    void onBlacklistAdded(BlacklistInfo u);
+    default void onBlacklistAdded(BlacklistInfo u){}
 
 
-    void onBlacklistDeleted(BlacklistInfo u);
+    default void onBlacklistDeleted(BlacklistInfo u){}
 
 
-    void onFriendApplicationAccepted(FriendApplicationInfo u);
+    default void onFriendApplicationAccepted(FriendApplicationInfo u){}
 
 
-    void onFriendApplicationAdded(FriendApplicationInfo u);
+    default void onFriendApplicationAdded(FriendApplicationInfo u){}
 
 
-    void onFriendApplicationDeleted(FriendApplicationInfo u);
+    default void onFriendApplicationDeleted(FriendApplicationInfo u){}
 
 
-    void onFriendApplicationRejected(FriendApplicationInfo u);
+    default void onFriendApplicationRejected(FriendApplicationInfo u){}
 
 
-    void onFriendInfoChanged(FriendInfo u);
+    default void onFriendInfoChanged(FriendInfo u){}
 
 
-    void onFriendAdded(FriendInfo u);
+    default void onFriendAdded(FriendInfo u){}
 
 
-    void onFriendDeleted(FriendInfo u);
+    default void onFriendDeleted(FriendInfo u){}
 }

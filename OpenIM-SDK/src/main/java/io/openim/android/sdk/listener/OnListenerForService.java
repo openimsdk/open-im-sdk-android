@@ -5,13 +5,13 @@ import io.openim.android.sdk.models.GroupApplicationInfo;
 import io.openim.android.sdk.models.Message;
 
 public interface OnListenerForService {
-    void onFriendApplicationAccepted(FriendApplicationInfo u);
+    default void onFriendApplicationAccepted(FriendApplicationInfo u){}
 
-    void onFriendApplicationAdded(FriendApplicationInfo u);
+    default void onFriendApplicationAdded(FriendApplicationInfo u){}
 
-    void onGroupApplicationAccepted(GroupApplicationInfo info);
+    default void onGroupApplicationAccepted(GroupApplicationInfo info){}
 
-    void onGroupApplicationAdded(GroupApplicationInfo info);
+    default void onGroupApplicationAdded(GroupApplicationInfo info){}
 
-    void onRecvNewMessage(Message msg);
+    default void onRecvNewMessage(Message msg){}
 }
