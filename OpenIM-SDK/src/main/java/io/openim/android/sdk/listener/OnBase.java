@@ -7,10 +7,10 @@ public interface OnBase<T> {
     /**
      * 失败
      */
-    void onError(int code, String error);
+    default  void onError(int code, String error){}
 
     /**
      * 成功
      */
-    void onSuccess(T data);
+    default void onSuccess(T data){}
 }

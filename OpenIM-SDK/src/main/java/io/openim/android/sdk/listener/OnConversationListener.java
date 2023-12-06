@@ -13,31 +13,31 @@ public interface OnConversationListener {
      * 会话列表有数据更新
      * 可刷新会话列表
      */
-    void onConversationChanged(List<ConversationInfo> list);
+    default void onConversationChanged(List<ConversationInfo> list){}
 
     /**
      * 新增会话
      * 可刷新会话列表
      */
-    void onNewConversation(List<ConversationInfo> list);
+    default void onNewConversation(List<ConversationInfo> list){}
 
     /**
      *
      */
-    void onSyncServerFailed();
+    default void onSyncServerFailed(){}
 
     /**
      *
      */
-    void onSyncServerFinish();
+    default void onSyncServerFinish(){}
 
     /**
      *
      */
-    void onSyncServerStart();
+    default void onSyncServerStart(){}
 
     /**
      * 未读消息总数改变
      */
-    void onTotalUnreadMessageCountChanged(int i);
+    default void onTotalUnreadMessageCountChanged(int i){}
 }

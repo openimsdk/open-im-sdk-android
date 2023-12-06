@@ -7,29 +7,29 @@ import io.openim.android.sdk.models.SignalingInfo;
 
 public interface OnSignalingListener {
 
-    void onInvitationCancelled(SignalingInfo s);
+    default void onInvitationCancelled(SignalingInfo s){}
 
-    void onInvitationTimeout(SignalingInfo s);
+    default void onInvitationTimeout(SignalingInfo s){}
 
-    void onInviteeAccepted(SignalingInfo s);
+    default void onInviteeAccepted(SignalingInfo s){}
 
-    void onInviteeAcceptedByOtherDevice(SignalingInfo s);
+    default void onInviteeAcceptedByOtherDevice(SignalingInfo s){}
 
-    void onInviteeRejected(SignalingInfo s);
+    default void onInviteeRejected(SignalingInfo s){}
 
-    void onInviteeRejectedByOtherDevice(SignalingInfo s);
+    default void onInviteeRejectedByOtherDevice(SignalingInfo s){}
 
-    void onReceiveNewInvitation(SignalingInfo s);
+    default void onReceiveNewInvitation(SignalingInfo s){}
 
-    void onHangup(SignalingInfo s);
+    default void onHangup(SignalingInfo s){}
 
-    void onRoomParticipantConnected(RoomCallingInfo s);
+    default void onRoomParticipantConnected(RoomCallingInfo s){}
 
-    void onRoomParticipantDisconnected(RoomCallingInfo s);
+    default void onRoomParticipantDisconnected(RoomCallingInfo s){}
 
-    void onMeetingStreamChanged(MeetingStreamEvent e);
+    default void onMeetingStreamChanged(MeetingStreamEvent e){}
 
-    void onReceiveCustomSignal(CustomSignalingInfo s);
+    default void onReceiveCustomSignal(CustomSignalingInfo s){}
 
-    void onStreamChange(String s);
+    default void onStreamChange(String s){}
 }

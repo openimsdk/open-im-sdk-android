@@ -12,27 +12,27 @@ import io.openim.android.sdk.models.GroupMembersInfo;
  */
 public interface OnGroupListener {
 
-    void onGroupApplicationAccepted(GroupApplicationInfo info);
+    default void  onGroupApplicationAccepted(GroupApplicationInfo info){}
 
-    void onGroupApplicationAdded(GroupApplicationInfo info);
+    default void  onGroupApplicationAdded(GroupApplicationInfo info){}
 
-    void onGroupApplicationDeleted(GroupApplicationInfo info);
+    default void  onGroupApplicationDeleted(GroupApplicationInfo info){}
 
-    void onGroupApplicationRejected(GroupApplicationInfo info);
+    default void  onGroupApplicationRejected(GroupApplicationInfo info){}
 
-    void onGroupDismissed(GroupInfo info);
+    default void  onGroupDismissed(GroupInfo info){}
 
-    void onGroupInfoChanged(GroupInfo info);
+    default void  onGroupInfoChanged(GroupInfo info){}
 
-    void onGroupMemberAdded(GroupMembersInfo info);
-
-
-    void onGroupMemberDeleted(GroupMembersInfo info);
+    default void  onGroupMemberAdded(GroupMembersInfo info){}
 
 
-    void onGroupMemberInfoChanged(GroupMembersInfo info);
+    default void  onGroupMemberDeleted(GroupMembersInfo info){}
 
-    void onJoinedGroupAdded(GroupInfo info);
 
-    void onJoinedGroupDeleted(GroupInfo info);
+    default void  onGroupMemberInfoChanged(GroupMembersInfo info){}
+
+    default void  onJoinedGroupAdded(GroupInfo info){}
+
+    default void  onJoinedGroupDeleted(GroupInfo info){}
 }

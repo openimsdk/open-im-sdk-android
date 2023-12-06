@@ -5,5 +5,5 @@ import java.util.List;
 import io.openim.android.sdk.models.MessageKv;
 
 public interface OnMessageKvInfoListener {
-    void onMessageKvInfoChanged(List<MessageKv> list);
+    default void onMessageKvInfoChanged(List<MessageKv> list){}
 }

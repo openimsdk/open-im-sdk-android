@@ -10,15 +10,15 @@ public interface OnMsgSendCallback extends OnBase<Message> {
     /**
      * 发送失败
      */
-    void onError(int code, String error);
+  default   void onError(int code, String error){}
 
     /**
      * 上传进度
      */
-    void onProgress(long progress);
+    default  void onProgress(long progress){}
 
     /**
      * 发送成功
      */
-    void onSuccess(Message s);
+    default void onSuccess(Message s){}
 }
