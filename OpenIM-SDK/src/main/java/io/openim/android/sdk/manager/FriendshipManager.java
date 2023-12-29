@@ -104,11 +104,8 @@ public class FriendshipManager {
      * @param uid  用户ID
      * @param base callback String
      */
-    public void addBlacklist(OnBase<String> base, String uid,String ex) {
-        Open_im_sdk.addBlack(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), uid,ex);
-    }
-    public void addBlacklist(OnBase<String> base, String uid){
-        Open_im_sdk.addBlack(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), uid,null);
+    public void addBlacklist(OnBase<String> base, String uid) {
+        Open_im_sdk.addBlack(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), uid);
     }
 
     /**
