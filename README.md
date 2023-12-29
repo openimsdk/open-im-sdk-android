@@ -51,15 +51,15 @@ package io.openim.android.sdk;
 ```java
 // Set listener
  //User Profile Change Listener
- OpenIMClient.getInstance().userInfoManager.setOnUserListener(new OnUserListener() {});
+ OpenIMClient.getInstance().userInfoManager.setOnUserListener(new OnUserListener() { });
  //Message-related Listener
- OpenIMClient.getInstance().messageManager.setAdvancedMsgListener(new OnAdvanceMsgListener(){}）
+ OpenIMClient.getInstance().messageManager.setAdvancedMsgListener(new OnAdvanceMsgListener() {});
  //Friendship Status Change Listener
- OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFriendshipListener() {})
+ OpenIMClient.getInstance().friendshipManager.setOnFriendshipListener(new OnFriendshipListener() {});
  //Conversation-related Listener
- OpenIMClient.getInstance().conversationManager.setOnConversationListener(new OnConversationListener(){})
+ OpenIMClient.getInstance().conversationManager.setOnConversationListener(new OnConversationListener() {});
  //Group-related Listener
- OpenIMClient.getInstance().groupManager.setOnGroupListener(new OnGroupListener(){})
+ OpenIMClient.getInstance().groupManager.setOnGroupListener(new OnGroupListener() { });
 
 // Retrieve the profile of the currently logged-in user
  OpenIMClient.getInstance().login(new OnBase<String>() {
