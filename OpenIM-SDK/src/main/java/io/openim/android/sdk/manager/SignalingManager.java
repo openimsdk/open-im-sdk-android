@@ -7,6 +7,7 @@ import java.util.Map;
 
 import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnBase;
+import io.openim.android.sdk.listener.OnListenerForService;
 import io.openim.android.sdk.listener.OnSignalingListener;
 import io.openim.android.sdk.listener._SignalingListener;
 import io.openim.android.sdk.models.MeetingInfoList;
@@ -187,6 +188,8 @@ public class SignalingManager {
     public void getSignalingInvitationInfoStartApp(OnBase<SignalingInfo> callBack) {
         Open_im_sdk.getSignalingInvitationInfoStartApp(BaseImpl.objectBase(callBack, SignalingInfo.class), ParamsUtil.buildOperationID());
     }
-
+//    public void setOnListenerForService(OnSignalingListener listener) {
+//        Open_im_sdk.setSignalingListenerForService(new _SignalingListener(listener));
+//    }
 
 }
