@@ -157,7 +157,11 @@ public class GroupManager {
      * @param base       callback String
      */
     public void joinGroup(OnBase<String> base, String gid, String reason, int joinSource) {
-        Open_im_sdk.joinGroup(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, reason, joinSource);
+        joinGroup(base, gid, reason, joinSource, null);
+    }
+
+    public void joinGroup(OnBase<String> base, String gid, String reason, int joinSource, String ex) {
+        Open_im_sdk.joinGroup(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, reason, joinSource, ex);
     }
 
     /**
@@ -371,7 +375,8 @@ public class GroupManager {
     }
 
     /**
-     *  是否加入群
+     * 是否加入群
+     *
      * @param gid
      * @param callBack
      */
