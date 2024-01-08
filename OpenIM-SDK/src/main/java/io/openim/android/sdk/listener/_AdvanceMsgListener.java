@@ -73,4 +73,9 @@ final public class _AdvanceMsgListener extends BaseListener<OnAdvanceMsgListener
         List<Message> list = JsonUtil.toArray(s, Message.class);
         post(() -> listener.onRecvOfflineNewMessage(list));
     }
+
+    @Override
+    public void onRecvOnlineOnlyMessage(String s) {
+        post(() -> listener.onRecvOnlineOnlyMessage(s));
+    }
 }

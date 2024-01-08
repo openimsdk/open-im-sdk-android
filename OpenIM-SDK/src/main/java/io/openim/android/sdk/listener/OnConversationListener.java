@@ -40,4 +40,6 @@ public interface OnConversationListener {
      * 未读消息总数改变
      */
     default void onTotalUnreadMessageCountChanged(int i){}
+
+    default void onConversationUserInputStatusChanged(String s){};
 }

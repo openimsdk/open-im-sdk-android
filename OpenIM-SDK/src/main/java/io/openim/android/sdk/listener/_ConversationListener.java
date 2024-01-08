@@ -24,6 +24,13 @@ final public class _ConversationListener implements open_im_sdk_callback.OnConve
         }
     }
 
+    @Override
+    public void onConversationUserInputStatusChanged(String s) {
+        if (null != listener) {
+            CommonUtil.runMainThread(() -> listener.onConversationUserInputStatusChanged(s));
+        }
+    }
+
     /**
      * 返回当前新增的会话列表
      **/
