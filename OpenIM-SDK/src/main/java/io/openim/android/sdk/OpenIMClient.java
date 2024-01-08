@@ -44,6 +44,7 @@ import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
 import open_im_sdk_callback.Base;
+import open_im_sdk_callback.UploadLogProgress;
 
 public class OpenIMClient {
     public ConversationManager conversationManager;
@@ -222,8 +223,8 @@ public class OpenIMClient {
      * @param base
      * @param params
      */
-    public void uploadLogs(OnBase<String> base, List<String> params) {
-        Open_im_sdk.uploadLogs(BaseImpl.stringBase(base),ParamsUtil.buildOperationID(),JsonUtil.toString(params));
+    public void uploadLogs(OnBase<String> base, List<String> params, UploadLogProgress progress) {
+        Open_im_sdk.uploadLogs(BaseImpl.stringBase(base),ParamsUtil.buildOperationID(),progress);
     }
 
 
@@ -236,9 +237,6 @@ public class OpenIMClient {
         Open_im_sdk.updateFcmToken(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), fcmToken,expireTime);
     }
 
-    public void setOnListenerForService(OnListenerForService listener) {
-//        Open_im_sdk.setListenerForService(new _ListenerForService(listener));
-    }
 
     public void networkChanged() {
         Open_im_sdk.networkStatusChanged(new Base() {

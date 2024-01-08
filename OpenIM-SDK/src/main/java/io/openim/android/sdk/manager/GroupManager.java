@@ -3,7 +3,6 @@ package io.openim.android.sdk.manager;
 
 import android.util.ArrayMap;
 
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +15,6 @@ import io.openim.android.sdk.listener._GroupListener;
 import io.openim.android.sdk.models.GroupApplicationInfo;
 import io.openim.android.sdk.models.GroupInfo;
 import io.openim.android.sdk.models.GroupInviteResult;
-import io.openim.android.sdk.models.GroupMemberRole;
 import io.openim.android.sdk.models.GroupMembersInfo;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
@@ -157,7 +155,11 @@ public class GroupManager {
      * @param base       callback String
      */
     public void joinGroup(OnBase<String> base, String gid, String reason, int joinSource) {
-        Open_im_sdk.joinGroup(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, reason, joinSource);
+        joinGroup(base, gid, reason, joinSource, null);
+    }
+
+    public void joinGroup(OnBase<String> base, String gid, String reason, int joinSource, String ex) {
+        Open_im_sdk.joinGroup(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, reason, joinSource, ex);
     }
 
     /**
@@ -371,7 +373,8 @@ public class GroupManager {
     }
 
     /**
-     *  是否加入群
+     * 是否加入群
+     *
      * @param gid
      * @param callBack
      */

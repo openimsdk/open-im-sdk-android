@@ -11,6 +11,7 @@ import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnAdvanceMsgListener;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnCustomBusinessListener;
+import io.openim.android.sdk.listener.OnListenerForService;
 import io.openim.android.sdk.listener.OnMessageKvInfoListener;
 import io.openim.android.sdk.listener.OnMsgSendCallback;
 import io.openim.android.sdk.listener._AdvanceMsgListener;
@@ -633,6 +634,11 @@ public class MessageManager {
     public void setMessageKvInfoListener(OnMessageKvInfoListener listener) {
         Open_im_sdk.setMessageKvInfoListener(new _MessageKvInfoListener(listener));
     }
+
+
+//    public void setOnListenerForService(OnListenerForService listener) {
+//        Open_im_sdk.setListenerForService(new _ListenerForService(listener));
+//    }
 
 //    public void setMessageReactionExtensions(OnBase<List<TypeKeySetResult>> base, Message message, List<KeyValue> list) {
 //        Open_im_sdk.setMessageReactionExtensions(BaseImpl.arrayBase(base, TypeKeySetResult.class), ParamsUtil.buildOperationID(), JsonUtil.toString(message),

@@ -3,8 +3,6 @@ package io.openim.android.sdk.listener;
 import java.util.List;
 
 import io.openim.android.sdk.models.ConversationInfo;
-
-
 /**
  * 会话监听
  */
@@ -40,4 +38,6 @@ public interface OnConversationListener {
      * 未读消息总数改变
      */
     default void onTotalUnreadMessageCountChanged(int i){}
+
+    default void onConversationUserInputStatusChanged(String s){};
 }

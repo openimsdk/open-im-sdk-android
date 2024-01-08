@@ -50,4 +50,6 @@ public interface OnAdvanceMsgListener {
     default void onMsgDeleted(Message message){}
 
     default void onRecvOfflineNewMessage(List<Message> msg){}
+
+    default void onRecvOnlineOnlyMessage(String s){};
 }
