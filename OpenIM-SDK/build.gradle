@@ -54,6 +54,6 @@ dependencies {
 
     compileOnly fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     compileOnly 'com.google.code.gson:gson:2.9.1'
-    compileOnly 'io.openim:core-sdk:3.5.1-alpha.2@aar'
+    compileOnly 'io.openim:core-sdk:3.5.1-alpha.7@aar'
 
 }
