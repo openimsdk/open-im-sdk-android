@@ -19,6 +19,10 @@ public class AtTextElem {
      * 自己是否被@了
      */
     private boolean isAtSelf;
+    /**
+     * 引用消息
+     */
+    private Message quoteMessage;
 
 
     public String getText() {
@@ -43,5 +47,13 @@ public class AtTextElem {
 
     public void setAtSelf(boolean atSelf) {
         isAtSelf = atSelf;
+    }
+
+    public Message getQuoteMessage() {
+        return quoteMessage;
+    }
+
+    public void setQuoteMessage(Message quoteMessage) {
+        this.quoteMessage = quoteMessage;
     }
 }

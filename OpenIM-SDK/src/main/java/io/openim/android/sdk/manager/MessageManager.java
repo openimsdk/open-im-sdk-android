@@ -160,6 +160,7 @@ public class MessageManager {
      * @param clientMsgIDs   消息ids
      * @param callBack
      */
+    @Deprecated
     public void markMessagesAsReadByMsgID(String conversationID, List<String> clientMsgIDs, OnBase<String> callBack) {
         Open_im_sdk.markMessagesAsReadByMsgID(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID, JsonUtil.toString(clientMsgIDs));
     }
