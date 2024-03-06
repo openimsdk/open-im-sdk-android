@@ -45,40 +45,31 @@ import open_im_sdk_callback.Base;
 public class MessageManager {
     /**
      * 发送群消息已读回执
+     *
      * @param conversationID
      * @param clientMsgIDs
      * @param callBack
      */
-    public void sendGroupMessageReadReceipt(String conversationID,List<String> clientMsgIDs,OnBase<String> callBack){
-        Open_im_sdk.sendGroupMessageReadReceipt(BaseImpl.stringBase(callBack),
-            ParamsUtil.buildOperationID(),
-            conversationID,
-            JsonUtil.toString(clientMsgIDs));
+    public void sendGroupMessageReadReceipt(String conversationID, List<String> clientMsgIDs, OnBase<String> callBack) {
+        Open_im_sdk.sendGroupMessageReadReceipt(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID, JsonUtil.toString(clientMsgIDs));
     }
 
     /**
      * 获取已读/未读列表
+     *
      * @param conversationID
      * @param clientMsgID
-     * @param filter 0: read 1: unread
+     * @param filter         0: read 1: unread
      * @param offset
      * @param count
      * @param callBack
      */
-    public void  getGroupMessageReaderList(String conversationID,
-                                           String clientMsgID,
-                                           int filter,
-                                           int offset,
-                                           int count,
-                                           OnBase<List<GroupMembersInfo>> callBack){
-        Open_im_sdk.getGroupMessageReaderList(BaseImpl.arrayBase(callBack,GroupMembersInfo.class),
-            ParamsUtil.buildOperationID(),
-            conversationID,
-            clientMsgID,
-            filter,
-            offset,
-            count);
+    public void getGroupMessageReaderList(String conversationID, String clientMsgID, int filter, int offset, int count,
+                                          OnBase<List<GroupMembersInfo>> callBack) {
+        Open_im_sdk.getGroupMessageReaderList(BaseImpl.arrayBase(callBack, GroupMembersInfo.class), ParamsUtil.buildOperationID(), conversationID,
+            clientMsgID, filter, offset, count);
     }
+
     /**
      * 添加消息监听
      * <p>
@@ -101,8 +92,12 @@ public class MessageManager {
      *                        onProgress:消息发送进度，如图片，文件，视频等消息
      */
     public void sendMessage(OnMsgSendCallback base, Message message, String recvUid, String recvGid, OfflinePushInfo offlinePushInfo) {
+        sendMessage(base, message, recvUid, recvGid, offlinePushInfo,false);
+    }
+
+    public void sendMessage(OnMsgSendCallback base, Message message, String recvUid, String recvGid, OfflinePushInfo offlinePushInfo, boolean isOnlineOnly) {
         Open_im_sdk.sendMessage(new _MsgSendProgressListener(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message), recvUid, recvGid,
-            JsonUtil.toString(offlinePushInfo));
+            JsonUtil.toString(offlinePushInfo), isOnlineOnly);
     }
 
 
@@ -513,9 +508,7 @@ public class MessageManager {
     }
 
     private void isClearSeq(String conversationID) {
-        if (!TextUtils.equals(lastConversationID,
-            conversationID))
-            lastMinSeq = 0;
+        if (!TextUtils.equals(lastConversationID, conversationID)) lastMinSeq = 0;
         lastConversationID = conversationID;
 
     }
@@ -605,8 +598,12 @@ public class MessageManager {
      *                        onProgress:消息发送进度，如图片，文件，视频等消息
      */
     public void sendMessageNotOss(OnMsgSendCallback base, Message message, String recvUid, String recvGid, OfflinePushInfo offlinePushInfo) {
+        sendMessageNotOss(base,message,recvUid,recvGid,offlinePushInfo,false);
+    }
+
+    public void sendMessageNotOss(OnMsgSendCallback base, Message message, String recvUid, String recvGid, OfflinePushInfo offlinePushInfo,boolean isOnlineOnly) {
         Open_im_sdk.sendMessageNotOss(new _MsgSendProgressListener(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message), recvUid, recvGid,
-            JsonUtil.toString(offlinePushInfo));
+            JsonUtil.toString(offlinePushInfo),isOnlineOnly);
     }
 
 
@@ -615,9 +612,9 @@ public class MessageManager {
      *
      * @return {@link Message}
      */
-    public Message createImageMessageByURL(String sourcePath,PictureInfo sourcePicture, PictureInfo bigPicture, PictureInfo snapshotPicture) {
-        return parse(Open_im_sdk.createImageMessageByURL(ParamsUtil.buildOperationID(), sourcePath,JsonUtil.toString(sourcePicture), JsonUtil.toString(bigPicture),
-            JsonUtil.toString(snapshotPicture)));
+    public Message createImageMessageByURL(String sourcePath, PictureInfo sourcePicture, PictureInfo bigPicture, PictureInfo snapshotPicture) {
+        return parse(Open_im_sdk.createImageMessageByURL(ParamsUtil.buildOperationID(), sourcePath, JsonUtil.toString(sourcePicture),
+            JsonUtil.toString(bigPicture), JsonUtil.toString(snapshotPicture)));
     }
 
     /**
@@ -650,6 +647,7 @@ public class MessageManager {
 
     /**
      * 修改消息本地 ex 字段，如：下载文件后设置保存路径等。
+     *
      * @param callBack
      * @param conversationID
      * @param clientMsgID
