@@ -66,8 +66,12 @@ public class MessageManager {
      *                        onProgress:消息发送进度，如图片，文件，视频等消息
      */
     public void sendMessage(OnMsgSendCallback base, Message message, String recvUid, String recvGid, OfflinePushInfo offlinePushInfo) {
+        sendMessage(base, message, recvUid, recvGid, offlinePushInfo,false);
+    }
+
+    public void sendMessage(OnMsgSendCallback base, Message message, String recvUid, String recvGid, OfflinePushInfo offlinePushInfo, boolean isOnlineOnly) {
         Open_im_sdk.sendMessage(new _MsgSendProgressListener(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message), recvUid, recvGid,
-            JsonUtil.toString(offlinePushInfo));
+            JsonUtil.toString(offlinePushInfo), isOnlineOnly);
     }
 
 
@@ -478,9 +482,7 @@ public class MessageManager {
     }
 
     private void isClearSeq(String conversationID) {
-        if (!TextUtils.equals(lastConversationID,
-            conversationID))
-            lastMinSeq = 0;
+        if (!TextUtils.equals(lastConversationID, conversationID)) lastMinSeq = 0;
         lastConversationID = conversationID;
 
     }
@@ -570,8 +572,12 @@ public class MessageManager {
      *                        onProgress:消息发送进度，如图片，文件，视频等消息
      */
     public void sendMessageNotOss(OnMsgSendCallback base, Message message, String recvUid, String recvGid, OfflinePushInfo offlinePushInfo) {
+        sendMessageNotOss(base,message,recvUid,recvGid,offlinePushInfo,false);
+    }
+
+    public void sendMessageNotOss(OnMsgSendCallback base, Message message, String recvUid, String recvGid, OfflinePushInfo offlinePushInfo,boolean isOnlineOnly) {
         Open_im_sdk.sendMessageNotOss(new _MsgSendProgressListener(base), ParamsUtil.buildOperationID(), JsonUtil.toString(message), recvUid, recvGid,
-            JsonUtil.toString(offlinePushInfo));
+            JsonUtil.toString(offlinePushInfo),isOnlineOnly);
     }
 
 
@@ -580,9 +586,9 @@ public class MessageManager {
      *
      * @return {@link Message}
      */
-    public Message createImageMessageByURL(String sourcePath,PictureInfo sourcePicture, PictureInfo bigPicture, PictureInfo snapshotPicture) {
-        return parse(Open_im_sdk.createImageMessageByURL(ParamsUtil.buildOperationID(), sourcePath,JsonUtil.toString(sourcePicture), JsonUtil.toString(bigPicture),
-            JsonUtil.toString(snapshotPicture)));
+    public Message createImageMessageByURL(String sourcePath, PictureInfo sourcePicture, PictureInfo bigPicture, PictureInfo snapshotPicture) {
+        return parse(Open_im_sdk.createImageMessageByURL(ParamsUtil.buildOperationID(), sourcePath, JsonUtil.toString(sourcePicture),
+            JsonUtil.toString(bigPicture), JsonUtil.toString(snapshotPicture)));
     }
 
     /**
@@ -615,6 +621,7 @@ public class MessageManager {
 
     /**
      * 修改消息本地 ex 字段，如：下载文件后设置保存路径等。
+     *
      * @param callBack
      * @param conversationID
      * @param clientMsgID
