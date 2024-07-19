@@ -223,8 +223,8 @@ public class OpenIMClient {
      * @param base
      * @param params
      */
-    public void uploadLogs(OnBase<String> base, List<String> params,String ex, UploadLogProgress progress) {
-        Open_im_sdk.uploadLogs(BaseImpl.stringBase(base),ParamsUtil.buildOperationID(),ex,progress);
+    public void uploadLogs(OnBase<String> base, List<String> params, UploadLogProgress progress) {
+        Open_im_sdk.uploadLogs(BaseImpl.stringBase(base),ParamsUtil.buildOperationID(),progress);
     }
 
 

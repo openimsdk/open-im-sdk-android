@@ -83,6 +83,18 @@ public class FriendshipManager {
         Open_im_sdk.getFriendList(BaseImpl.arrayBase(base, UserInfo.class), ParamsUtil.buildOperationID());
     }
 
+    /**
+     * 分批获取好友列表
+     * 返回的好友里包含了已拉入黑名单的好友
+     * 需要根据字段isInBlackList做筛选，isInBlackList==1 已拉入黑名单
+     *
+     * @param base callback List<{@link UserInfo}>
+     * @param offset  偏移量
+     * @param count   每页数量
+     */
+    public void getFriendListPage(OnBase<List<UserInfo>> base, int offset, int count) {
+        Open_im_sdk.getFriendListPage(BaseImpl.arrayBase(base, UserInfo.class), ParamsUtil.buildOperationID(), offset, count);
+    }
 
     /**
      * 修改好友资料

@@ -35,4 +35,10 @@ public interface OnConnListener {
      * 请使用新签发的 UserSig 进行登录。
      */
     default void onUserTokenExpired(){}
+
+    /**
+     * 登录票据无效
+     * 请使用新签发的 UserSig 进行登录。
+     */
+    default void onUserTokenInvalid(String s){}
 }

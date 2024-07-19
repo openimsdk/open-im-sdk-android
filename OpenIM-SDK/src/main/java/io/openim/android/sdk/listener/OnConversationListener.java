@@ -22,17 +22,22 @@ public interface OnConversationListener {
     /**
      *
      */
-    default void onSyncServerFailed(){}
+    default void onSyncServerFailed(boolean reinstalled){}
 
     /**
      *
      */
-    default void onSyncServerFinish(){}
+    default void onSyncServerFinish(boolean reinstalled){}
 
     /**
      *
      */
-    default void onSyncServerStart(){}
+    default void onSyncServerStart(boolean reinstalled){}
+
+    /**
+     *
+     */
+    default void onSyncServerProgress(long progress){}
 
     /**
      * 未读消息总数改变

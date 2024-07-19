@@ -93,6 +93,15 @@ public class GroupManager {
         Open_im_sdk.getGroupMemberList(BaseImpl.arrayBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupId, filter, offset, count);
     }
 
+    /**
+     * 通过群ID获取
+     *
+     * @param groupID          组ID号
+     * @param userIdList  用户id列表
+     */
+    public void getUsersInGroup(OnBase<List<String>> base, String groupID, List<String> userIdList) {
+        Open_im_sdk.getUsersInGroup(BaseImpl.arrayBase(base, String.class), ParamsUtil.buildOperationID(), groupID, JsonUtil.toString(userIdList));
+    }
 
     /**
      * 获取已加入的群列表
@@ -101,6 +110,17 @@ public class GroupManager {
      */
     public void getJoinedGroupList(OnBase<List<GroupInfo>> base) {
         Open_im_sdk.getJoinedGroupList(BaseImpl.arrayBase(base, GroupInfo.class), ParamsUtil.buildOperationID());
+    }
+
+    /**
+     * 分批获取已加入的群列表
+     *
+     * @param base callback List<{@link GroupInfo}></>
+     * @param offset 每一批的偏移
+     * @param count 一批的最大数量
+     */
+    public void getJoinedGroupListPage(OnBase<List<GroupInfo>> base, int offset, int count) {
+        Open_im_sdk.getJoinedGroupListPage(BaseImpl.arrayBase(base, GroupInfo.class), ParamsUtil.buildOperationID(), offset, count);
     }
 
     /**

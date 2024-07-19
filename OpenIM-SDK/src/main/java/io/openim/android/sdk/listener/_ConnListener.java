@@ -44,4 +44,10 @@ final public class _ConnListener implements open_im_sdk_callback.OnConnListener 
         }
     }
 
+    @Override
+    public void onUserTokenInvalid(String s) {
+        if (null != listener) {
+            CommonUtil.runMainThread(() -> listener.onUserTokenInvalid(s));
+        }
+    }
 }

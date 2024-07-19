@@ -44,23 +44,30 @@ final public class _ConversationListener implements open_im_sdk_callback.OnConve
     }
 
     @Override
-    public void onSyncServerFailed() {
+    public void onSyncServerFailed(boolean reinstalled) {
         if (null != listener) {
-            CommonUtil.runMainThread(listener::onSyncServerFailed);
+            CommonUtil.runMainThread(()->listener.onSyncServerFailed(reinstalled));
         }
     }
 
     @Override
-    public void onSyncServerFinish() {
+    public void onSyncServerFinish(boolean reinstalled) {
         if (null != listener) {
-            CommonUtil.runMainThread(listener::onSyncServerFinish);
+            CommonUtil.runMainThread(()->listener.onSyncServerFinish(reinstalled));
         }
     }
 
     @Override
-    public void onSyncServerStart() {
+    public void onSyncServerStart(boolean reinstalled) {
         if (null != listener) {
-            CommonUtil.runMainThread(listener::onSyncServerStart);
+            CommonUtil.runMainThread(()->listener.onSyncServerStart(reinstalled));
+        }
+    }
+
+    @Override
+    public void onSyncServerProgress(long progress) {
+        if (null != listener) {
+            CommonUtil.runMainThread(()->listener.onSyncServerProgress(progress));
         }
     }
 
