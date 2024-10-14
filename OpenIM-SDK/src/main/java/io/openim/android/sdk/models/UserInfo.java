@@ -18,7 +18,7 @@ public class UserInfo {
     /**
      * 性别：1男，2女
      */
-    private int gender;
+    private Integer gender;
     /**
      * 手机号
      */
@@ -26,7 +26,7 @@ public class UserInfo {
     /**
      * 生日
      */
-    private long birth;
+    private Long birth;
     /**
      * 邮箱
      */
@@ -55,19 +55,22 @@ public class UserInfo {
     /**
      * 全局免打扰
      */
-    private int globalRecvMsgOpt;
+    private Integer globalRecvMsgOpt;
 
     // 是允许添加为好友  1：允许，2：否
-    private int allowAddFriend;
+    private Integer allowAddFriend;
 
     // 新消息铃声   1：允许，2：否
-    private int allowBeep;
+    private Integer allowBeep;
 
     // 新消息震动   1：允许，2：否
-    private int allowVibration;
+    private Integer allowVibration;
 
     // 禁止登录
-    private int forbidden;
+    private Integer forbidden;
+
+    // 创建日期
+    private Long createTime;
 
     public String getUserID() {
         if (null == userID) {
@@ -125,8 +128,6 @@ public class UserInfo {
             return friendInfo.getGender();
         } else if (isBlacklist()) {
             return blackInfo.getGender();
-        } else if (null != publicInfo) {
-            return publicInfo.getGender();
         }
         return gender;
     }
@@ -276,6 +277,14 @@ public class UserInfo {
 
     public void setForbidden(int forbidden) {
         this.forbidden = forbidden;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
     }
 
     @Override

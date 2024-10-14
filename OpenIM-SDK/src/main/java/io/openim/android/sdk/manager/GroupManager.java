@@ -14,8 +14,11 @@ import io.openim.android.sdk.listener.OnGroupListener;
 import io.openim.android.sdk.listener._GroupListener;
 import io.openim.android.sdk.models.GroupApplicationInfo;
 import io.openim.android.sdk.models.GroupInfo;
+import io.openim.android.sdk.models.GroupInfoReq;
 import io.openim.android.sdk.models.GroupInviteResult;
 import io.openim.android.sdk.models.GroupMembersInfo;
+import io.openim.android.sdk.models.GroupMemberInfoReq;
+import io.openim.android.sdk.models.SetGroupMemberInfo;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
@@ -29,19 +32,6 @@ public class GroupManager {
      */
     public void setOnGroupListener(OnGroupListener listener) {
         Open_im_sdk.setGroupListener(new _GroupListener(listener));
-    }
-
-    /**
-     * 修改群成员信息
-     *
-     * @param callBack
-     */
-    public void setGroupMemberInfo(String groupID, String userID, String ex, OnBase<String> callBack) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("groupID", groupID);
-        map.put("userID", userID);
-        map.put("ex", ex);
-        Open_im_sdk.setGroupMemberInfo(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
     }
 
     /**
@@ -154,7 +144,6 @@ public class GroupManager {
     public void setGroupInfo(GroupInfo groupInfo, OnBase<String> callBack) {
         Open_im_sdk.setGroupInfo(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), JsonUtil.toString(groupInfo));
     }
-
 
     /**
      * 批量获取群资料
@@ -279,17 +268,6 @@ public class GroupManager {
     }
 
     /**
-     * 修改所在群的昵称
-     *
-     * @param gid           群ID
-     * @param uid           群成员userID
-     * @param groupNickname 群内显示名称
-     */
-    public void setGroupMemberNickname(OnBase<String> base, String gid, String uid, String groupNickname) {
-        Open_im_sdk.setGroupMemberNickname(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), gid, uid, groupNickname);
-    }
-
-    /**
      * 根据关键词搜索群组
      *
      * @param keywordList       关键词
@@ -305,14 +283,12 @@ public class GroupManager {
     }
 
     /**
-     * 设置群管理员
-     *
-     * @param groupID   组ID号
-     * @param userID    用户ID号
-     * @param roleLevel 角色 {@link io.openim.android.sdk.enums.GroupRole}
+     * 修改群成员信息
+     * @param base 方法执行回调
+     * @param setGroupMemberInfo 需要设置的成员信息，属性为空即为不传
      */
-    public void setGroupMemberRoleLevel(OnBase<String> base, String groupID, String userID, long roleLevel) {
-        Open_im_sdk.setGroupMemberRoleLevel(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, userID, roleLevel);
+    public void setGroupMemberInfo(SetGroupMemberInfo setGroupMemberInfo, OnBase<String> base) {
+        Open_im_sdk.setGroupMemberInfo(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toStringWithoutNull(setGroupMemberInfo));
     }
 
     /**
@@ -329,36 +305,6 @@ public class GroupManager {
         , List<String> excludeUserIDList) {
         Open_im_sdk.getGroupMemberListByJoinTimeFilter(BaseImpl.arrayBase(base, GroupMembersInfo.class), ParamsUtil.buildOperationID(), groupID, offset,
             count, joinTimeBegin, joinTimeEnd, JsonUtil.toString(excludeUserIDList));
-    }
-
-    /**
-     * 设置进群验证
-     *
-     * @param groupID          组ID号
-     * @param needVerification {@link io.openim.android.sdk.enums.GroupVerification}
-     */
-    public void setGroupVerification(OnBase<String> base, String groupID, int needVerification) {
-        Open_im_sdk.setGroupVerification(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, needVerification);
-    }
-
-    /**
-     * 不允许通过群获取成员资料
-     *
-     * @param groupID 组ID号
-     * @param status  0：关闭，1：打开
-     */
-    public void setGroupLookMemberInfo(OnBase<String> base, String groupID, int status) {
-        Open_im_sdk.setGroupLookMemberInfo(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, status);
-    }
-
-    /**
-     * 不允许通过群添加好友
-     *
-     * @param groupID 组ID号
-     * @param status  0：关闭，1：打开
-     */
-    public void setGroupApplyMemberFriend(OnBase<String> base, String groupID, int status) {
-        Open_im_sdk.setGroupApplyMemberFriend(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), groupID, status);
     }
 
     /**

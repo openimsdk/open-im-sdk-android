@@ -39,30 +39,6 @@ final public class _AdvanceMsgListener extends BaseListener<OnAdvanceMsgListener
     }
 
     @Override
-    public void onRecvGroupReadReceipt(String s) {
-        GroupMessageReceipt groupMessageReceipt = JsonUtil.toObj(s, GroupMessageReceipt.class);
-        post(() -> listener.onRecvGroupMessageReadReceipt(groupMessageReceipt));
-    }
-
-    @Override
-    public void onRecvMessageExtensionsAdded(String s, String s1) {
-        List<KeyValue> list = JsonUtil.toArray(s1, KeyValue.class);
-        post(() -> listener.onRecvMessageExtensionsAdded(s, list));
-    }
-
-    @Override
-    public void onRecvMessageExtensionsChanged(String s, String s1) {
-        List<KeyValue> list = JsonUtil.toArray(s1, KeyValue.class);
-        post(() -> listener.onRecvMessageExtensionsChanged(s, list));
-    }
-
-    @Override
-    public void onRecvMessageExtensionsDeleted(String s, String s1) {
-        List<String> list = JsonUtil.toArray(s1, String.class);
-        post(() -> listener.onRecvMessageExtensionsDeleted(s, list));
-    }
-
-    @Override
     public void onRecvNewMessage(String s) {
         Message msg = JsonUtil.toObj(s, Message.class);
         post(() -> listener.onRecvNewMessage(msg));

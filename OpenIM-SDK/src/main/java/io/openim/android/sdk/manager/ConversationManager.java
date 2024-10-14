@@ -1,14 +1,19 @@
 package io.openim.android.sdk.manager;
 
+import android.util.ArrayMap;
+
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnConversationListener;
 import io.openim.android.sdk.listener._ConversationListener;
 import io.openim.android.sdk.models.ConversationInfo;
+import io.openim.android.sdk.models.ConversationReq;
 import io.openim.android.sdk.models.NotDisturbInfo;
+import io.openim.android.sdk.models.UserInfo;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
 import open_im_sdk.Open_im_sdk;
@@ -84,18 +89,6 @@ public class ConversationManager {
         Open_im_sdk.setConversationDraft(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, draftText);
     }
 
-    /**
-     * 置顶会话
-     *
-     * @param conversationID 会话ID
-     * @param isPinned       true 置顶； false 取消置顶
-     * @param base           callback String
-     **/
-    public void pinConversation(OnBase<String> base, String conversationID, boolean isPinned) {
-        Open_im_sdk.pinConversation(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, isPinned);
-    }
-
-
     public void hideConversation(OnBase<String> base, String conversationID) {
         Open_im_sdk.hideConversation(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID);
     }
@@ -133,31 +126,33 @@ public class ConversationManager {
     }
 
     /**
-     * 设置会话免打扰状态
-     *
-     * @param status 1:屏蔽消息; 2:接收消息但不提示; 0:正常
+     * 改变当前输入状态，输入结束时，需要将focus值为false
+     * @param base 回调函数，回调值为String
+     * @param conversationId 会话Id
+     * @param hasFocus 用户是否在输入
      */
-    public void setConversationRecvMessageOpt(OnBase<String> base, String conversationID, long status) {
-        Open_im_sdk.setConversationRecvMessageOpt(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, status);
+    public void changeInputStates(OnBase<String> base, String conversationId, boolean hasFocus) {
+        Open_im_sdk.changeInputStates(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationId, hasFocus);
     }
 
     /**
-     * 获取会话免打扰状态
-     * 1: Do not receive messages, 2: Do not notify when messages are received; 0: Normal
-     * [{"conversationId":"single_13922222222","result":0}]
+     * 获取用户输入状态
+     * @param base 回调函数，回调值为String
+     * @param conversationID 会话Id
+     * @param userId 用户Id
      */
-    public void getConversationRecvMessageOpt(OnBase<List<NotDisturbInfo>> base, List<String> conversationIDs) {
-        Open_im_sdk.getConversationRecvMessageOpt(BaseImpl.arrayBase(base, NotDisturbInfo.class), ParamsUtil.buildOperationID(),
-            JsonUtil.toString(conversationIDs));
+    public void getInputStates(OnBase<String> base, String conversationID, String userId) {
+        Open_im_sdk.getInputStates(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, userId);
     }
 
-    /***
-     * 设置私聊
-     * @param conversionID 会话ID
-     * @param isPrivate true开启
-     * */
-    public void setOneConversationPrivateChat(OnBase<String> base, String conversionID, boolean isPrivate) {
-        Open_im_sdk.setConversationPrivateChat(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversionID, isPrivate);
+    /**
+     * 设置会话信息
+     * @param base 回调信息
+     * @param conversationID 会话id
+     * @param conversationReq 请求信息
+     */
+    public void setConversation(OnBase<String> base, String conversationID, ConversationReq conversationReq) {
+        Open_im_sdk.setConversation(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, JsonUtil.toStringWithoutNull(conversationReq));
     }
 
     /***
@@ -173,60 +168,11 @@ public class ConversationManager {
     }
 
     /**
-     * 清除@消息标志位
-     *
-     * @param conversationID 会话ID
-     */
-    public void resetConversationGroupAtType(OnBase<String> base, String conversationID) {
-        Open_im_sdk.resetConversationGroupAtType(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID);
-    }
-
-    /**
      * 查询at所有人标识
      */
     public String getAtAllTag() {
         return Open_im_sdk.getAtAllTag(ParamsUtil.buildOperationID());
     }
-
-    /**
-     * 全局免打扰
-     *
-     * @param status 状态 1:屏蔽消息; 2:接收消息但不提示; 0:正常
-     */
-    public void setGlobalRecvMessageOpt(OnBase<String> base, long status) {
-        Open_im_sdk.setGlobalRecvMessageOpt(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), status);
-    }
-
-    /**
-     * 阅后即焚
-     *
-     * @param burnDuration 阅读时长s
-     */
-    public void setConversationBurnDuration(OnBase<String> base, String conversationID, int burnDuration) {
-        Open_im_sdk.setConversationBurnDuration(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID,
-            burnDuration);
-    }
-
-    /**
-     * 设置 到期删除
-     * @param base
-     * @param conversationID
-     * @param isMsgDestruct
-     */
-    public void setConversationIsMsgDestruct(OnBase<String> base, String conversationID, boolean isMsgDestruct) {
-        Open_im_sdk.setConversationIsMsgDestruct(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, isMsgDestruct);
-    }
-
-    /**
-     *设置到期删除时间
-     * @param base
-     * @param conversationID
-     * @param msgDestructTime 秒
-     */
-    public void setConversationMsgDestructTime(OnBase<String> base, String conversationID,  long msgDestructTime) {
-        Open_im_sdk.setConversationMsgDestructTime(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), conversationID, msgDestructTime);
-    }
-
 
     /**
      * 会话排序比较器

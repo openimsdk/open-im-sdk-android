@@ -4,6 +4,7 @@ package io.openim.android.sdk.manager;
 import android.util.ArrayMap;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import io.openim.android.sdk.listener._FriendshipListener;
 import io.openim.android.sdk.models.FriendApplicationInfo;
 import io.openim.android.sdk.models.FriendInfo;
 import io.openim.android.sdk.models.FriendshipInfo;
+import io.openim.android.sdk.models.UpdateFriendsReq;
 import io.openim.android.sdk.models.UserInfo;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
@@ -36,8 +38,21 @@ public class FriendshipManager {
      * @param uidList 好友id集合
      * @param base    callback List<{@link UserInfo}>
      */
+    @Deprecated
     public void getFriendsInfo(OnBase<List<UserInfo>> base, List<String> uidList) {
-        Open_im_sdk.getSpecifiedFriendsInfo(BaseImpl.arrayBase(base, UserInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(uidList));
+        getFriendsInfo(base, uidList, null);
+    }
+
+    /**
+     * 根据用户id，批量查询好友资料
+     *
+     * @param uidList 好友id集合
+     * @param base    callback List<{@link UserInfo}>
+     * @param filterBlack
+     */
+    public void getFriendsInfo(OnBase<List<UserInfo>> base, List<String> uidList, Boolean filterBlack) {
+        Open_im_sdk.getSpecifiedFriendsInfo(BaseImpl.arrayBase(base, UserInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(uidList),
+            null != filterBlack ? filterBlack : false);
     }
 
     /**
@@ -79,8 +94,22 @@ public class FriendshipManager {
      *
      * @param base callback List<{@link UserInfo}>
      */
+    @Deprecated
     public void getFriendList(OnBase<List<UserInfo>> base) {
-        Open_im_sdk.getFriendList(BaseImpl.arrayBase(base, UserInfo.class), ParamsUtil.buildOperationID());
+        getFriendList(base, null);
+    }
+
+    /**
+     * 好友列表
+     * 返回的好友里包含了已拉入黑名单的好友
+     * 需要根据字段isInBlackList做筛选，isInBlackList==1 已拉入黑名单
+     *
+     * @param base callback List<{@link UserInfo}>
+     * @param filterBlack
+     */
+    public void getFriendList(OnBase<List<UserInfo>> base, Boolean filterBlack) {
+        Open_im_sdk.getFriendList(BaseImpl.arrayBase(base, UserInfo.class), ParamsUtil.buildOperationID(),
+            null != filterBlack ? filterBlack : false);
     }
 
     /**
@@ -92,22 +121,32 @@ public class FriendshipManager {
      * @param offset  偏移量
      * @param count   每页数量
      */
+    @Deprecated
     public void getFriendListPage(OnBase<List<UserInfo>> base, int offset, int count) {
-        Open_im_sdk.getFriendListPage(BaseImpl.arrayBase(base, UserInfo.class), ParamsUtil.buildOperationID(), offset, count);
+        getFriendListPage(base, offset, count, null);
     }
 
     /**
-     * 修改好友资料
+     * 分批获取好友列表
+     * 返回的好友里包含了已拉入黑名单的好友
+     * 需要根据字段isInBlackList做筛选，isInBlackList==1 已拉入黑名单
      *
-     * @param uid    用户id
-     * @param remark 备注名
-     * @param base   callback String
+     * @param base callback List<{@link UserInfo}>
+     * @param offset  偏移量
+     * @param count   每页数量
+     * @param filterBlack
      */
-    public void setFriendRemark(OnBase<String> base, String uid, String remark) {
-        Map<String, Object> params = new ArrayMap<>();
-        params.put("toUserID", uid);
-        params.put("remark", remark);
-        Open_im_sdk.setFriendRemark(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(params));
+    public void getFriendListPage(OnBase<List<UserInfo>> base, int offset, int count, Boolean filterBlack) {
+        Open_im_sdk.getFriendListPage(BaseImpl.arrayBase(base, UserInfo.class), ParamsUtil.buildOperationID(), offset, count,
+            null != filterBlack ? filterBlack : false);
+    }
+    /**
+     * 更新好友信息
+     * @param base 回调方法
+     * @param updateFriendsReq 请求更新的好友信息 {@link io.openim.android.sdk.models.UpdateFriendsReq}
+     */
+    public void updateFriendsReq(OnBase<String> base, UpdateFriendsReq updateFriendsReq) {
+        Open_im_sdk.updateFriends(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toStringWithoutNull(updateFriendsReq));
     }
 
     /**
