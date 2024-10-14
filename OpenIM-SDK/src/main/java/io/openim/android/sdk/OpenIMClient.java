@@ -227,6 +227,20 @@ public class OpenIMClient {
         Open_im_sdk.uploadLogs(BaseImpl.stringBase(base),ParamsUtil.buildOperationID(), line, ex, progress);
     }
 
+    /**
+     *  日志
+     * @param base
+     * @param logLevel
+     * @param file
+     * @param line
+     * @param msg
+     * @param err
+     * @param keyAndValues
+     */
+    public void logs(OnBase<String> base, long logLevel, String file, long line, String msg, String err, String[] keyAndValues) {
+
+    }
+
 
     /**
      * 更新firebase token

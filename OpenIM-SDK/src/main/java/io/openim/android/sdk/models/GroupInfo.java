@@ -30,15 +30,15 @@ public class GroupInfo {
     /**
      * 创建时间
      */
-    private long createTime;
+    private Long createTime;
     /**
      * 群成员数量
      */
-    private int memberCount;
+    private Integer memberCount;
     /**
      * 群状态： ok = 0 blocked = 1 Dismissed = 2 Muted  = 3
      */
-    private int status;
+    private Integer status;
     /**
      * 创建者id
      */
@@ -46,7 +46,7 @@ public class GroupInfo {
     /**
      * 群类型
      */
-    private int groupType;
+    private Integer groupType;
     /**
      * 扩展字段
      */
@@ -54,20 +54,20 @@ public class GroupInfo {
     /**
      * 进群验证方式 {@link io.openim.android.sdk.enums.GroupVerification}
      */
-    private int needVerification;
+    private Integer needVerification;
 
     /**
      * 不允许通过群获取成员资料 0：关闭，1：打开
      */
-    private int lookMemberInfo;
+    private Integer lookMemberInfo;
     /**
      * 不允许通过群添加好友 0：关闭，1：打开
      */
-    private int applyMemberFriend;
+    private Integer applyMemberFriend;
     /**
      * 通知更新时间
      */
-    private long notificationUpdateTime;
+    private Long notificationUpdateTime;
     /**
      * 通知更新人
      */
@@ -121,7 +121,7 @@ public class GroupInfo {
         this.ownerUserID = ownerUserID;
     }
 
-    public long getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
@@ -129,7 +129,7 @@ public class GroupInfo {
         this.createTime = createTime;
     }
 
-    public int getMemberCount() {
+    public Integer getMemberCount() {
         return memberCount;
     }
 
@@ -137,7 +137,7 @@ public class GroupInfo {
         this.memberCount = memberCount;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
@@ -153,7 +153,7 @@ public class GroupInfo {
         this.creatorUserID = creatorUserID;
     }
 
-    public int getGroupType() {
+    public Integer getGroupType() {
         return groupType;
     }
 
@@ -169,7 +169,7 @@ public class GroupInfo {
         this.ex = ex;
     }
 
-    public int getNeedVerification() {
+    public Integer getNeedVerification() {
         return needVerification;
     }
 
@@ -177,7 +177,7 @@ public class GroupInfo {
         this.needVerification = needVerification;
     }
 
-    public int getLookMemberInfo() {
+    public Integer getLookMemberInfo() {
         return lookMemberInfo;
     }
 
@@ -185,7 +185,7 @@ public class GroupInfo {
         this.lookMemberInfo = lookMemberInfo;
     }
 
-    public int getApplyMemberFriend() {
+    public Integer getApplyMemberFriend() {
         return applyMemberFriend;
     }
 
@@ -193,7 +193,7 @@ public class GroupInfo {
         this.applyMemberFriend = applyMemberFriend;
     }
 
-    public long getNotificationUpdateTime() {
+    public Long getNotificationUpdateTime() {
         return notificationUpdateTime;
     }
 

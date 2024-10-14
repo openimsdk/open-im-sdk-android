@@ -14,17 +14,13 @@ public class PublicUserInfo {
      */
     private String faceURL;
     /**
-     * 性别
-     */
-    private int gender;
-    /**
-     *
-     */
-    private int appMangerLevel;
-    /**
      * 扩展字段
      */
     private String ex;
+    /**
+     * 创建时间
+     */
+    private Long createTime;
 
     public String getUserID() {
         return userID;
@@ -50,27 +46,19 @@ public class PublicUserInfo {
         this.faceURL = faceURL;
     }
 
-    public int getGender() {
-        return gender;
-    }
-
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
-
-    public int getAppMangerLevel() {
-        return appMangerLevel;
-    }
-
-    public void setAppMangerLevel(int appMangerLevel) {
-        this.appMangerLevel = appMangerLevel;
-    }
-
     public String getEx() {
         return ex;
     }
 
     public void setEx(String ex) {
         this.ex = ex;
+    }
+
+    public Long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
     }
 }

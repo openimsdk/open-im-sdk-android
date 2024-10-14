@@ -12,7 +12,9 @@ import io.openim.android.sdk.listener.OnGroupListener;
 import io.openim.android.sdk.listener.OnUserListener;
 import io.openim.android.sdk.listener._GroupListener;
 import io.openim.android.sdk.listener._UserListener;
+import io.openim.android.sdk.models.PublicUserInfo;
 import io.openim.android.sdk.models.UserInfo;
+import io.openim.android.sdk.models.UserInfoReq;
 import io.openim.android.sdk.models.UsersOnlineStatus;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
@@ -28,23 +30,23 @@ public class UserInfoManager {
 
     /**
      * 根据uid 批量查询用户信息
-     *
+     *A
      * @param uidList 用户id列表
-     * @param base    callback List<{@link UserInfo}>
+     * @param base    callback List<{@link io.openim.android.sdk.models.PublicUserInfo}>
      */
-    public void getUsersInfo(OnBase<List<UserInfo>> base, List<String> uidList) {
-        Open_im_sdk.getUsersInfo(BaseImpl.arrayBase(base, UserInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(uidList));
+    public void getUsersInfo(OnBase<List<PublicUserInfo>> base, List<String> uidList) {
+        Open_im_sdk.getUsersInfo(BaseImpl.arrayBase(base, PublicUserInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(uidList));
     }
 
     /**
-     * 从缓存获取用户信息
+     * 从缓存获取用户信息，将在后续版本中弃用该接口，建议使用{@link io.openim.android.sdk.manager.UserInfoManager#getUsersInfo(OnBase, List)}
      * @param callBack
      * @param uidList
      * @param groupID
      */
-    public void getUsersInfoWithCache(OnBase<List<UserInfo>> callBack,List<String> uidList,String groupID){
-        Open_im_sdk.getUsersInfoWithCache(BaseImpl.arrayBase(callBack, UserInfo.class),
-            ParamsUtil.buildOperationID(),JsonUtil.toString(uidList),groupID);
+    @Deprecated
+    public void getUsersInfoWithCache(OnBase<List<UserInfo>> callBack, List<String> uidList, String groupID){
+        Open_im_sdk.getUsersInfo(BaseImpl.arrayBase(callBack, UserInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(uidList));
     }
 
     /**
@@ -70,6 +72,27 @@ public class UserInfoManager {
         map.put("email", email);
         map.put("ex", ex);
         Open_im_sdk.setSelfInfo(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toString(map));
+    }
+
+    /**
+     * 全局免打扰
+     *
+     * @param status 状态 1:屏蔽消息; 2:接收消息但不提示; 0:正常
+     */
+    @Deprecated
+    public void setGlobalRecvMessageOpt(OnBase<String> base, long status) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setGlobalRecvMsgOpt((int) status);
+        Open_im_sdk.setSelfInfo(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toStringWithoutNull(userInfo));
+    }
+
+    /**
+     * 设置当前用户资料
+     * @param base 方法回调
+     * @param userInfoReq 请求参数{@link io.openim.android.sdk.models.UserInfoReq}
+     */
+    public void setSelfInfo(OnBase<String> base, UserInfoReq userInfoReq) {
+        Open_im_sdk.setSelfInfo(BaseImpl.stringBase(base), ParamsUtil.buildOperationID(), JsonUtil.toStringWithoutNull(userInfoReq));
     }
 
     /**

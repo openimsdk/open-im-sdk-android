@@ -1,6 +1,7 @@
 package io.openim.android.sdk.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -22,6 +23,21 @@ public class JsonUtil {
         try {
             if (null != object) {
                 gsonString = gson.toJson(object);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return gsonString;
+    }
+
+    /**
+     * 将object对象转成json字符串
+     */
+    public static String toStringWithoutNull(Object object) {
+        String gsonString = "";
+        try {
+            if (null != object) {
+                gsonString = new GsonBuilder().create().toJson(object);
             }
         } catch (Exception e) {
             e.printStackTrace();
