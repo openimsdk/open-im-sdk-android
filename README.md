@@ -15,10 +15,52 @@ Visit [https://doc.rentsoft.cn/](https://doc.rentsoft.cn/) for detailed document
 For the SDK reference, see [https://doc.rentsoft.cn/sdks/quickstart/android](https://doc.rentsoft.cn/sdks/quickstart/android).
 
 ## Installation 💻
-### Adding repositories
+### For used before November 2024
+If you are a new for our repository, just ignore this.
+We had already moved most release libraries to Maven Central. So if you has some errors in build.gradle when build your project, you can replace the old repository to Maven Central in it like this: 
+Before: 
 ```
-   maven { url 'https://open-im-online.rentsoft.cn:51000/repository/maven2/' }
+buildscript {
+    repositories {
+        ...
+        maven { url 'https://open-im-online.rentsoft.cn:51000/repository/maven2/' }
+        google()
+        mavenCentral()
+        ...
+    }
+}
+
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://open-im-online.rentsoft.cn:51000/repository/maven2/' }
+        google()
+        mavenCentral()
+        ...
+    }
+}
 ```
+After: 
+```
+buildscript {
+    repositories {
+        ...
+        google()
+        mavenCentral()
+        ...
+    }
+}
+
+allprojects {
+    repositories {
+        ...
+        google()
+        mavenCentral()
+        ...
+    }
+}
+```
+Just make sure your project had already used Maven Central to get our libraries' dependency when you wanna to build project.
 ### Adding Dependencies
 ```
    implementation 'io.openim:android-sdk:3.4.1@aar'
