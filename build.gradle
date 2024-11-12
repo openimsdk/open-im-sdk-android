@@ -5,6 +5,7 @@ buildscript {
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
+        maven { url 'https://open-im-online.rentsoft.cn:51000/repository/maven2/' }
 
         maven { url 'https://jitpack.io' }
         google()
@@ -24,6 +25,7 @@ allprojects {
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/google' }
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
+        maven { url 'https://open-im-online.rentsoft.cn:51000/repository/maven2/' }
 
         maven { url 'https://jitpack.io' }
         google()
