@@ -17,9 +17,7 @@ For the SDK reference, see [https://doc.rentsoft.cn/sdks/quickstart/android](htt
 ## Installation 💻
 ### For used before November 2024
 If you are a new for our repository, just ignore this.
-
 We had already moved most release libraries to Maven Central. So if you has some errors in build.gradle when build your project, you can replace the old repository to Maven Central in it like this: 
-
 Before: 
 ```
 buildscript {
@@ -42,7 +40,6 @@ allprojects {
     }
 }
 ```
-
 After: 
 ```
 buildscript {
@@ -63,7 +60,6 @@ allprojects {
     }
 }
 ```
-
 Just make sure your project had already used Maven Central to get our libraries' dependency when you wanna to build project.
 ### Adding Dependencies
 ```
