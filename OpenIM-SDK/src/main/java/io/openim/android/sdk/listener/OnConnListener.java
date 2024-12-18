@@ -11,7 +11,7 @@ public interface OnConnListener {
      * 连接服务器失败
      * 可以提示用户当前网络连接不可用
      */
-    default void onConnectFailed(long code, String error){}
+    default void onConnectFailed(int code, String error){}
 
     /**
      * 已经成功连接到服务器
