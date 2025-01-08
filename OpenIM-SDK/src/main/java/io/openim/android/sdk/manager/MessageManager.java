@@ -1,7 +1,6 @@
 package io.openim.android.sdk.manager;
 
 
-import android.text.TextUtils;
 import android.util.ArrayMap;
 
 import java.util.List;
@@ -11,7 +10,6 @@ import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnAdvanceMsgListener;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnCustomBusinessListener;
-import io.openim.android.sdk.listener.OnListenerForService;
 import io.openim.android.sdk.listener.OnMessageKvInfoListener;
 import io.openim.android.sdk.listener.OnMsgSendCallback;
 import io.openim.android.sdk.listener._AdvanceMsgListener;
@@ -22,8 +20,6 @@ import io.openim.android.sdk.models.AdvancedMessage;
 import io.openim.android.sdk.models.AtUserInfo;
 import io.openim.android.sdk.models.CardElem;
 import io.openim.android.sdk.models.FileElem;
-import io.openim.android.sdk.models.GroupMembersInfo;
-import io.openim.android.sdk.models.KeyValue;
 import io.openim.android.sdk.models.Message;
 import io.openim.android.sdk.models.OfflinePushInfo;
 import io.openim.android.sdk.models.PictureInfo;
@@ -31,8 +27,8 @@ import io.openim.android.sdk.models.RichMessage;
 import io.openim.android.sdk.models.SearchParams;
 import io.openim.android.sdk.models.SearchResult;
 import io.openim.android.sdk.models.SoundElem;
-import io.openim.android.sdk.models.TypeKeySetResult;
 import io.openim.android.sdk.models.VideoElem;
+import io.openim.android.sdk.enums.ViewType;
 import io.openim.android.sdk.utils.CommonUtil;
 import io.openim.android.sdk.utils.JsonUtil;
 import io.openim.android.sdk.utils.ParamsUtil;
@@ -424,10 +420,6 @@ public class MessageManager {
         Open_im_sdk.markConversationMessageAsRead(BaseImpl.stringBase(callBack), ParamsUtil.buildOperationID(), conversationID);
     }
 
-
-    private int lastMinSeq;
-    private String lastConversationID;
-
     /**
      * 撤回消息（新版本）
      * 调用此方法会触发：onRecvMessageRevokedV2回调
@@ -454,15 +446,14 @@ public class MessageManager {
      * @param count          一次拉取count条
      * @param callBack       callback <{@link AdvancedMessage}>
      */
-    public void getAdvancedHistoryMessageList(OnBase<AdvancedMessage> callBack, String conversationID, Message startMsg, int count) {
-        isClearSeq(conversationID);
+    public void getAdvancedHistoryMessageList(OnBase<AdvancedMessage> callBack, String conversationID, Message startMsg, int count, ViewType viewType) {
         Map<String, Object> map = new ArrayMap<>();
-        map.put("lastMinSeq", MessageManager.this.lastMinSeq);
         map.put("conversationID", conversationID);
         if (null != startMsg) {
             map.put("startClientMsgID", startMsg.getClientMsgID());
         }
         map.put("count", count);
+        map.put("viewType", viewType.getValue());
 
         Open_im_sdk.getAdvancedHistoryMessageList(new Base() {
             @Override
@@ -473,18 +464,11 @@ public class MessageManager {
             @Override
             public void onSuccess(String s) {
                 AdvancedMessage messageListSeq = JsonUtil.toObj(s, AdvancedMessage.class);
-                MessageManager.this.lastMinSeq = messageListSeq.getLastMinSeq();
                 CommonUtil.runMainThread(() -> {
                     if (null != callBack) callBack.onSuccess(messageListSeq);
                 });
             }
         }, ParamsUtil.buildOperationID(), JsonUtil.toString(map));
-    }
-
-    private void isClearSeq(String conversationID) {
-        if (!TextUtils.equals(lastConversationID, conversationID)) lastMinSeq = 0;
-        lastConversationID = conversationID;
-
     }
 
 
@@ -499,15 +483,14 @@ public class MessageManager {
      *                       下一次拉取消息记录参数：startMsg=list.last && count =20；以此内推，startMsg始终为list的最后一条。
      * @param count          一次拉取count条
      */
-    public void getAdvancedHistoryMessageListReverse(OnBase<AdvancedMessage> callBack, String conversationID, Message startMsg, int count) {
-        isClearSeq(conversationID);
+    public void getAdvancedHistoryMessageListReverse(OnBase<AdvancedMessage> callBack, String conversationID, Message startMsg, int count, ViewType viewType) {
         Map<String, Object> map = new ArrayMap<>();
-        map.put("lastMinSeq", MessageManager.this.lastMinSeq);
         map.put("conversationID", conversationID);
         if (null != startMsg) {
             map.put("startClientMsgID", startMsg.getClientMsgID());
         }
         map.put("count", count);
+        map.put("viewType", viewType.getValue());
 
         Open_im_sdk.getAdvancedHistoryMessageListReverse(new Base() {
             @Override
@@ -518,7 +501,6 @@ public class MessageManager {
             @Override
             public void onSuccess(String s) {
                 AdvancedMessage messageListSeq = JsonUtil.toObj(s, AdvancedMessage.class);
-                MessageManager.this.lastMinSeq = messageListSeq.getLastMinSeq();
                 CommonUtil.runMainThread(() -> {
                     if (null != callBack) callBack.onSuccess(messageListSeq);
                 });
