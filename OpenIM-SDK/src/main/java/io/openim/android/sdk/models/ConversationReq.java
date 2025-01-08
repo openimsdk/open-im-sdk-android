@@ -29,10 +29,6 @@ public class ConversationReq {
      */
     private Boolean isPinned;
     /**
-     *
-     */
-    private String attachedInfo;
-    /**
      * 是否开启私聊
      */
     private Boolean isPrivateChat;
@@ -45,25 +41,9 @@ public class ConversationReq {
      */
     private Integer burnDuration;
     /**
-     *
-     */
-    private Long minSeq;
-    /**
-     *
-     */
-    private Long maxSeq;
-    /**
      * 强提示 如at消息，公告 {@link io.openim.android.sdk.enums.GroupAtType}
      */
     private Integer groupAtType;
-    /**
-     *  定期删除时间
-     */
-    private Long msgDestructTime;
-    /**
-     *  开启定期删除时间
-     */
-    private Boolean isMsgDestruct;
 
     public String getConversationID() {
         return conversationID;
@@ -95,22 +75,6 @@ public class ConversationReq {
 
     public void setEx(String ex) {
         this.ex = ex;
-    }
-
-    public String getAttachedInfo() {
-        return attachedInfo;
-    }
-
-    protected void setAttachedInfo(String attachedInfo) {
-        this.attachedInfo = attachedInfo;
-    }
-
-    public Boolean getMsgDestruct() {
-        return isMsgDestruct;
-    }
-
-    protected void setMsgDestruct(boolean msgDestruct) {
-        isMsgDestruct = msgDestruct;
     }
 
     public Boolean getPrivateChat() {
@@ -159,29 +123,5 @@ public class ConversationReq {
 
     public void setGroupAtType(int groupAtType) {
         this.groupAtType = groupAtType;
-    }
-
-    public Long getMinSeq() {
-        return minSeq;
-    }
-
-    protected void setMinSeq(long minSeq) {
-        this.minSeq = minSeq;
-    }
-
-    public Long getMaxSeq() {
-        return maxSeq;
-    }
-
-    protected void setMaxSeq(long maxSeq) {
-        this.maxSeq = maxSeq;
-    }
-
-    public Long getMsgDestructTime() {
-        return msgDestructTime;
-    }
-
-    protected void setMsgDestructTime(long msgDestructTime) {
-        this.msgDestructTime = msgDestructTime;
     }
 }

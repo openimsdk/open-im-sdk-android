@@ -123,7 +123,7 @@ public class UserInfo {
         this.faceURL = faceURL;
     }
 
-    public int getGender() {
+    public Integer getGender() {
         if ((isFriendship())) {
             return friendInfo.getGender();
         } else if (isBlacklist()) {
@@ -149,7 +149,7 @@ public class UserInfo {
         this.phoneNumber = phoneNumber;
     }
 
-    public long getBirth() {
+    public Long getBirth() {
         if ((isFriendship())) {
             return friendInfo.getBirth();
         }
@@ -239,7 +239,7 @@ public class UserInfo {
         return null != friendInfo;
     }
 
-    public int getGlobalRecvMsgOpt() {
+    public Integer getGlobalRecvMsgOpt() {
         return globalRecvMsgOpt;
     }
 
@@ -247,7 +247,7 @@ public class UserInfo {
         this.globalRecvMsgOpt = globalRecvMsgOpt;
     }
 
-    public int getAllowAddFriend() {
+    public Integer getAllowAddFriend() {
         return allowAddFriend;
     }
 
@@ -255,7 +255,7 @@ public class UserInfo {
         this.allowAddFriend = allowAddFriend;
     }
 
-    public int getAllowBeep() {
+    public Integer getAllowBeep() {
         return allowBeep;
     }
 
@@ -263,7 +263,7 @@ public class UserInfo {
         this.allowBeep = allowBeep;
     }
 
-    public int getAllowVibration() {
+    public Integer getAllowVibration() {
         return allowVibration;
     }
 
@@ -271,7 +271,7 @@ public class UserInfo {
         this.allowVibration = allowVibration;
     }
 
-    public int getForbidden() {
+    public Integer getForbidden() {
         return forbidden;
     }
 
@@ -279,7 +279,7 @@ public class UserInfo {
         this.forbidden = forbidden;
     }
 
-    public long getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
