@@ -110,6 +110,10 @@ public class Message {
      */
     private Object ex;
     /**
+     * localEx属性，setMessageLocalEx
+     */
+    private String localEx;
+    /**
      * 图片信息
      */
     private PictureElem pictureElem;
@@ -345,6 +349,10 @@ public class Message {
 
     public void setEx(Object ex) {
         this.ex = ex;
+    }
+
+    public String getLocalEx() {
+        return localEx;
     }
 
     public PictureElem getPictureElem() {
