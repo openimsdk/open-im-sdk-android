@@ -184,5 +184,5 @@ We take notes of each [biweekly meeting](https://github.com/orgs/OpenIMSDK/discu
 Check out our [user case studies](https://github.com/OpenIMSDK/community/blob/main/ADOPTERS.md) page for a list of the project users. Don't hesitate to leave a [📝comment](https://github.com/openimsdk/open-im-server/issues/379) and share your use case.
 
 ## License :page_facing_up:
-
-OpenIM is licensed under the Apache 2.0 license. See [LICENSE](https://github.com/openimsdk/open-im-server/tree/main/LICENSE) for the full license text.
+[
+OpenIM is licensed under the AGPL-3.0 license. See [LICENSE](https://github.com/openimsdk/open-im-sdk-android/blob/release-v3.8/LICENSE) for the full license text.
