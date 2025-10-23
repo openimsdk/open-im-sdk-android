@@ -15,6 +15,8 @@ import io.openim.android.sdk.listener._FriendshipListener;
 import io.openim.android.sdk.models.FriendApplicationInfo;
 import io.openim.android.sdk.models.FriendInfo;
 import io.openim.android.sdk.models.FriendshipInfo;
+import io.openim.android.sdk.models.GetFriendApplicationListAsApplicantReq;
+import io.openim.android.sdk.models.GetFriendApplicationListAsRecipientReq;
 import io.openim.android.sdk.models.UpdateFriendsReq;
 import io.openim.android.sdk.models.UserInfo;
 import io.openim.android.sdk.utils.JsonUtil;
@@ -74,8 +76,17 @@ public class FriendshipManager {
      *
      * @param base callback List<{@link UserInfo}>
      */
+    @Deprecated
     public void getRecvFriendApplicationList(OnBase<List<FriendApplicationInfo>> base) {
-        Open_im_sdk.getFriendApplicationListAsRecipient(BaseImpl.arrayBase(base, FriendApplicationInfo.class), ParamsUtil.buildOperationID());
+        getRecvFriendApplicationList(base, new GetFriendApplicationListAsRecipientReq());
+    }
+    /**
+     * 收到好友申请列表
+     *
+     * @param base callback List<{@link UserInfo}>
+     */
+    public void getRecvFriendApplicationList(OnBase<List<FriendApplicationInfo>> base, GetFriendApplicationListAsRecipientReq recipientReq) {
+        Open_im_sdk.getFriendApplicationListAsRecipient(BaseImpl.arrayBase(base, FriendApplicationInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(recipientReq));
     }
 
     /**
@@ -83,9 +94,19 @@ public class FriendshipManager {
      *
      * @param base callback List<{@link UserInfo}>
      */
+    @Deprecated
     public void getSendFriendApplicationList(OnBase<List<FriendApplicationInfo>> base) {
-        Open_im_sdk.getFriendApplicationListAsApplicant(BaseImpl.arrayBase(base, FriendApplicationInfo.class), ParamsUtil.buildOperationID());
+        getSendFriendApplicationList(base, new GetFriendApplicationListAsApplicantReq());
     }
+    /**
+     * 发出好友申请列表
+     *
+     * @param base callback List<{@link UserInfo}>
+     */
+    public void getSendFriendApplicationList(OnBase<List<FriendApplicationInfo>> base, GetFriendApplicationListAsApplicantReq applicantReq) {
+        Open_im_sdk.getFriendApplicationListAsApplicant(BaseImpl.arrayBase(base, FriendApplicationInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(applicantReq));
+    }
+
 
     /**
      * 好友列表
