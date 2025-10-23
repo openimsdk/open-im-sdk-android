@@ -1,8 +1,13 @@
 package io.openim.android.sdk.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.util.Objects;
 
-public class ConversationInfo {
+public class ConversationInfo implements Parcelable {
     /**
      * 会话id
      */
@@ -272,5 +277,71 @@ public class ConversationInfo {
     @Override
     public int hashCode() {
         return Objects.hash(conversationID);
+    }
+
+    protected ConversationInfo(Parcel in) {
+        conversationID = in.readString();
+        conversationType = in.readInt();
+        userID = in.readString();
+        groupID = in.readString();
+        showName = in.readString();
+        faceURL = in.readString();
+        recvMsgOpt = in.readInt();
+        unreadCount = in.readInt();
+        groupAtType = in.readInt();
+        latestMsg = in.readString();
+        latestMsgSendTime = in.readLong();
+        draftText = in.readString();
+        draftTextTime = in.readLong();
+        isPinned = in.readByte() != 0;
+        isPrivateChat = in.readByte() != 0;
+        ext = in.readString();
+        ex = in.readString();
+        isNotInGroup = in.readByte() != 0;
+        burnDuration = in.readInt();
+        msgDestructTime = in.readLong();
+        isMsgDestruct = in.readByte() != 0;
+    }
+
+    public static final Creator<ConversationInfo> CREATOR = new Creator<ConversationInfo>() {
+        @Override
+        public ConversationInfo createFromParcel(Parcel in) {
+            return new ConversationInfo(in);
+        }
+
+        @Override
+        public ConversationInfo[] newArray(int size) {
+            return new ConversationInfo[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(conversationID);
+        dest.writeInt(conversationType);
+        dest.writeString(userID);
+        dest.writeString(groupID);
+        dest.writeString(showName);
+        dest.writeString(faceURL);
+        dest.writeInt(recvMsgOpt);
+        dest.writeInt(unreadCount);
+        dest.writeInt(groupAtType);
+        dest.writeString(latestMsg);
+        dest.writeLong(latestMsgSendTime);
+        dest.writeString(draftText);
+        dest.writeLong(draftTextTime);
+        dest.writeByte((byte) (isPinned ? 1 : 0));
+        dest.writeByte((byte) (isPrivateChat ? 1 : 0));
+        dest.writeString(ext);
+        dest.writeString(ex);
+        dest.writeByte((byte) (isNotInGroup ? 1 : 0));
+        dest.writeInt(burnDuration);
+        dest.writeLong(msgDestructTime);
+        dest.writeByte((byte) (isMsgDestruct ? 1 : 0));
     }
 }
