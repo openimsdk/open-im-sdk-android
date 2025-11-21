@@ -22,4 +22,13 @@ public final class LogcatHelper {
             Log.d(TAG, message);
         }
     }
+
+    public static void logEInError(String message) {
+        if (TextUtils.isEmpty(message)) {
+            return;
+        }
+        if (BuildConfig.DEBUG) {
+            Log.e(TAG, message);
+        }
+    }
 }
