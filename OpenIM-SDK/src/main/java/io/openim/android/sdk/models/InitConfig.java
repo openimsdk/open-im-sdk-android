@@ -1,5 +1,8 @@
 package io.openim.android.sdk.models;
 
+import io.openim.android.sdk.enums.LogLevel;
+import io.openim.android.sdk.enums.Platform;
+
 /**
  * apiUrl              SDK的API接口地址。如：http:xxx:10000
  * wsUrl               SDK的web socket地址。如： ws:xxx:17778
@@ -15,11 +18,12 @@ public class InitConfig {
         this.dataDir = storageDir;
     }
 
-    public final int platformID = 2;
+    public final int platformID = Platform.ANDROID;
     public String apiAddr;
     public String wsAddr;
     public String dataDir;
-    public int logLevel = 6;
+    @LogLevel
+    public int logLevel = LogLevel.Debug;
     public boolean isLogStandardOutput;
     public String logFilePath;
 }

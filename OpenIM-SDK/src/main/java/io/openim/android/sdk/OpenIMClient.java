@@ -8,20 +8,25 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.ArrayMap;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.openim.android.sdk.enums.LogLevel;
 import io.openim.android.sdk.internal.log.LogcatHelper;
 import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnBase;
@@ -228,17 +233,57 @@ public class OpenIMClient {
     }
 
     /**
-     *  日志
-     * @param base
-     * @param logLevel
-     * @param file
-     * @param line
-     * @param msg
-     * @param err
-     * @param keyAndValues
+     * Sends a log entry to the SDK with the specified level, caller information, and optional key-value data.
+     *
+     * <p>This method mirrors the behavior of the Go SDKLog function by:
+     * <ul>
+     *   <li>Embedding caller information ({@code clazz} and {@code currentLineNum}) similar to Go's {@code [file:line]}.</li>
+     *   <li>Routing logs according to the specified {@code logLevel}.</li>
+     *   <li>Appending extra key-value pairs, requiring an even number of elements.</li>
+     * </ul>
+     * </p>
+     *
+     * @param logLevel Log level defined in {@link LogLevel}. Levels Warn~Fatal require a non-empty {@code errStr}.
+     * @param currentClassName The class' name where the log is generated, used to recreate Go's native caller info.
+     * @param currentLineNum The line number associated with the log.
+     * @param msgStr The main log message.
+     * @param errStr Optional error detail; required for Warn, Error, and Fatal levels.
+     * @param extra Optional key-value pairs. Must be an even number of elements; otherwise a warning entry is appended.
      */
-    public void logs(OnBase<String> base, long logLevel, String file, long line, String msg, String err, String[] keyAndValues) {
+    public void logs(@LogLevel int logLevel, String currentClassName , int currentLineNum, @NonNull String msgStr, @Nullable String errStr, @Nullable String... extra) {
+        if (logLevel <= LogLevel.Warn && logLevel >= LogLevel.Fatal && TextUtils.isEmpty(errStr)) {
+            LogcatHelper.logEInError("Must have an error message.");
+            return;
+        }
+        if (logLevel > LogLevel.DebugWithSQL || logLevel < LogLevel.Fatal) {
+            LogcatHelper.logEInError("Unknown log level.");
+            return;
+        }
+        // The Core SDK requires a value of array type, so the default string here is "[]".
+        String kvJson = "[]";
+        if (extra != null) {
+            if (extra.length % 2 == 0) {
+                kvJson = JsonUtil.toString(extra);
+            } else {
+                List<String> stringList = new ArrayList<>(Arrays.asList(extra));
+                stringList.add("The extra argument must contain an even number of elements.");
+                kvJson = JsonUtil.toString(stringList);
+            }
+            if (TextUtils.isEmpty(kvJson))
+                kvJson = "[]";
+        }
 
+        Open_im_sdk.logs(BaseImpl.stringBase(new OnBase<String>() {
+            @Override
+            public void onSuccess(String data) {
+                LogcatHelper.logDInDebug("Insert log success");
+            }
+
+            @Override
+            public void onError(int code, String error) {
+                LogcatHelper.logEInError("Insert log failed, code is " + code + " " + error);
+            }
+        }), ParamsUtil.buildOperationID(), logLevel, currentClassName, currentLineNum, msgStr, errStr, kvJson);
     }
 
 
