@@ -12,6 +12,8 @@ import io.openim.android.sdk.listener.BaseImpl;
 import io.openim.android.sdk.listener.OnBase;
 import io.openim.android.sdk.listener.OnGroupListener;
 import io.openim.android.sdk.listener._GroupListener;
+import io.openim.android.sdk.models.GetGroupApplicationListAsApplicantReq;
+import io.openim.android.sdk.models.GetGroupApplicationListAsRecipientReq;
 import io.openim.android.sdk.models.GroupApplicationInfo;
 import io.openim.android.sdk.models.GroupInfo;
 import io.openim.android.sdk.models.GroupInfoReq;
@@ -197,8 +199,18 @@ public class GroupManager {
      *
      * @param base callback {@link GroupApplicationInfo}
      */
+    @Deprecated
     public void getRecvGroupApplicationList(OnBase<List<GroupApplicationInfo>> base) {
-        Open_im_sdk.getGroupApplicationListAsRecipient(BaseImpl.arrayBase(base, GroupApplicationInfo.class), ParamsUtil.buildOperationID());
+        getRecvGroupApplicationList(base, new GetGroupApplicationListAsRecipientReq());
+    }
+
+    /**
+     * 收到群申请列表
+     *
+     * @param base callback {@link GroupApplicationInfo}
+     */
+    public void getRecvGroupApplicationList(OnBase<List<GroupApplicationInfo>> base, GetGroupApplicationListAsRecipientReq recipientReq) {
+        Open_im_sdk.getGroupApplicationListAsRecipient(BaseImpl.arrayBase(base, GroupApplicationInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(recipientReq));
     }
 
     /**
@@ -206,8 +218,17 @@ public class GroupManager {
      *
      * @param base callback {@link GroupApplicationInfo}
      */
+    @Deprecated
     public void getSendGroupApplicationList(OnBase<List<GroupApplicationInfo>> base) {
-        Open_im_sdk.getGroupApplicationListAsApplicant(BaseImpl.arrayBase(base, GroupApplicationInfo.class), ParamsUtil.buildOperationID());
+        getSendGroupApplicationList(base, new GetGroupApplicationListAsApplicantReq());
+    }
+    /**
+     * 发出群申请列表
+     *
+     * @param base callback {@link GroupApplicationInfo}
+     */
+    public void getSendGroupApplicationList(OnBase<List<GroupApplicationInfo>> base, GetGroupApplicationListAsApplicantReq applicantReq) {
+        Open_im_sdk.getGroupApplicationListAsApplicant(BaseImpl.arrayBase(base, GroupApplicationInfo.class), ParamsUtil.buildOperationID(), JsonUtil.toString(applicantReq));
     }
 
     /**
