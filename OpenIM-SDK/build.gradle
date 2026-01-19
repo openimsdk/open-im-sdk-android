@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.library'
-    id 'maven-publish'
 }
 
 android {
@@ -12,39 +11,14 @@ android {
         versionCode 1
         versionName "1.0"
 
-//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-//        consumerProguardFiles "consumer-rules.pro"
-
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
     }
 
-//    buildTypes {
-//        release {
-//            minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
-//                'proguard-rules.pro'
-//        }
-//    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
-    }
-
-    afterEvaluate {
-        publishing {
-            publications {
-                // Creates a Maven publication called "release".
-                release(MavenPublication) {
-                    from components.release
-                    //建议和github地址对应，否则对jitpack无效
-                    groupId = 'com.github.openimsdk'
-                    //建议和github仓库名称对应，否则对jitpack无效
-                    artifactId = 'open-im-sdk-android'
-                }
-            }
-        }
     }
 }
 
